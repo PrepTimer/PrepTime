@@ -3,10 +3,6 @@ import 'package:preptime/speech/ring.dart';
 
 /// Manages a timer ring including the ring painter, label, title, and dots.
 class TimerRing extends StatelessWidget {
-  final Widget child;
-
-  TimerRing({@required this.child});
-
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -16,7 +12,7 @@ class TimerRing extends StatelessWidget {
         child: Stack(
           children: <Widget>[
             Positioned.fill(
-              child: child,
+              child: Ring(),
             ),
             Align(
               alignment: FractionalOffset.center,

@@ -6,13 +6,15 @@ import 'package:flutter/material.dart';
 /// The timer ring is a custom painter object that paints a round circle
 /// with the given background color underneath a colored arc that animates
 /// from full to empty.
-class Ring extends StatelessWidget {
-  final AnimationController controller;
+class Ring extends StatefulWidget {
+  @override
+  _RingState createState() => _RingState();
+}
 
-  Ring({@required this.controller});
-
+class _RingState extends State<Ring> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
+    Provider.of<>
     return CustomPaint(
       painter: _RingPainter(controller),
     );
