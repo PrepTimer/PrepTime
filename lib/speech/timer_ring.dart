@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:preptime/models/event_manager.dart';
 import 'package:preptime/speech/ring.dart';
+import 'package:provider/provider.dart';
 
 /// Manages a timer ring including the ring painter, label, title, and dots.
 class TimerRing extends StatelessWidget {
@@ -16,11 +18,10 @@ class TimerRing extends StatelessWidget {
             ),
             Align(
               alignment: FractionalOffset.center,
-              child: AnimatedBuilder(
-                animation: widget.controller,
-                builder: (context, child) {
+              child: Consumer<EventManager>(
+                builder: (context, value, child) {
                   return Text(
-                    _getFormattedTime(),
+                    value.getSpeech().getFormattedTime(),
                     style: TextStyle(
                       letterSpacing: -2.0,
                       fontWeight: FontWeight.w200,
@@ -35,14 +36,5 @@ class TimerRing extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String _getFormattedTime() {
-    Duration duration = widget.controller.duration * widget.controller.value;
-    String min = duration.inMinutes.toString();
-    String sec = (duration.inSeconds % 60).toString().padLeft(2, '0');
-    // String ms = (duration.inMilliseconds % 10).toString();
-    // print(ms);
-    return min + ':' + sec;
   }
 }

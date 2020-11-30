@@ -1,5 +1,8 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:preptime/models/event_manager.dart';
+import 'package:preptime/models/speech.dart';
+import 'package:provider/provider.dart';
 
 /// Manages the animation of a circle and arc of the timer ring.
 ///
@@ -12,11 +15,19 @@ class Ring extends StatefulWidget {
 }
 
 class _RingState extends State<Ring> with TickerProviderStateMixin {
+  Speech speech;
+
+  @override
+  void initState() {
+    speech = Provider.of<EventManager>(context).getSpeech();
+    speech.initController(this);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    Provider.of<>
     return CustomPaint(
-      painter: _RingPainter(controller),
+      painter: _RingPainter(speech.controller),
     );
   }
 }

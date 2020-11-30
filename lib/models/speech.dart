@@ -1,34 +1,46 @@
-import 'dart:async';
+import 'package:flutter/material.dart';
 
-import 'package:flutter/widgets.dart';
-
-/// Describes the direction of how the timer counts.
-enum TimerDirection { countDown, countsUp }
-
-/// Describes what happens when the timer runs out.
-enum TimerEndBehavior { stopClock, keepCounting }
-
-/// Describes the state and behavior of a single speech.
 class Speech {
-  final TimerDirection direction;
-  final TimerEndBehavior onEnd;
-  final Function callback;
-  final AnimationController controller;
-  final String name;
+  AnimationController controller;
+  String name;
+  bool shouldCountUp;
+  bool useJudgeAssistant;
 
-  /// Constructs a new speech object.
-  Speech({
-    @required this.name,
-    @required this.direction,
-    Duration length,
-    @required this.onEnd,
-    this.callback,
-  }) : controller = AnimationController(
-          vsync: null,
-          value: 1.0,
-          duration: length,
-        );
+  /// Starts the speech animation.
+  void startSpeech() {}
 
-  /// Starts the speech timer.
-  void startTimer() {}
+  /// Pauses the speech animation.
+  void pauseSpeech() {}
+
+  /// Resumes the speech animation.
+  void resumeSpeech() {}
+
+  /// Cancels the speech animation.
+  void cancelSpeech() {
+    _checkControllerNotNull();
+    // controller
+  }
+
+  /// Returns the speech animation's duration.
+  ///
+  /// Throws ArgumentError if the controller is null.
+  Duration getTime() {
+    _checkControllerNotNull();
+    return controller.duration * controller.value;
+  }
+
+  ///
+  void initController() {}
+
+  ///
+  void disposeController() {}
+
+  /// Checks that the controller is not null.
+  ///
+  /// If the controller is null, throws ArgumentError.
+  void _checkControllerNotNull() {
+    if (controller == null) {
+      throw ArgumentError('Controller should not be null.');
+    }
+  }
 }
