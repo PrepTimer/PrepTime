@@ -105,12 +105,11 @@ class Speech implements Timeable {
   /// - [onStatusChange] an optional function called when the status changes.
   void initController({
     @required TickerProvider ticker,
-    @required Duration duration,
     @required Function onValueChange,
     void Function(AnimationStatus) onStatusChange,
   }) {
     controller = AnimationController(
-      duration: duration,
+      duration: length,
       vsync: ticker,
     );
     controller.addListener(() => onValueChange);
