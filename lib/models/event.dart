@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:preptime/models/speech.dart';
 
 /// An academic forensics event.
-/// 
+///
 /// There are two types of forensics events, [DebateEvent] and [SpeechEvent].
 /// They both share this interface, which includes the [name] of the event, the
 /// [description] of the event, and the current [speech] being given. Only the
@@ -26,4 +26,10 @@ abstract class Event extends ChangeNotifier {
 
   /// Selects and returns the previous speech.
   void prevSpeech();
+
+  @override
+  void dispose() {
+    speech?.dispose();
+    super.dispose();
+  }
 }

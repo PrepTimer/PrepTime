@@ -24,7 +24,7 @@ class EventManager extends ChangeNotifier {
   }
 
   /// Selects the given event.
-  /// 
+  ///
   /// The given event must be in the set of [events].
   void setEvent(Event e) {
     if (events.contains(e)) {
@@ -35,5 +35,14 @@ class EventManager extends ChangeNotifier {
   /// Removes the selected event.
   void clearEvent() {
     event = null;
+  }
+
+  @override
+  void dispose() {
+    event = null;
+    for (Event e in events) {
+      e.dispose();
+    }
+    super.dispose();
   }
 }
