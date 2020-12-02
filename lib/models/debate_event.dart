@@ -2,11 +2,11 @@ import 'package:preptime/models/event.dart';
 import 'package:preptime/models/prep_time.dart';
 import 'package:preptime/models/speech.dart';
 
-/// A DebateEvent is an Event in which multiple speechs are given.
+/// A [DebateEvent] is an [Event] in which multiple speechs are given.
 /// 
 /// The timer in a debate event counts down, whereas the timer in a
-/// [SpeechEvent] will count up. For a DebateEvent, the nextSpeech and
-/// prevSpeech methods will change the value of the speech field and trigger
+/// [SpeechEvent] will count up. For a [DebateEvent], the [nextSpeech] and
+/// [prevSpeech] methods will change the value of the speech field and trigger
 /// updates in the UI. 
 class DebateEvent extends Event with PrepTimeMixin {
   /// A list of speeches that defines the structure of the event.
@@ -21,7 +21,7 @@ class DebateEvent extends Event with PrepTimeMixin {
 
   /// Sets the current speech to be the next speech.
   ///
-  /// No-op if the current speech is the last speech.
+  /// The current speech must not be the last speech.
   @override
   void nextSpeech() {
     if (super.speech != speeches.last) {
@@ -33,7 +33,7 @@ class DebateEvent extends Event with PrepTimeMixin {
 
   /// Sets the current speech to be the previous speech.
   ///
-  /// No-op if the current speech is the first speech.
+  /// The current speech must not be the first speech.
   @override
   void prevSpeech() {
     if (super.speech != speeches.first) {
