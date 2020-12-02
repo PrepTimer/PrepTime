@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:preptime/timer/button.dart';
+import 'package:preptime/timer/timer_buttons.dart';
 import 'package:preptime/timer/timer_ring.dart';
 
 class Timer extends StatelessWidget {
@@ -33,21 +34,7 @@ class Timer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               TimerRing(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TimerButton(
-                    buttonText: 'Cancel',
-                    textColor: Color(0xFF999999),
-                    onPressed: () {},
-                  ),
-                  TimerButton(
-                    buttonText: 'Start',
-                    textColor: Color(0xFFFF9F0A), // Color(0xFF32D74B)
-                    onPressed: () {},
-                  ),
-                ],
-              )
+              TimerButtons()
             ],
           ),
         ),

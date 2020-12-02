@@ -21,6 +21,9 @@ class Speech implements Timeable {
   /// The name of the speech.
   final String name;
 
+  /// The duration of the speech.
+  final Duration length;
+
   /// Whether the timer should count up or down.
   final bool shouldCountUp;
 
@@ -31,7 +34,7 @@ class Speech implements Timeable {
   AnimationController controller;
 
   /// Constructs a new Speech object
-  Speech({this.name, this.shouldCountUp, this.useJudgeAssistant});
+  Speech({this.name, this.length, this.shouldCountUp, this.useJudgeAssistant});
 
   /// Whether the [Speech] is running.
   bool get isRunning => controller.isAnimating;
@@ -96,10 +99,10 @@ class Speech implements Timeable {
   /// If the speech uses JudgeAssistant, the controller will also add the
   /// onStatusChange callback to the controller.
   ///
-  /// [ticker] - a reference to the current context's TickerProvider.
-  /// [duration] - the amount of time it takes for the controller to expire.
-  /// [onValueChange] - a function called when the controller value changes.
-  /// [onStatusChange] - an optional function called when the status changes.
+  /// - [ticker] a reference to the current context's TickerProvider.
+  /// - [duration] the amount of time it takes for the controller to expire.
+  /// - [onValueChange] a function called when the controller value changes.
+  /// - [onStatusChange] an optional function called when the status changes.
   void initController({
     @required TickerProvider ticker,
     @required Duration duration,

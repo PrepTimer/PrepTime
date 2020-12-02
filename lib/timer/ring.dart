@@ -19,8 +19,8 @@ class _RingState extends State<Ring> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    speech = Provider.of<EventManager>(context).getSpeech();
-    speech.initController(this);
+    speech = Provider.of<EventManager>(context).event.speech;
+    speech.initController(ticker: this, duration: null, onValueChange: null);
     super.initState();
   }
 
