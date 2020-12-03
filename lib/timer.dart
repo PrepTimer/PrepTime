@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:preptime/timer/button.dart';
 import 'package:preptime/timer/timer_buttons.dart';
 import 'package:preptime/timer/timer_ring.dart';
 
