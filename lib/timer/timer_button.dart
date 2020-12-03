@@ -47,14 +47,23 @@ class _TimerButtonState extends State<TimerButton> {
   static const double strokeWidth = 2.5;
   static const double fontSize = 16;
 
+  /// The opacity of the background.
   int alpha = 60;
 
   @override
   Widget build(BuildContext context) {
+    /// Whether the speech timer is running or not.
     bool isRunning = context.watch<Speech>().isRunning;
+
+    /// Handles the onPress callback for the button.
+    void Function() handlePress =
+        isRunning ? widget.whenRunning : widget.whenPaused;
+
+    /// The color of the button background, not considering button disability.
     Color buttonColor = isRunning
         ? widget.secondaryColor.withAlpha(alpha)
         : widget.primaryColor.withAlpha(alpha);
+
     return Container(
       width: buttonSize.width,
       height: buttonSize.height,
@@ -74,8 +83,9 @@ class _TimerButtonState extends State<TimerButton> {
           ),
         ),
         color: buttonColor,
+        disabledColor: buttonColor,
         onHighlightChanged: (tap) => this.setState(() => alpha = tap ? 30 : 60),
-        onPressed: () => isRunning ? widget.whenRunning() : widget.whenPaused(),
+        onPressed: handlePress,
       ),
     );
   }
