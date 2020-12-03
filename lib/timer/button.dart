@@ -1,18 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:preptime/models/event_manager.dart';
+import 'package:preptime/models/speech.dart';
+import 'package:provider/provider.dart';
 
 /// Defines the state and behavior of a timer button.
 ///
 /// The button is a circle with a double ring around its edge. When the button
 /// is pressed, the background color gets darker.
 class TimerButton extends StatefulWidget {
-  final Function onPressed;
-  final String buttonText;
-  final Color textColor;
+  /// The function the button performs when the timer is running.
+  final void Function() whenRunning;
 
+  /// The function the button performs when the timer is paused.
+  final void Function() whenPaused;
+
+  /// The text in the center of the button.
+  final String buttonText;
+
+  /// The base color of the button.
+  final Color color;
+
+  /// The alternate color of the button.
+  ///
+  /// By default, this is equal to [color]. The button assumes the alternate
+  /// color when the timer is running and returns to its base color when the
+  /// timer is paused.
+  final Color altColor;
+
+  /// Constructs a new TimerButton.
   TimerButton({
-    this.buttonText,
-    this.textColor,
-    this.onPressed,
+    @required this.buttonText,
+    @required this.color,
+    this.altColor,
+    @required this.whenPaused,
+    @required this.whenRunning,
   });
 
   @override
@@ -25,15 +46,15 @@ class _TimerButtonState extends State<TimerButton> {
   static const double strokeWidth = 2.5;
   static const double fontSize = 16;
 
+  Speech speech;
   Color buttonColor;
 
   @override
   void initState() {
     super.initState();
-    buttonColor = widget.textColor.withAlpha(60);
+    buttonColor = widget.color.withAlpha(60);
+    speech = Provider.of<EventManager>(context).event.speech;
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -50,14 +71,14 @@ class _TimerButtonState extends State<TimerButton> {
         child: Text(
           widget.buttonText,
           style: TextStyle(
-            color: widget.textColor,
+            color: widget.color,
             fontSize: fontSize,
             fontWeight: FontWeight.w400,
           ),
         ),
         color: buttonColor,
         onHighlightChanged: (value) => _toggleButtonColor(value),
-        onPressed: widget.onPressed,
+        // onPressed: widget.onPressed,
       ),
     );
   }
