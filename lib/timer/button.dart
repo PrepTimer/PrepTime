@@ -76,7 +76,7 @@ class _TimerButtonState extends State<TimerButton> {
         child: Text(
           widget.buttonText,
           style: TextStyle(
-            color: widget.color,
+            color: speech.isNotRunning ? widget.color : widget.altColor,
             fontSize: fontSize,
             fontWeight: FontWeight.w400,
           ),

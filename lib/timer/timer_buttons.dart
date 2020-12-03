@@ -16,8 +16,8 @@ class TimerButtons extends StatelessWidget {
         ),
         TimerButton(
           buttonText: 'Start',
-          color: Color(0xFFFF9F0A),
-          altColor: Color(0xFF32D74B),
+          color: Color(0xFF32D74B),
+          altColor: Color(0xFFFF9F0A),
           whenRunning: null,
           whenPaused: null,
         ),
