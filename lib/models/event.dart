@@ -39,15 +39,10 @@ abstract class Event extends ChangeNotifier {
     TickerProvider ticker, {
     void Function(AnimationStatus) onStatusChange,
   }) {
-    controller = AnimationController(
-      duration: length,
-      vsync: ticker,
+    speech.initController(
+      ticker,
+      onValueChange: notifyListeners,
     );
-    
-    if (useJudgeAssistant) {
-      // controller.addListener(() => handleValueChange); // for time signals
-      controller.addStatusListener((status) => onStatusChange); // auto-move
-    }
   }
 
   @override
