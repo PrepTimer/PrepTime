@@ -20,16 +20,15 @@ class TimerRing extends StatelessWidget {
               alignment: FractionalOffset.center,
               child: Consumer<EventManager>(
                 builder: (context, eventManager, child) {
-                  return RichText()
-                  // return Text(
-                  //   eventManager.event.speech.toString(),
-                  //   style: const TextStyle(
-                  //     letterSpacing: -2.0,
-                  //     fontWeight: FontWeight.w200,
-                  //     fontSize: 100.0,
-                  //     color: Colors.white,
-                  //   ),
-                  // );
+                  return Text(
+                    eventManager.event.speech.toString(),
+                    style: const TextStyle(
+                      letterSpacing: -2.0,
+                      fontWeight: FontWeight.w200,
+                      fontSize: 100.0,
+                      color: Colors.white,
+                    ),
+                  );
                 },
               ),
             ),
