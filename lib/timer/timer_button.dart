@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:preptime/models/event_manager.dart';
 import 'package:preptime/models/speech.dart';
 import 'package:provider/provider.dart';
 
@@ -46,6 +45,7 @@ class _TimerButtonState extends State<TimerButton> {
   static const double strokeWidth = 2.5;
   static const double fontSize = 16;
 
+  // TODO: MAKE THE BUTTON CHANGE COLORS ON START/STOP.
   Color buttonColor;
 
   @override

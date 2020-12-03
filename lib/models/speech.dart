@@ -82,6 +82,7 @@ class Speech extends ChangeNotifier implements Timeable {
     } else {
       controller.reverse(from: 1.0);
     }
+    notifyListeners();
   }
 
   /// Resumes the speech animation.
@@ -92,23 +93,22 @@ class Speech extends ChangeNotifier implements Timeable {
   /// decreasing toward 0.0.
   void resume() {
     _checkControllerNotNull();
-    if (shouldCountUp) {
-      controller.forward();
-    } else {
-      controller.reverse();
-    }
+    shouldCountUp ? controller.forward() : controller.reverse();
+    notifyListeners();
   }
 
   /// Stops the speech animation.
   void stop() {
     _checkControllerNotNull();
     controller.stop();
+    notifyListeners();
   }
 
   /// Resets the speech animation.
   void reset() {
     _checkControllerNotNull();
-    controller.reset();
+    shouldCountUp ? controller.reset() : controller.value = 1.0;
+    notifyListeners();
   }
 
   /// Initializes the controller.
