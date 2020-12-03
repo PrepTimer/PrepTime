@@ -83,15 +83,6 @@ class Speech implements Timeable {
     controller.reset();
   }
 
-  /// Returns the speech animation's duration.
-  ///
-  /// Throws ArgumentError if the controller is null.
-  Duration getDuration() {
-    _checkControllerNotNull();
-    // TODO: Verify logic speech controller duration logic.
-    return controller.duration * controller.value;
-  }
-
   /// Initializes the controller.
   ///
   /// Binds the TickerProvider to the AnimationController and if the speech
@@ -99,15 +90,18 @@ class Speech implements Timeable {
   /// callback to the controller.
   ///
   /// - [ticker] a reference to the current context's TickerProvider.
+  /// - [onValueChange] a callback that is attached to the valueChange listener.
   /// - [onStatusChange] an optional function called when the status changes.
   void initController(
     TickerProvider ticker, {
+    @required Function() onValueChange,
     void Function(AnimationStatus) onStatusChange,
   }) {
     controller = AnimationController(
       duration: length,
       vsync: ticker,
     );
+    controller.addListener(() => onValueChange);
     if (useJudgeAssistant) {
       // controller.addListener(() => handleValueChange); // for time signals
       controller.addStatusListener((status) => onStatusChange); // auto-move
@@ -117,6 +111,47 @@ class Speech implements Timeable {
   /// Disposes the resources used by the [Speech] object.
   void dispose() {
     controller.dispose();
+  }
+
+  /// Returns the speech animation's duration.
+  ///
+  /// Throws ArgumentError if the controller is null.
+  Duration getDuration() {
+    _checkControllerNotNull();
+    // TODO: Verify logic speech controller duration logic.
+    return controller.duration * controller.value;
+  }
+
+  /// Returns a string representation of this `Duration`.
+  ///
+  /// Returns a string with minutes, seconds, and milliseconds, in the
+  /// following format: `M:SS.m`. For example,
+  ///
+  /// var d = Duration(minutes: 6, seconds: 32, milliseconds: 400);
+  /// d.toString();  // "6:32.4"
+  @override
+  String toString() {
+    String sixDigits(int n) {
+      if (n >= 100000) return "$n";
+      if (n >= 10000) return "0$n";
+      if (n >= 1000) return "00$n";
+      if (n >= 100) return "000$n";
+      if (n >= 10) return "0000$n";
+      return "00000$n";
+    }
+
+    String twoDigits(int n) {
+      if (n >= 10) return "$n";
+      return "0$n";
+    }
+
+    String twoDigitMinutes =
+        twoDigits(inMinutes.remainder(minutesPerHour) as int);
+    String twoDigitSeconds =
+        twoDigits(inSeconds.remainder(secondsPerMinute) as int);
+    String sixDigitUs =
+        sixDigits(inMicroseconds.remainder(microsecondsPerSecond) as int);
+    return "$inHours:$twoDigitMinutes:$twoDigitSeconds.$sixDigitUs";
   }
 
   /// Checks that the controller is not null.
