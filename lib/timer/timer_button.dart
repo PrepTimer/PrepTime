@@ -62,30 +62,25 @@ class _TimerButtonState extends State<TimerButton> {
       decoration: ShapeDecoration(
         shape: _circularRingWithColor(buttonColor),
       ),
-      child: Consumer<EventManager>(
-        builder: (context, eventManager, child) {
-          Speech speech = eventManager?.event?.speech;
-          return MaterialButton(
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            shape: _circularRingWithColor(Colors.black), // background color
-            child: Text(
-              widget.buttonText,
-              style: TextStyle(
-                color: speech?.isNotRunning ?? true
-                    ? widget.color
-                    : widget.altColor,
-                fontSize: fontSize,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            color: buttonColor,
-            onHighlightChanged: (isPressed) => _toggleButtonColor,
-            onPressed: () => speech?.isRunning ?? true
-                ? widget.whenRunning()
-                : widget.whenPaused(),
-          );
-        },
+      child: MaterialButton(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        shape: _circularRingWithColor(Colors.black), // background color
+        child: Text(
+          widget.buttonText,
+          style: TextStyle(
+            color: context.watch<Speech>().isNotRunning
+                ? widget.color
+                : widget.altColor,
+            fontSize: fontSize,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        color: buttonColor,
+        onHighlightChanged: (isPressed) => _toggleButtonColor,
+        onPressed: () => context.watch<Speech>().isRunning
+            ? widget.whenRunning()
+            : widget.whenPaused(),
       ),
     );
   }
@@ -104,11 +99,7 @@ class _TimerButtonState extends State<TimerButton> {
   /// Toggles the color of the button.
   void _toggleButtonColor(bool buttonIsPressed) {
     this.setState(() {
-      if (buttonIsPressed) {
-        buttonColor = buttonColor.withAlpha(30); // darken
-      } else {
-        buttonColor = buttonColor.withAlpha(60); // lighten
-      }
+      buttonColor = buttonColor.withAlpha(buttonIsPressed ? 30 : 60);
     });
   }
 }

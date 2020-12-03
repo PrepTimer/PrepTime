@@ -12,7 +12,7 @@ class Ring extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: _RingPainter(context.read<Speech>().controller),
+      painter: _RingPainter(context.watch<Speech>().controller),
     );
   }
 }
