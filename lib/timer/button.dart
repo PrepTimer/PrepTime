@@ -44,7 +44,7 @@ class _TimerButtonState extends State<TimerButton> {
   static const BorderStyle borderStyle = BorderStyle.solid;
   static const Size buttonSize = Size(100, 90);
   static const double strokeWidth = 2.5;
-  static const double fontSize = 15;
+  static const double fontSize = 16;
 
   Speech speech;
   Color buttonColor;
@@ -53,7 +53,12 @@ class _TimerButtonState extends State<TimerButton> {
   void initState() {
     super.initState();
     buttonColor = widget.color.withAlpha(60);
+  }
+
+  @override
+  void didChangeDependencies() {
     speech = Provider.of<EventManager>(context).event.speech;
+    super.didChangeDependencies();
   }
 
   @override

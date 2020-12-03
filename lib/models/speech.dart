@@ -126,9 +126,10 @@ class Speech implements Timeable {
   ///
   /// Returns a string with minutes, seconds, and milliseconds, in the
   /// following format: `MM:SS.m`. For example,
-  ///
+  /// ```dart
   /// var d = Duration(minutes: 6, seconds: 32, milliseconds: 400);
   /// d.toString();  // "06:32.4"
+  /// ```
   @override
   String toString() {
     String one(int n) {

@@ -25,7 +25,7 @@ class TimerRing extends StatelessWidget {
                     style: const TextStyle(
                       letterSpacing: -2.0,
                       fontWeight: FontWeight.w200,
-                      fontSize: 100.0,
+                      fontSize: 85.0,
                       color: Colors.white,
                     ),
                   );
