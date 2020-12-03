@@ -13,7 +13,7 @@ import 'package:preptime/models/timeable.dart';
 /// [isRunning] and [isNotRunning] getter methods.
 ///
 /// Before using the [Speech] you must call [initController] and initialize it
-/// with a [TickerProvider]. After that, you can call [getDuration] to get the
+/// with a [TickerProvider]. After that, you can call [toString] to get the
 /// duration that should be shown on the clock. Finally, to properly dispose of
 /// the resources used here, you should call [dispose] to free up the space
 /// used by the [controller].
@@ -116,7 +116,7 @@ class Speech implements Timeable {
   /// Returns the speech animation's duration.
   ///
   /// Throws ArgumentError if the controller is null.
-  Duration getDuration() {
+  Duration _getDuration() {
     _checkControllerNotNull();
     // TODO: Verify logic speech controller duration logic.
     return controller.duration * controller.value;
@@ -125,33 +125,28 @@ class Speech implements Timeable {
   /// Returns a string representation of this `Duration`.
   ///
   /// Returns a string with minutes, seconds, and milliseconds, in the
-  /// following format: `M:SS.m`. For example,
+  /// following format: `MM:SS.m`. For example,
   ///
   /// var d = Duration(minutes: 6, seconds: 32, milliseconds: 400);
-  /// d.toString();  // "6:32.4"
+  /// d.toString();  // "06:32.4"
   @override
   String toString() {
-    String sixDigits(int n) {
-      if (n >= 100000) return "$n";
-      if (n >= 10000) return "0$n";
-      if (n >= 1000) return "00$n";
-      if (n >= 100) return "000$n";
-      if (n >= 10) return "0000$n";
-      return "00000$n";
+    String one(int n) {
+      if (n < 100) return "0";
+      return "${n ~/ 100}";
     }
 
-    String twoDigits(int n) {
+    String two(int n) {
       if (n >= 10) return "$n";
       return "0$n";
     }
 
-    String twoDigitMinutes =
-        twoDigits(inMinutes.remainder(minutesPerHour) as int);
-    String twoDigitSeconds =
-        twoDigits(inSeconds.remainder(secondsPerMinute) as int);
-    String sixDigitUs =
-        sixDigits(inMicroseconds.remainder(microsecondsPerSecond) as int);
-    return "$inHours:$twoDigitMinutes:$twoDigitSeconds.$sixDigitUs";
+    Duration t = _getDuration();
+
+    String mm = two(t.inMinutes.remainder(Duration.minutesPerHour));
+    String ss = two(t.inSeconds.remainder(Duration.secondsPerMinute));
+    String m = one(t.inMilliseconds.remainder(Duration.millisecondsPerSecond));
+    return "$mm:$ss.$m";
   }
 
   /// Checks that the controller is not null.
