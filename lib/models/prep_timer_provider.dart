@@ -35,6 +35,9 @@ class PrepTimeProvider extends StatelessWidget {
     return MultiProvider(
       child: child,
       providers: [
+        ChangeNotifierProvider<Speech>(
+          create: (_) => eventManager.event.speech,
+        ),
         ChangeNotifierProvider<EventManager>.value(
           value: eventManager,
         ),
@@ -43,12 +46,12 @@ class PrepTimeProvider extends StatelessWidget {
           update: (_, newEventManager, __) => newEventManager.event,
           updateShouldNotify: (previous, current) => previous != current,
         ),
-        ProxyProvider<Event, Speech>(
-          create: (_) => eventManager.event?.speech,
-          update: (_, newEvent, __) => newEvent.speech,
-          updateShouldNotify: (previous, current) => previous != current,
-          dispose: (_, __) => eventManager.dispose(),
-        ),
+        // ProxyProvider<Event, Speech>(
+        //   create: (_) => eventManager.event?.speech,
+        //   update: (_, newEvent, __) => newEvent.speech,
+        //   updateShouldNotify: (previous, current) => previous != current,
+        //   dispose: (_, __) => eventManager.dispose(),
+        // ),
       ],
     );
   }

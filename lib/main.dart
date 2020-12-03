@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:preptime/models/event_manager.dart';
-// import 'package:preptime/home.dart';
+import 'package:preptime/models/prep_timer_provider.dart';
 import 'package:preptime/timer.dart';
 import 'package:provider/provider.dart';
+// import 'package:preptime/home.dart';
 
-void main() => runApp(PrepTime());
+void main() {
+  Provider.debugCheckInvalidValueType = null;
+
+  runApp(PrepTime());
+}
 
 class PrepTime extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => EventManager(),
+    return PrepTimeProvider(
       child: MaterialApp(
         theme: ThemeData.dark(),
         home: Timer(),

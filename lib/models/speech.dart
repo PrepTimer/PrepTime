@@ -17,7 +17,7 @@ import 'package:preptime/models/timeable.dart';
 /// duration that should be shown on the clock. Finally, to properly dispose of
 /// the resources used here, you should call [dispose] to free up the space
 /// used by the [controller].
-class Speech implements Timeable {
+class Speech extends ChangeNotifier implements Timeable {
   /// The name of the speech.
   final String name;
 
@@ -41,6 +41,34 @@ class Speech implements Timeable {
 
   /// Whether the [Speech] is not running.
   bool get isNotRunning => !controller.isAnimating;
+
+  /// Returns a string representation of this `Duration`.
+  ///
+  /// Returns a string with minutes, seconds, and milliseconds, in the
+  /// following format: `MM:SS.m`. For example,
+  /// ```dart
+  /// var d = Duration(minutes: 6, seconds: 32, milliseconds: 400);
+  /// d.toString();  // "06:32.4"
+  /// ```
+  String get timeRemaining {
+    String one(int n) {
+      if (n < 100) return "0";
+      return "${n ~/ 100}";
+    }
+
+    String two(int n) {
+      if (n >= 10) return "$n";
+      return "0$n";
+    }
+
+    _checkControllerNotNull();
+    Duration t =  controller.duration * controller.value;
+
+    String mm = two(t.inMinutes.remainder(Duration.minutesPerHour));
+    String ss = two(t.inSeconds.remainder(Duration.secondsPerMinute));
+    String m = one(t.inMilliseconds.remainder(Duration.millisecondsPerSecond));
+    return "$mm:$ss.$m";
+  }
 
   /// Starts the speech animation from the beginning.
   ///
@@ -90,18 +118,18 @@ class Speech implements Timeable {
   /// callback to the controller.
   ///
   /// - [ticker] a reference to the current context's TickerProvider.
-  /// - [onValueChange] a callback that is attached to the valueChange listener.
   /// - [onStatusChange] an optional function called when the status changes.
   void initController(
     TickerProvider ticker, {
-    @required Function() onValueChange,
     void Function(AnimationStatus) onStatusChange,
   }) {
     controller = AnimationController(
       duration: length,
       vsync: ticker,
     );
-    controller.addListener(() => onValueChange);
+    controller.addListener(() {
+      notifyListeners();
+    });
     if (useJudgeAssistant) {
       // controller.addListener(() => handleValueChange); // for time signals
       controller.addStatusListener((status) => onStatusChange); // auto-move
@@ -111,43 +139,7 @@ class Speech implements Timeable {
   /// Disposes the resources used by the [Speech] object.
   void dispose() {
     controller.dispose();
-  }
-
-  /// Returns the speech animation's duration.
-  ///
-  /// Throws ArgumentError if the controller is null.
-  Duration _getDuration() {
-    _checkControllerNotNull();
-    // TODO: Verify logic speech controller duration logic.
-    return controller.duration * controller.value;
-  }
-
-  /// Returns a string representation of this `Duration`.
-  ///
-  /// Returns a string with minutes, seconds, and milliseconds, in the
-  /// following format: `MM:SS.m`. For example,
-  /// ```dart
-  /// var d = Duration(minutes: 6, seconds: 32, milliseconds: 400);
-  /// d.toString();  // "06:32.4"
-  /// ```
-  @override
-  String toString() {
-    String one(int n) {
-      if (n < 100) return "0";
-      return "${n ~/ 100}";
-    }
-
-    String two(int n) {
-      if (n >= 10) return "$n";
-      return "0$n";
-    }
-
-    Duration t = _getDuration();
-
-    String mm = two(t.inMinutes.remainder(Duration.minutesPerHour));
-    String ss = two(t.inSeconds.remainder(Duration.secondsPerMinute));
-    String m = one(t.inMilliseconds.remainder(Duration.millisecondsPerSecond));
-    return "$mm:$ss.$m";
+    super.dispose();
   }
 
   /// Checks that the controller is not null.

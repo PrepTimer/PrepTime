@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:preptime/models/event_manager.dart';
 import 'package:preptime/models/speech.dart';
-import 'package:preptime/timer/button.dart';
+import 'package:preptime/timer/timer_button.dart';
 import 'package:provider/provider.dart';
 
 class TimerButtons extends StatelessWidget {
