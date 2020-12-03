@@ -78,7 +78,7 @@ class _TimerButtonState extends State<TimerButton> {
         ),
         color: buttonColor,
         onHighlightChanged: (isPressed) => _toggleButtonColor,
-        onPressed: () => context.watch<Speech>().isRunning
+        onPressed: () => context.read<Speech>().isRunning
             ? widget.whenRunning()
             : widget.whenPaused(),
       ),
