@@ -77,8 +77,10 @@ class _TimerButtonState extends State<TimerButton> {
           ),
         ),
         color: buttonColor,
-        onHighlightChanged: (value) => _toggleButtonColor(value),
-        // onPressed: widget.onPressed,
+        onHighlightChanged: (isPressed) => _toggleButtonColor,
+        onPressed: () {
+          speech.isRunning ? widget.whenRunning() : widget.whenPaused();
+        },
       ),
     );
   }
@@ -98,9 +100,9 @@ class _TimerButtonState extends State<TimerButton> {
   void _toggleButtonColor(bool buttonIsPressed) {
     this.setState(() {
       if (buttonIsPressed) {
-        buttonColor = buttonColor.withAlpha(30);
+        buttonColor = buttonColor.withAlpha(30); // darken
       } else {
-        buttonColor = buttonColor.withAlpha(60);
+        buttonColor = buttonColor.withAlpha(60); // lighten
       }
     });
   }

@@ -1,7 +1,4 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
-import 'package:preptime/models/event.dart';
 import 'package:preptime/models/event_manager.dart';
 // import 'package:preptime/home.dart';
 import 'package:preptime/timer.dart';
