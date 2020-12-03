@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:preptime/models/event.dart';
+import 'package:preptime/models/speech.dart';
+import 'package:preptime/models/speech_event.dart';
 
 /// Manages a list of events.
 ///
@@ -11,7 +13,23 @@ class EventManager extends ChangeNotifier {
   Event event;
 
   /// A set of [Event]s that the user has timers for.
-  Set<Event> events;
+  final Set<Event> events = Set();
+
+  EventManager() {
+    events.add(
+      SpeechEvent(
+        name: 'Event Name',
+        description: 'This is a speech event.',
+        speech: Speech(
+          name: 'Speech',
+          length: Duration(seconds: 10),
+          shouldCountUp: false,
+          useJudgeAssistant: false,
+        ),
+      ),
+    );
+    setEvent(events.first);
+  }
 
   /// Adds the event to the list.
   void add(Event event) {

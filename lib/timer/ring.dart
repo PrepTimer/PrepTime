@@ -18,10 +18,10 @@ class _RingState extends State<Ring> with TickerProviderStateMixin {
   Event event;
 
   @override
-  void initState() {
+  void didChangeDependencies() {
     event = Provider.of<EventManager>(context).event;
     event.initController(this);
-    super.initState();
+    super.didChangeDependencies();
   }
 
   @override
