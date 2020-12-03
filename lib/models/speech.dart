@@ -94,27 +94,23 @@ class Speech implements Timeable {
 
   /// Initializes the controller.
   ///
-  /// Binds the TickerProvider and Duration to the AnimationController, adds
-  /// a listener to the controller that calls a callback when the value changes.
-  /// If the speech uses JudgeAssistant, the controller will also add the
-  /// onStatusChange callback to the controller.
+  /// Binds the TickerProvider to the AnimationController and if the speech
+  /// uses JudgeAssistant, the controller will also add the onStatusChange
+  /// callback to the controller.
   ///
   /// - [ticker] a reference to the current context's TickerProvider.
-  /// - [duration] the amount of time it takes for the controller to expire.
-  /// - [onValueChange] a function called when the controller value changes.
   /// - [onStatusChange] an optional function called when the status changes.
-  void initController({
-    @required TickerProvider ticker,
-    @required Function onValueChange,
+  void initController(
+    TickerProvider ticker, {
     void Function(AnimationStatus) onStatusChange,
   }) {
     controller = AnimationController(
       duration: length,
       vsync: ticker,
     );
-    controller.addListener(() => onValueChange);
     if (useJudgeAssistant) {
-      controller.addStatusListener((status) => onStatusChange);
+      // controller.addListener(() => handleValueChange); // for time signals
+      controller.addStatusListener((status) => onStatusChange); // auto-move
     }
   }
 

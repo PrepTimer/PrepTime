@@ -20,7 +20,7 @@ class _RingState extends State<Ring> with TickerProviderStateMixin {
   @override
   void initState() {
     speech = Provider.of<EventManager>(context).event.speech;
-    speech.initController(ticker: this, duration: null, onValueChange: null);
+    speech.initController(this);
     super.initState();
   }
 
@@ -32,6 +32,7 @@ class _RingState extends State<Ring> with TickerProviderStateMixin {
   }
 }
 
+/// Paints the timer and ring from the given speech controller.
 class _RingPainter extends CustomPainter {
   static const PaintingStyle paintStrokeStyle = PaintingStyle.stroke;
   static const StrokeCap strokeCapStyle = StrokeCap.round;
