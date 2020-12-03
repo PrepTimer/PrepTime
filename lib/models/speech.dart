@@ -123,10 +123,9 @@ class Speech extends ChangeNotifier implements Timeable {
     TickerProvider ticker, {
     void Function(AnimationStatus) onStatusChange,
   }) {
-    controller ??= AnimationController(
-      duration: length,
-      vsync: ticker,
-    )..addListener(() => notifyListeners());
+    controller ??= AnimationController(duration: length, vsync: ticker)
+      ..value = shouldCountUp ? 0.0 : 1.0
+      ..addListener(() => notifyListeners());
     // TODO: Implement time signals and auto-move speeches.
     // if (useJudgeAssistant) {
     // controller.addListener(() => handleValueChange); // for time signals

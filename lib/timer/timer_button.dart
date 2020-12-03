@@ -7,32 +7,32 @@ import 'package:provider/provider.dart';
 /// The button is a circle with a double ring around its edge. When the button
 /// is pressed, the background color gets darker.
 class TimerButton extends StatefulWidget {
-  /// The function the button performs when the timer is running.
-  final void Function() whenRunning;
-
   /// The function the button performs when the timer is paused.
   final void Function() whenPaused;
 
-  /// The text in the center of the button.
-  final String buttonText;
+  /// The function the button performs when the timer is running.
+  final void Function() whenRunning;
+
+  /// The text displayed when the timer is paused.
+  final String primaryText;
+
+  /// The text displayed when the timer is running.
+  final String secondaryText;
 
   /// The base color of the button.
-  final Color color;
+  final Color primaryColor;
 
   /// The alternate color of the button.
-  ///
-  /// By default, this is equal to [color]. The button assumes the alternate
-  /// color when the timer is running and returns to its base color when the
-  /// timer is paused.
-  final Color altColor;
+  final Color secondaryColor;
 
   /// Constructs a new TimerButton.
   TimerButton({
-    @required this.buttonText,
-    @required this.color,
-    @required this.altColor,
-    @required this.whenPaused,
+    @required this.primaryText,
+    this.secondaryText,
+    @required this.primaryColor,
+    this.secondaryColor,
     @required this.whenRunning,
+    this.whenPaused,
   });
 
   @override
@@ -41,46 +41,41 @@ class TimerButton extends StatefulWidget {
 
 class _TimerButtonState extends State<TimerButton> {
   static const BorderStyle borderStyle = BorderStyle.solid;
+  static const FontWeight fontWeight = FontWeight.w400;
+  static const Color transparent = Colors.transparent;
   static const Size buttonSize = Size(100, 90);
   static const double strokeWidth = 2.5;
   static const double fontSize = 16;
 
-  // TODO: MAKE THE BUTTON CHANGE COLORS ON START/STOP.
-  Color buttonColor;
-
-  @override
-  void initState() {
-    super.initState();
-    buttonColor = widget.color.withAlpha(60);
-  }
+  int alpha = 60;
 
   @override
   Widget build(BuildContext context) {
+    bool isRunning = context.watch<Speech>().isRunning;
+    Color buttonColor = isRunning
+        ? widget.secondaryColor.withAlpha(alpha)
+        : widget.primaryColor.withAlpha(alpha);
     return Container(
       width: buttonSize.width,
       height: buttonSize.height,
-      decoration: ShapeDecoration(
-        shape: _circularRingWithColor(buttonColor),
-      ),
+      decoration: ShapeDecoration(shape: _circularRingWithColor(buttonColor)),
       child: MaterialButton(
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
+        splashColor: transparent,
+        highlightColor: transparent,
         shape: _circularRingWithColor(Colors.black), // background color
         child: Text(
-          widget.buttonText,
+          isRunning
+              ? widget.secondaryText ?? widget.primaryText
+              : widget.primaryText,
           style: TextStyle(
-            color: context.watch<Speech>().isNotRunning
-                ? widget.color
-                : widget.altColor,
+            color: isRunning ? widget.secondaryColor : widget.primaryColor,
             fontSize: fontSize,
-            fontWeight: FontWeight.w400,
+            fontWeight: fontWeight,
           ),
         ),
         color: buttonColor,
-        onHighlightChanged: (isPressed) => _toggleButtonColor,
-        onPressed: () => context.read<Speech>().isRunning
-            ? widget.whenRunning()
-            : widget.whenPaused(),
+        onHighlightChanged: (tap) => this.setState(() => alpha = tap ? 30 : 60),
+        onPressed: () => isRunning ? widget.whenRunning() : widget.whenPaused(),
       ),
     );
   }
@@ -94,12 +89,5 @@ class _TimerButtonState extends State<TimerButton> {
         style: borderStyle,
       ),
     );
-  }
-
-  /// Toggles the color of the button.
-  void _toggleButtonColor(bool buttonIsPressed) {
-    this.setState(() {
-      buttonColor = buttonColor.withAlpha(buttonIsPressed ? 30 : 60);
-    });
   }
 }

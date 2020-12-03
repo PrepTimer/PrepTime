@@ -6,22 +6,23 @@ import 'package:provider/provider.dart';
 class TimerButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Speech speech = context.watch<Speech>();
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         TimerButton(
-          buttonText: 'Cancel',
-          color: Color(0xFF999999),
-          altColor: Color(0x88999999),
-          whenRunning: null,
-          whenPaused: context.watch<Speech>().reset,
+          primaryText: 'Cancel',
+          primaryColor: Color(0xFF999999),
+          secondaryColor: Color(0x88999999),
+          whenRunning: speech.reset,
         ),
         TimerButton(
-          buttonText: 'Start',
-          color: Color(0xFF32D74B),
-          altColor: Color(0xFFFF9F0A),
-          whenRunning: context.watch<Speech>().stop,
-          whenPaused: context.watch<Speech>().start,
+          primaryText: 'Start',
+          secondaryText: 'Pause',
+          primaryColor: Color(0xFF32D74B),
+          secondaryColor: Color(0xFFFF9F0A),
+          whenPaused: speech.start,
+          whenRunning: speech.stop,
         ),
       ],
     );
