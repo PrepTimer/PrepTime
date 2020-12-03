@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:preptime/models/event.dart';
 
-/// Manages a list of events.
+/// Controlls a list of events.
 ///
-/// The [EventManager] keeps track of a collection of [Event]s that the user has
-/// created timers for, as well as a singular [Event] that is assigned when the
-/// user selects an event from the list.
-class EventManager extends ChangeNotifier {
+/// The [EventController] keeps track of a collection of [Event]s that the user
+/// has created timers for, as well as a singular [Event] that is assigned when
+/// the user selects an event from the list.
+class EventController extends ChangeNotifier {
   /// The selected [Event].
   Event event;
 

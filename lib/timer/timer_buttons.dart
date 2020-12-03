@@ -11,16 +11,16 @@ class TimerButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         TimerButton(
-          primaryText: 'Cancel',
-          primaryColor: Color(0xFF999999),
-          secondaryColor: Color(0x88999999),
+          pausedText: 'Cancel',
+          pausedColor: Color(0xFF999999),
+          runningColor: Color(0x88999999),
           whenRunning: speech.reset,
         ),
         TimerButton(
-          primaryText: 'Start',
-          secondaryText: 'Pause',
-          primaryColor: Color(0xFF32D74B),
-          secondaryColor: Color(0xFFFF9F0A),
+          pausedText: 'Start',
+          runningText: 'Pause',
+          pausedColor: Color(0xFF32D74B),
+          runningColor: Color(0xFFFF9F0A),
           whenPaused: speech.start,
           whenRunning: speech.stop,
         ),

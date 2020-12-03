@@ -14,23 +14,23 @@ class TimerButton extends StatefulWidget {
   final void Function() whenRunning;
 
   /// The text displayed when the timer is paused.
-  final String primaryText;
+  final String pausedText;
 
   /// The text displayed when the timer is running.
-  final String secondaryText;
+  final String runningText;
 
-  /// The base color of the button.
-  final Color primaryColor;
+  /// The color of the button when the button is paused.
+  final Color pausedColor;
 
-  /// The alternate color of the button.
-  final Color secondaryColor;
+  /// The color of the button when the button is running.
+  final Color runningColor;
 
   /// Constructs a new TimerButton.
   TimerButton({
-    @required this.primaryText,
-    this.secondaryText,
-    @required this.primaryColor,
-    this.secondaryColor,
+    @required this.pausedText,
+    this.runningText,
+    @required this.pausedColor,
+    this.runningColor,
     @required this.whenRunning,
     this.whenPaused,
   });
@@ -61,8 +61,8 @@ class _TimerButtonState extends State<TimerButton> {
 
     /// The color of the button background, not considering button disability.
     Color buttonColor = isRunning
-        ? widget.secondaryColor.withAlpha(alpha)
-        : widget.primaryColor.withAlpha(alpha);
+        ? widget.runningColor.withAlpha(alpha)
+        : widget.pausedColor.withAlpha(alpha);
 
     return Container(
       width: buttonSize.width,
@@ -74,10 +74,10 @@ class _TimerButtonState extends State<TimerButton> {
         shape: _circularRingWithColor(Colors.black), // background color
         child: Text(
           isRunning
-              ? widget.secondaryText ?? widget.primaryText
-              : widget.primaryText,
+              ? widget.runningText ?? widget.pausedText
+              : widget.pausedText,
           style: TextStyle(
-            color: isRunning ? widget.secondaryColor : widget.primaryColor,
+            color: isRunning ? widget.runningColor : widget.pausedColor,
             fontSize: fontSize,
             fontWeight: fontWeight,
           ),
