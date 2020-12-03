@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:preptime/models/event.dart';
-import 'package:preptime/models/speech.dart';
-import 'package:preptime/models/speech_event.dart';
 
 /// Manages a list of events.
 ///
@@ -15,30 +13,16 @@ class EventManager extends ChangeNotifier {
   /// A set of [Event]s that the user has timers for.
   final Set<Event> events = Set();
 
-  EventManager() {
-    events.add(
-      SpeechEvent(
-        name: 'Event Name',
-        description: 'This is a speech event.',
-        speech: Speech(
-          name: 'Speech',
-          length: Duration(seconds: 10),
-          shouldCountUp: false,
-          useJudgeAssistant: false,
-        ),
-      ),
-    );
-    setEvent(events.first);
-  }
-
   /// Adds the event to the list.
   void add(Event event) {
     events.add(event);
+    notifyListeners();
   }
 
   /// Removes the event to the list.
   void remove(Event e) {
     events.remove(e);
+    notifyListeners();
   }
 
   /// Selects the given event.
@@ -47,12 +31,14 @@ class EventManager extends ChangeNotifier {
   void setEvent(Event e) {
     if (events.contains(e)) {
       event = e;
+      notifyListeners();
     }
   }
 
   /// Removes the selected event.
   void clearEvent() {
     event = null;
+    notifyListeners();
   }
 
   @override
