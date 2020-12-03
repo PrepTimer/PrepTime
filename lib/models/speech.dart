@@ -62,7 +62,7 @@ class Speech extends ChangeNotifier implements Timeable {
     }
 
     _checkControllerNotNull();
-    Duration t =  controller.duration * controller.value;
+    Duration t = controller.duration * controller.value;
 
     String mm = two(t.inMinutes.remainder(Duration.minutesPerHour));
     String ss = two(t.inSeconds.remainder(Duration.secondsPerMinute));
@@ -119,21 +119,20 @@ class Speech extends ChangeNotifier implements Timeable {
   ///
   /// - [ticker] a reference to the current context's TickerProvider.
   /// - [onStatusChange] an optional function called when the status changes.
-  void initController(
+  AnimationController initController(
     TickerProvider ticker, {
     void Function(AnimationStatus) onStatusChange,
   }) {
-    controller = AnimationController(
+    controller ??= AnimationController(
       duration: length,
       vsync: ticker,
-    );
-    controller.addListener(() {
-      notifyListeners();
-    });
-    if (useJudgeAssistant) {
-      // controller.addListener(() => handleValueChange); // for time signals
-      controller.addStatusListener((status) => onStatusChange); // auto-move
-    }
+    )..addListener(() => notifyListeners());
+    // TODO: Implement time signals and auto-move speeches.
+    // if (useJudgeAssistant) {
+    // controller.addListener(() => handleValueChange); // for time signals
+    // controller.addStatusListener((status) => onStatusChange); // auto-move
+    // }
+    return controller;
   }
 
   /// Disposes the resources used by the [Speech] object.

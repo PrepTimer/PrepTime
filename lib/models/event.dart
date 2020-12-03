@@ -27,24 +27,6 @@ abstract class Event extends ChangeNotifier {
   /// Selects and returns the previous speech.
   void prevSpeech();
 
-  /// Initializes the controller.
-  ///
-  /// Binds the TickerProvider to the AnimationController and if the speech
-  /// uses JudgeAssistant, the controller will also add the onStatusChange
-  /// callback to the controller.
-  ///
-  /// - [ticker] a reference to the current context's TickerProvider.
-  /// - [onStatusChange] an optional function called when the status changes.
-  void initController(
-    TickerProvider ticker, {
-    void Function(AnimationStatus) onStatusChange,
-  }) {
-    speech.initController(
-      ticker,
-      onValueChange: notifyListeners,
-    );
-  }
-
   @override
   void dispose() {
     speech?.dispose();

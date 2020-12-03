@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:preptime/models/event.dart';
-import 'package:preptime/models/event_manager.dart';
+import 'package:preptime/models/speech.dart';
 import 'package:provider/provider.dart';
 
 /// Manages the animation of a circle and arc of the timer ring.
@@ -9,25 +8,11 @@ import 'package:provider/provider.dart';
 /// The timer ring is a custom painter object that paints a round circle
 /// with the given background color underneath a colored arc that animates
 /// from full to empty.
-class Ring extends StatefulWidget {
-  @override
-  _RingState createState() => _RingState();
-}
-
-class _RingState extends State<Ring> with TickerProviderStateMixin {
-  Event event;
-
-  @override
-  void didChangeDependencies() {
-    event = Provider.of<EventManager>(context).event;
-    event.initController(this);
-    super.didChangeDependencies();
-  }
-
+class Ring extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: _RingPainter(event.speech.controller),
+      painter: _RingPainter(context.read<Speech>().controller),
     );
   }
 }

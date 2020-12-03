@@ -4,7 +4,19 @@ import 'package:preptime/timer/ring.dart';
 import 'package:provider/provider.dart';
 
 /// Manages a timer ring including the ring painter, label, title, and dots.
-class TimerRing extends StatelessWidget {
+class TimerRing extends StatefulWidget {
+  @override
+  _TimerRingState createState() => _TimerRingState();
+}
+
+class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
+  
+  @override
+  void initState() {
+    context.read<Speech>().initController(this);
+    super.initState();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -18,19 +30,14 @@ class TimerRing extends StatelessWidget {
             ),
             Align(
               alignment: FractionalOffset.center,
-              child: Consumer<Speech>(
-                builder: (context, speech, child) {
-                  print('updating');
-                  return Text(
-                    speech.timeRemaining,
-                    style: const TextStyle(
-                      letterSpacing: -2.0,
-                      fontWeight: FontWeight.w200,
-                      fontSize: 85.0,
-                      color: Colors.white,
-                    ),
-                  );
-                },
+              child: Text(
+                context.watch<Speech>().timeRemaining,
+                style: const TextStyle(
+                  letterSpacing: -2.0,
+                  fontWeight: FontWeight.w200,
+                  fontSize: 85.0,
+                  color: Colors.white,
+                ),
               ),
             ),
           ],

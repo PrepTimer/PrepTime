@@ -41,17 +41,6 @@ class PrepTimeProvider extends StatelessWidget {
         ChangeNotifierProvider<EventManager>.value(
           value: eventManager,
         ),
-        ProxyProvider<EventManager, Event>(
-          create: (_) => eventManager.event,
-          update: (_, newEventManager, __) => newEventManager.event,
-          updateShouldNotify: (previous, current) => previous != current,
-        ),
-        // ProxyProvider<Event, Speech>(
-        //   create: (_) => eventManager.event?.speech,
-        //   update: (_, newEvent, __) => newEvent.speech,
-        //   updateShouldNotify: (previous, current) => previous != current,
-        //   dispose: (_, __) => eventManager.dispose(),
-        // ),
       ],
     );
   }
