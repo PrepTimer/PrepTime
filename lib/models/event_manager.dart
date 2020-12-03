@@ -58,8 +58,8 @@ class EventManager extends ChangeNotifier {
   @override
   void dispose() {
     event = null;
-    for (Event e in events) {
-      e.dispose();
+    for (Event eachEvent in events) {
+      eachEvent.dispose();
     }
     super.dispose();
   }

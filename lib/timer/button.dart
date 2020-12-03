@@ -31,7 +31,7 @@ class TimerButton extends StatefulWidget {
   TimerButton({
     @required this.buttonText,
     @required this.color,
-    this.altColor,
+    @required this.altColor,
     @required this.whenPaused,
     @required this.whenRunning,
   });
@@ -46,19 +46,12 @@ class _TimerButtonState extends State<TimerButton> {
   static const double strokeWidth = 2.5;
   static const double fontSize = 16;
 
-  Speech speech;
   Color buttonColor;
 
   @override
   void initState() {
     super.initState();
     buttonColor = widget.color.withAlpha(60);
-  }
-
-  @override
-  void didChangeDependencies() {
-    speech = Provider.of<EventManager>(context).event.speech;
-    super.didChangeDependencies();
   }
 
   @override
@@ -69,22 +62,29 @@ class _TimerButtonState extends State<TimerButton> {
       decoration: ShapeDecoration(
         shape: _circularRingWithColor(buttonColor),
       ),
-      child: MaterialButton(
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        shape: _circularRingWithColor(Colors.black), // background color
-        child: Text(
-          widget.buttonText,
-          style: TextStyle(
-            color: speech.isNotRunning ? widget.color : widget.altColor,
-            fontSize: fontSize,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        color: buttonColor,
-        onHighlightChanged: (isPressed) => _toggleButtonColor,
-        onPressed: () {
-          speech.isRunning ? widget.whenRunning() : widget.whenPaused();
+      child: Consumer<EventManager>(
+        builder: (context, eventManager, child) {
+          Speech speech = eventManager?.event?.speech;
+          return MaterialButton(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            shape: _circularRingWithColor(Colors.black), // background color
+            child: Text(
+              widget.buttonText,
+              style: TextStyle(
+                color: speech?.isNotRunning ?? true
+                    ? widget.color
+                    : widget.altColor,
+                fontSize: fontSize,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            color: buttonColor,
+            onHighlightChanged: (isPressed) => _toggleButtonColor,
+            onPressed: () => speech?.isRunning ?? true
+                ? widget.whenRunning()
+                : widget.whenPaused(),
+          );
         },
       ),
     );
