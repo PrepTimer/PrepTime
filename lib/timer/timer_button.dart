@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:preptime/models/speech.dart';
+import 'package:preptime/models/speech_status.dart';
 import 'package:provider/provider.dart';
 
 /// Defines the state and behavior of a timer button.
@@ -8,34 +9,19 @@ import 'package:provider/provider.dart';
 /// is pressed, the background color gets darker.
 class TimerButton extends StatefulWidget {
   /// Tracks the function of the button across each animation state.
-  final Map<AnimationStatus, > callbacks;
+  final Map<SpeechStatus, void Function()> callback;
 
-  /// The function the button performs when the timer is paused.
-  final void Function() whenPaused;
+  /// The text of the button for each animation state.
+  final Map<SpeechStatus, String> text;
 
-  /// The function the button performs when the timer is running.
-  final void Function() whenRunning;
-
-  /// The text displayed when the timer is paused.
-  final String pausedText;
-
-  /// The text displayed when the timer is running.
-  final String runningText;
-
-  /// The color of the button when the button is paused.
-  final Color pausedColor;
-
-  /// The color of the button when the button is running.
-  final Color runningColor;
+  /// The color of the button for each animation state.
+  final Map<SpeechStatus, Color> color;
 
   /// Constructs a new TimerButton.
   TimerButton({
-    @required this.pausedText,
-    @required this.runningText,
-    @required this.runningColor,
-    @required this.pausedColor,
-    @required this.whenRunning,
-    @required this.whenPaused,
+    @required this.callback,
+    @required this.color,
+    @required this.text,
   });
 
   @override
@@ -44,39 +30,43 @@ class TimerButton extends StatefulWidget {
 
 class _TimerButtonState extends State<TimerButton> {
   static const BorderStyle _borderStyle = BorderStyle.solid;
-  static const FontWeight _fontWeight = FontWeight.w400;
+  static const FontWeight _fontWeight = FontWeight.w300;
   static const Color _transparent = Colors.transparent;
   static const Size _buttonSize = Size(100, 90);
   static const double _strokeWidth = 2.5;
-  static const double _fontSize = 16;
+  static const double _fontSize = 17;
+  static const int initialAlpha = 40;
 
   /// The opacity of the background.
-  int alpha = 60;
+  int alpha = initialAlpha;
 
   @override
   Widget build(BuildContext context) {
     /// Whether the speech timer is running or not.
-    bool isRunning = context.watch<Speech>().isRunning;
+    SpeechStatus status = context.watch<Speech>().status;
     return Container(
       width: _buttonSize.width,
       height: _buttonSize.height,
       decoration: ShapeDecoration(
-        shape: _circularRingWithColor(_buttonColor(isRunning)),
+        shape: _circularRingWithColor(_buttonColor(status)),
       ),
       child: MaterialButton(
+        padding: EdgeInsets.zero,
         splashColor: _transparent,
         highlightColor: _transparent,
-        color: _buttonColor(isRunning),
-        onPressed: _handlePress(isRunning),
-        disabledColor: _buttonColor(isRunning),
+        color: _buttonColor(status),
+        onPressed: _handlePress(status),
+        disabledColor: _buttonColor(status),
         shape: _circularRingWithColor(Colors.black), // background color
-        onHighlightChanged: (tap) => this.setState(() => alpha = tap ? 30 : 60),
+        onHighlightChanged: (bool isPressed) => this.setState(() {
+          alpha = isPressed ? initialAlpha ~/ 2 : initialAlpha;
+        }),
         child: Text(
-          _buttonText(isRunning),
+          _buttonText(status),
           style: TextStyle(
             fontSize: _fontSize,
             fontWeight: _fontWeight,
-            color: _buttonTextColor(isRunning),
+            color: _buttonTextColor(status),
           ),
         ),
       ),
@@ -84,37 +74,27 @@ class _TimerButtonState extends State<TimerButton> {
   }
 
   /// The color of the button.
-  Color _buttonColor(bool isRunning) {
-    if (_handlePress(isRunning) == null) {
-      if (isRunning) return widget.runningColor.withAlpha(alpha ~/ 2);
-      return widget.pausedColor.withAlpha(alpha ~/ 2);
-    } else {
-      if (isRunning) return widget.runningColor.withAlpha(alpha);
-      return widget.pausedColor.withAlpha(alpha);
-    }
+  Color _buttonColor(SpeechStatus status) {
+    int newAlpha = _handlePress(status) == null ? alpha ~/ 2 : alpha;
+    return widget.color[status].withAlpha(newAlpha);
   }
 
   /// The button text to display.
-  String _buttonText(bool isRunning) {
-    if (isRunning) return widget.runningText;
-    return widget.pausedText;
+  String _buttonText(SpeechStatus status) {
+    return widget.text[status];
   }
 
   /// Handles the onPressed callback.
-  void Function() _handlePress(bool isRunning) {
-    if (isRunning) return widget.whenRunning;
-    return widget.whenPaused;
+  void Function() _handlePress(SpeechStatus status) {
+    return widget.callback[status];
   }
 
   /// The color of the button text.
-  Color _buttonTextColor(bool isRunning) {
-    if (_handlePress(isRunning) == null) {
-      if (isRunning) return widget.runningColor.withAlpha(alpha ~/ 2);
-      return widget.pausedColor.withAlpha(alpha ~/ 2);
-    } else {
-      if (isRunning) return widget.runningColor;
-      return widget.pausedColor;
+  Color _buttonTextColor(SpeechStatus status) {
+    if (_handlePress(status) == null) {
+      return widget.color[status].withAlpha(alpha);
     }
+    return widget.color[status];
   }
 
   /// Returns a circular ring with the given color.
