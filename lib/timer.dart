@@ -14,7 +14,7 @@ class Timer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               TimerRing(),
-              TimerButtons()
+              TimerButtons(),
             ],
           ),
         ),

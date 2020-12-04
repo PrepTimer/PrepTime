@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:preptime/models/event.dart';
-import 'package:preptime/models/event_manager.dart';
 import 'package:preptime/models/speech.dart';
 import 'package:preptime/models/speech_event.dart';
 import 'package:provider/provider.dart';
