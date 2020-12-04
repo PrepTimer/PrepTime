@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:preptime/models/speech.dart';
 import 'package:preptime/models/speech_status.dart';
@@ -61,12 +63,13 @@ class _TimerButtonState extends State<TimerButton> {
         onHighlightChanged: (bool isPressed) => this.setState(() {
           alpha = isPressed ? initialAlpha ~/ 2 : initialAlpha;
         }),
-        child: Text.rich(
+        child: Text(
           _buttonText(status),
           style: TextStyle(
             fontSize: _fontSize,
             fontWeight: _fontWeight,
             color: _buttonTextColor(status),
+            fontFeatures: [FontFeature.tabularFigures()],
           ),
         ),
       ),

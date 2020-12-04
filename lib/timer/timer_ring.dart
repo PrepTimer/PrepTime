@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:preptime/models/speech.dart';
 import 'package:preptime/timer/ring.dart';
@@ -10,13 +12,12 @@ class TimerRing extends StatefulWidget {
 }
 
 class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
-  
   @override
   void initState() {
     context.read<Speech>().initController(this);
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -33,10 +34,11 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
               child: Text(
                 context.watch<Speech>().timeRemaining,
                 style: const TextStyle(
-                  letterSpacing: -2.0,
+                  fontFeatures: [FontFeature.tabularFigures()],
                   fontWeight: FontWeight.w200,
-                  fontSize: 85.0,
+                  letterSpacing: -4.0,
                   color: Colors.white,
+                  fontSize: 85.0,
                 ),
               ),
             ),

@@ -48,7 +48,7 @@ class TimerButtons extends StatelessWidget {
             SpeechStatus.stoppedAtBeginning: 'Start',
             SpeechStatus.runningForward: 'Pause',
             SpeechStatus.pausedInMiddle: 'Resume',
-            SpeechStatus.completed: 'Start',
+            SpeechStatus.completed: 'Restart',
           },
         ),
       ],

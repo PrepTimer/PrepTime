@@ -3,6 +3,8 @@ import 'package:preptime/models/speech.dart';
 import 'package:preptime/models/speech_event.dart';
 import 'package:provider/provider.dart';
 
+import 'event_controller.dart';
+
 /// Manages the providers used in PrepTime.
 class PrepTimeProvider extends StatelessWidget {
   /// The child of the Provider.
