@@ -12,9 +12,11 @@ class TimerButtons extends StatelessWidget {
       children: [
         TimerButton(
           pausedText: 'Cancel',
+          runningText: 'Cancel',
+          runningColor: Color(0xFF999999),
           pausedColor: Color(0xFF999999),
-          runningColor: Color(0x88999999),
           whenRunning: speech.reset,
+          whenPaused: null,
         ),
         TimerButton(
           pausedText: 'Start',

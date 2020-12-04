@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:preptime/models/speech_status.dart';
 import 'package:preptime/models/timeable.dart';
 
 /// A speech given in an [Event].
@@ -32,6 +33,9 @@ class Speech extends ChangeNotifier implements Timeable {
 
   /// A reference to the animation controller object.
   AnimationController controller;
+
+  /// Tracks the state of this speech object.
+  SpeechStatus status = SpeechStatus.stoppedAtBeginning;
 
   /// Constructs a new Speech object
   Speech({this.name, this.length, this.shouldCountUp, this.useJudgeAssistant});
@@ -82,6 +86,7 @@ class Speech extends ChangeNotifier implements Timeable {
     } else {
       controller.reverse(from: 1.0);
     }
+    status = SpeechStatus.runningForward;
     notifyListeners();
   }
 
@@ -94,6 +99,7 @@ class Speech extends ChangeNotifier implements Timeable {
   void resume() {
     _checkControllerNotNull();
     shouldCountUp ? controller.forward() : controller.reverse();
+    status = SpeechStatus.runningForward;
     notifyListeners();
   }
 
@@ -101,6 +107,7 @@ class Speech extends ChangeNotifier implements Timeable {
   void stop() {
     _checkControllerNotNull();
     controller.stop();
+    status = SpeechStatus.pausedInMiddle;
     notifyListeners();
   }
 
@@ -108,6 +115,7 @@ class Speech extends ChangeNotifier implements Timeable {
   void reset() {
     _checkControllerNotNull();
     shouldCountUp ? controller.reset() : controller.value = 1.0;
+    status = SpeechStatus.stoppedAtBeginning;
     notifyListeners();
   }
 
@@ -125,7 +133,12 @@ class Speech extends ChangeNotifier implements Timeable {
   }) {
     controller ??= AnimationController(duration: length, vsync: ticker)
       ..value = shouldCountUp ? 0.0 : 1.0
-      ..addListener(() => notifyListeners());
+      ..addListener(() => notifyListeners())
+      ..addStatusListener((controllerStatus) {
+        if (controllerStatus == AnimationStatus.completed) {
+          status = SpeechStatus.completed;
+        }
+      });
     // TODO: Implement time signals and auto-move speeches.
     // if (useJudgeAssistant) {
     // controller.addListener(() => handleValueChange); // for time signals
