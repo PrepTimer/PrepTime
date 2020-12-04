@@ -61,7 +61,7 @@ class _TimerButtonState extends State<TimerButton> {
         onHighlightChanged: (bool isPressed) => this.setState(() {
           alpha = isPressed ? initialAlpha ~/ 2 : initialAlpha;
         }),
-        child: Text(
+        child: Text.rich(
           _buttonText(status),
           style: TextStyle(
             fontSize: _fontSize,

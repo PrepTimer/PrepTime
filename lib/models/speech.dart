@@ -55,14 +55,22 @@ class Speech extends ChangeNotifier implements Timeable {
   /// d.toString();  // "06:32.4"
   /// ```
   String get timeRemaining {
-    String one(int n) {
-      if (n < 100) return "0";
-      return "${n ~/ 100}";
+    String one(int number) {
+      String numberAsSingleDigit = '';
+      if (number >= 1000 || number < 0) throw ArgumentError();
+      else if (number < 100) numberAsSingleDigit = "0";
+      else numberAsSingleDigit = "${number ~/ 100}";
+      assert(numberAsSingleDigit.length == 1);
+      return numberAsSingleDigit;
     }
 
-    String two(int n) {
-      if (n >= 10) return "$n";
-      return "0$n";
+    String two(int number) {
+      String numberAsTwoDigits = '';
+      if (number >= 100 || number < 0) throw ArgumentError();
+      else if (number >= 10) numberAsTwoDigits = "$number";
+      else numberAsTwoDigits = "0$number";
+      assert(numberAsTwoDigits.length == 2);
+      return numberAsTwoDigits;
     }
 
     _checkControllerNotNull();
