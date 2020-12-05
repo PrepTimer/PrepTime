@@ -8,17 +8,17 @@ import 'package:provider/provider.dart';
 /// The timer ring is a custom painter object that paints a round circle
 /// with the given background color underneath a colored arc that animates
 /// from full to empty.
-class Ring extends StatelessWidget {
+class RingPainter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: _RingPainter(context.watch<Speech>().controller),
+      painter: _CustomRingPainter(context.watch<Speech>().controller),
     );
   }
 }
 
 /// Paints the timer and ring from the given speech controller.
-class _RingPainter extends CustomPainter {
+class _CustomRingPainter extends CustomPainter {
   static const PaintingStyle paintStrokeStyle = PaintingStyle.stroke;
   static const StrokeCap strokeCapStyle = StrokeCap.round;
   static const Color foregroundColor = Color(0xFF32D74B);
@@ -30,7 +30,7 @@ class _RingPainter extends CustomPainter {
   final Animation<double> animation;
 
   /// Constructs a new timer ring with the given animation object and colors.
-  _RingPainter(this.animation) : super(repaint: animation);
+  _CustomRingPainter(this.animation) : super(repaint: animation);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -40,7 +40,7 @@ class _RingPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_RingPainter old) {
+  bool shouldRepaint(_CustomRingPainter old) {
     return animation.value != old.animation.value;
   }
 

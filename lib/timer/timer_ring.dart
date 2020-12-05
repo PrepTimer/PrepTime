@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:preptime/models/speech.dart';
-import 'package:preptime/timer/ring.dart';
+import 'package:preptime/timer/ring_painter.dart';
 import 'package:provider/provider.dart';
 
 /// Manages a timer ring including the ring painter, label, title, and dots.
@@ -27,7 +27,7 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
         child: Stack(
           children: <Widget>[
             Positioned.fill(
-              child: Ring(),
+              child: RingPainter(),
             ),
             Align(
               alignment: FractionalOffset.center,
