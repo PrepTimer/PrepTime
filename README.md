@@ -1,12 +1,12 @@
 # PrepTimer
-The codebase for the PrepTime app refresh. The app is currently being rewritten with the Flutter framework. The target date for launch will be January of 2021.
+The codebase for the PrepTime app refresh. The app is being rewritten with the Flutter framework. The target date for launch will be January of 2021.
 
 ## Cider CI
 We will be using the [cider](https://pub.dev/packages/cider) command-line utility to automate package maintenance. This tool assumes that the changelog:
 - is called `CHANGELOG.md`
 - is located in the root
 - strictly follows the `Keep a Changelog` v1.0.0 format
-- uses baseic markdown
+- uses basic markdown
 
 #### Step 1: Update the Changelog
 To use this tool, you should install the tool via the directions linked above. Then, to log a new line to the chaneglog, simply type your command using one of {`added`, `changed`, `depreciated`, `removed`, `fixed`, `security`}.
