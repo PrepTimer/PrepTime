@@ -37,7 +37,7 @@ class _TimerButtonState extends State<TimerButton> {
   static const Size _buttonSize = Size(100, 90);
   static const double _strokeWidth = 2.5;
   static const double _fontSize = 17;
-  static const int initialAlpha = 40;
+  static const int initialAlpha = 80;
 
   /// The opacity of the background.
   int alpha = initialAlpha;
