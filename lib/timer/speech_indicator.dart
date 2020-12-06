@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:preptime/provider/models/debate_event.dart';
 import 'package:preptime/provider/models/event.dart';
+import 'package:preptime/provider/models/event_controller.dart';
 import 'package:preptime/provider/models/speech.dart';
 import 'package:preptime/provider/models/speech_event.dart';
 import 'package:provider/provider.dart';
@@ -17,8 +18,8 @@ class SpeechIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Event event = context.watch<Event>();
-    if (event is SpeechEvent) return null;
+    Event event = context.watch<EventController>().event;
+    if (event is SpeechEvent) return Container(width: 0.0, height: 0.0);
     List<Speech> speeches = (event as DebateEvent).speeches;
     return Row(
       mainAxisAlignment: _alignCenter,

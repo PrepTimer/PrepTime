@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:preptime/provider/models/debate_event.dart';
+import 'package:preptime/provider/models/event_controller.dart';
 import 'package:preptime/provider/models/speech.dart';
 import 'package:preptime/timer/ring_painter.dart';
 import 'package:preptime/timer/speech_indicator.dart';
@@ -21,6 +23,7 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    Speech speech = context.watch<Speech>();
     return Align(
       alignment: FractionalOffset.center,
       child: AspectRatio(
@@ -36,7 +39,7 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
             Align(
               alignment: FractionalOffset.center,
               child: Text(
-                context.watch<Speech>().timeRemaining,
+                speech.timeRemaining,
                 style: const TextStyle(
                   fontFeatures: [FontFeature.tabularFigures()],
                   fontWeight: FontWeight.w200,
@@ -51,7 +54,7 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
             Align(
               alignment: FractionalOffset(0.5, 0.69),
               child: Text(
-                context.watch<Speech>().name.toUpperCase(),
+                speech.name.toUpperCase(),
                 style: const TextStyle(
                   fontWeight: FontWeight.w300,
                   color: Color(0x88FFFFFF),
@@ -60,11 +63,12 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
               ),
             ),
 
-            /// Optional dots indicating which speech is active.
-            Align(
-              alignment: FractionalOffset(0.5, 0.8),
-              child: SpeechIndicator(),
-            ),
+            /// Dots indicating which speech is active (debate only).
+            if (context.watch<EventController>().event is DebateEvent)
+              Align(
+                alignment: FractionalOffset(0.5, 0.8),
+                child: SpeechIndicator(),
+              ),
           ],
         ),
       ),
