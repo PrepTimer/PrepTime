@@ -1,6 +1,6 @@
-import 'package:preptime/models/countdown_timer.dart';
-import 'package:preptime/models/event.dart';
-import 'package:preptime/models/team.dart';
+import 'package:preptime/provider/models/countdown_timer.dart';
+import 'package:preptime/provider/models/event.dart';
+import 'package:preptime/provider/models/team.dart';
 
 /// Manages the prep time for two teams in a forensic event.
 ///

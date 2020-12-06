@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:preptime/models/timeable.dart';
+import 'package:preptime/provider/models/timeable.dart';
 
 /// Manages a timer that counts down from an initial value.
 ///

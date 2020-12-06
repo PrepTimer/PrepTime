@@ -42,6 +42,17 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
                 ),
               ),
             ),
+            Align(
+              alignment: FractionalOffset(0.5, 0.69),
+              child: Text(
+                context.watch<Speech>().name.toUpperCase(),
+                style: const TextStyle(
+                  fontWeight: FontWeight.w300,
+                  color: Color(0x88FFFFFF),
+                  fontSize: 18.0,
+                ),
+              ),
+            ),
           ],
         ),
       ),

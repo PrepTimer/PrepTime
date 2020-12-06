@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:preptime/models/event.dart';
+import 'package:preptime/provider/models/event.dart';
 
 /// Controlls a list of events.
 ///

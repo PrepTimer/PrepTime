@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:preptime/models/speech.dart';
+import 'package:preptime/provider/models/speech.dart';
 
 /// An academic forensics event.
 ///

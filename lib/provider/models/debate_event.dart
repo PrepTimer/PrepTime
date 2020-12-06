@@ -1,6 +1,6 @@
-import 'package:preptime/models/event.dart';
-import 'package:preptime/models/prep_time.dart';
-import 'package:preptime/models/speech.dart';
+import 'package:preptime/provider/models/event.dart';
+import 'package:preptime/provider/models/prep_time.dart';
+import 'package:preptime/provider/models/speech.dart';
 
 /// A [DebateEvent] is an [Event] in which multiple speechs are given.
 ///
