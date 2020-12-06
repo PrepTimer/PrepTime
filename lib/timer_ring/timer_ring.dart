@@ -1,12 +1,12 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:preptime/provider/models/debate_event.dart';
 import 'package:preptime/provider/models/event_controller.dart';
 import 'package:preptime/provider/models/speech.dart';
-import 'package:preptime/timer/ring_painter.dart';
-import 'package:preptime/timer/speech_indicator.dart';
-import 'package:provider/provider.dart';
+import 'package:preptime/timer_ring/src/ring_painter.dart';
+import 'package:preptime/timer_ring/src/speech_indicator.dart';
 
 /// Manages a timer ring including the ring painter, label, title, and dots.
 class TimerRing extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:preptime/timer/timer_buttons.dart';
-import 'package:preptime/timer/timer_ring.dart';
+import 'package:preptime/timer_ring/timer_ring.dart';
 
 class Timer extends StatelessWidget {
   @override
