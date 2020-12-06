@@ -11,6 +11,7 @@ class TimerButtons extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        // TODO: #7 Clean up timer buttons.
         TimerButton(
           callback: {
             SpeechStatus.stoppedAtBeginning: null,
