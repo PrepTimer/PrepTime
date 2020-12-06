@@ -66,8 +66,9 @@ class CountDownTimer implements Timeable {
   /// Starts a periodic timer that adds a new [Duration] value to the sink. The
   /// [CountDownTimer] must not already be started.
   ///
-  /// TODO: ticks should represent elapsed durations, not callback invocations.
-  /// The problem is that we construct a new timer on each valid [start] call,
+  /// TODO: #5 Fix countdown timer ticks.
+  /// Ticks should represent elapsed durations, not callback invocations. The
+  /// problem is that we construct a new timer on each valid [start] call,
   /// and therefore we lose the ticks of the cancelled timer.
   void resume() {
     if (isNotRunning) {

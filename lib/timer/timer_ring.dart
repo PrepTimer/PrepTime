@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:preptime/debate_events/debate_events.dart';
 import 'package:preptime/provider/models/debate_event.dart';
 import 'package:preptime/provider/models/event_controller.dart';
 import 'package:preptime/provider/models/speech.dart';

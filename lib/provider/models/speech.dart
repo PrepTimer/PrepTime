@@ -154,7 +154,7 @@ class Speech extends ChangeNotifier implements Timeable {
           status = SpeechStatus.completed;
         }
       });
-    // TODO: Implement time signals and auto-move speeches.
+    // TODO: #6 Implement time signals and auto-move speeches.
     // if (useJudgeAssistant) {
     // controller.addListener(() => handleValueChange); // for time signals
     // controller.addStatusListener((status) => onStatusChange); // auto-move
