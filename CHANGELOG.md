@@ -3,6 +3,7 @@
 - increased opacity of disabled button
 - policy debate info
 - lincoln douglas info
+- speech
 
 ## 0.0.1 - 2020-12-05
 ### Added
