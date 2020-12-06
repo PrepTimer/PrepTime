@@ -1,5 +1,5 @@
-import 'package:preptime/models/event.dart';
-import 'package:preptime/models/speech.dart';
+import 'package:preptime/provider/models/event.dart';
+import 'package:preptime/provider/models/speech.dart';
 
 /// A SpeechEvent is an Event in which a single speech is given.
 ///

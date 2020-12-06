@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:preptime/models/speech_status.dart';
-import 'package:preptime/models/timeable.dart';
+import 'package:preptime/provider/models/speech_status.dart';
+import 'package:preptime/provider/models/timeable.dart';
 
 /// A speech given in an [Event].
 ///
