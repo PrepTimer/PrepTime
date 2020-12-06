@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:preptime/models/speech.dart';
-import 'package:preptime/models/speech_status.dart';
+import 'package:preptime/provider/models/speech.dart';
+import 'package:preptime/provider/models/speech_status.dart';
 import 'package:preptime/timer/timer_button.dart';
 import 'package:provider/provider.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:preptime/models/prep_timer_provider.dart';
+import 'package:preptime/provider/prep_timer_provider.dart';
 import 'package:preptime/timer.dart';
 import 'package:provider/provider.dart';
 // import 'package:preptime/home.dart';

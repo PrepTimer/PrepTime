@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:preptime/models/speech.dart';
+import 'package:preptime/provider/models/speech.dart';
 import 'package:preptime/timer/ring_painter.dart';
 import 'package:provider/provider.dart';
 

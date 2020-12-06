@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:preptime/models/speech.dart';
+import 'package:preptime/provider/models/speech.dart';
 import 'package:provider/provider.dart';
 
 /// Manages the animation of a circle and arc of the timer ring.
