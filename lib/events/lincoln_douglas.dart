@@ -1,9 +1,8 @@
 part of 'debate_events.dart';
 
+/// Defines a DebateEvent in lincoln-douglas format.
 abstract class LincolnDouglasDebate {
-  /// General rules for lincoln-douglas debate.
-  static const bool _useJudgeAssisitant = false;
-  static const bool _shouldCountUp = false;
+  /// Specific rules for lincoln douglas debate
   static const int _prepTime = 4;
   static const int _crossX = 4;
 
@@ -19,15 +18,5 @@ abstract class LincolnDouglasDebate {
           _createSpeech('NR', 5),
           _createSpeech('2AR', 4),
         ],
-      );
-
-  /// Creates a new speech with the given parameters.
-  Speech _createSpeech(String name, int minutes) {
-    return Speech(
-      name: name,
-      shouldCountUp: _shouldCountUp,
-      useJudgeAssistant: _useJudgeAssisitant,
-      length: Duration(minutes: minutes),
-    );
-  }
+      )..initPrepTimers(Duration(minutes: _prepTime));
 }

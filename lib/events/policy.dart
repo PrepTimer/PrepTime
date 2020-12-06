@@ -83,14 +83,4 @@ abstract class PolicyDebate {
           _createSpeech('2AR', _univRebuttal),
         ],
       )..initPrepTimers(Duration(minutes: _univPrepTime));
-
-  /// Creates a new speech with the given parameters.
-  Speech _createSpeech(String name, int minutes) {
-    return Speech(
-      name: name,
-      shouldCountUp: _shouldCountUp,
-      useJudgeAssistant: _useJudgeAssisitant,
-      length: Duration(minutes: minutes),
-    );
-  }
 }
