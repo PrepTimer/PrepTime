@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:preptime/provider/models/countdown_timer.dart';
 import 'package:preptime/provider/models/event.dart';
 import 'package:preptime/provider/models/team.dart';
@@ -20,7 +22,7 @@ mixin PrepTimeMixin on Event {
   /// team's use of prep time (in this case, there are only two teams). The
   /// [CountDownTimer] implements the [Timeable] interface, so you can call
   /// start(), stop(), reset(), and isRunning on each team's prep timer.
-  Map<Team, CountDownTimer> _timers;
+  Map<Team, CountDownTimer> _timers = LinkedHashMap();
 
   /// Initializes the prep timers.
   ///
