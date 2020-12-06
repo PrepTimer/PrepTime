@@ -7,22 +7,23 @@ class LincolnDouglas extends DebateEvent {
   static const int _crossX = 4;
 
   /// High school lincoln-douglas debate.
-  factory LincolnDouglas.highSchool() {
-    return DebateEvent(
-      name: 'HS Lincoln-Douglas',
-      description: '$_prepTime\' Prep',
-      speeches: [
-        _createSpeech('AC', 4),
-        _createSpeech('CX', _crossX),
-        _createSpeech('NC', 8),
-        _createSpeech('CX', _crossX),
-        _createSpeech('1AR', 4),
-        _createSpeech('NR', 5),
-        _createSpeech('2AR', 4),
-      ],
-    )..initPrepTimers(
-        duration: Duration(minutes: _prepTime),
-        useAffNeg: true,
-      );
+  LincolnDouglas.highSchool()
+      : super(
+          name: 'HS Lincoln-Douglas',
+          description: '$_prepTime\' Prep',
+          speeches: [
+            _createSpeech('AC', 4),
+            _createSpeech('CX', _crossX),
+            _createSpeech('NC', 8),
+            _createSpeech('CX', _crossX),
+            _createSpeech('1AR', 4),
+            _createSpeech('NR', 5),
+            _createSpeech('2AR', 4),
+          ],
+        ) {
+    super.initPrepTimers(
+      duration: Duration(minutes: _prepTime),
+      useAffNeg: true,
+    );
   }
 }
