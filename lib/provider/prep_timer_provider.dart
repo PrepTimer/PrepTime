@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:preptime/models/speech.dart';
-import 'package:preptime/models/speech_event.dart';
-import 'package:preptime/models/event_controller.dart';
+import 'package:preptime/provider/models/speech.dart';
+import 'package:preptime/provider/models/speech_event.dart';
+import 'package:preptime/provider/models/event_controller.dart';
 
 /// Manages the providers used in PrepTime.
 class PrepTimeProvider extends StatelessWidget {
