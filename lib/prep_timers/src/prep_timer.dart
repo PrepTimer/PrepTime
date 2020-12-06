@@ -18,8 +18,9 @@ class PrepTimer extends StatelessWidget {
       onTap: () => print('Timer Clicked'),
       child: Column(
         children: [
-          Text(team.toString()),
+          Text(event.prepName(team).toUpperCase() + ' PREP'),
           StreamBuilder<Duration>(
+            initialData: event.initialPrep,
             stream: event.remainingPrep(team),
             builder: (context, timeRemaining) {
               return Text(
