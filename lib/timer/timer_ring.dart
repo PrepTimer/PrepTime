@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:preptime/provider/models/speech.dart';
 import 'package:preptime/timer/ring_painter.dart';
+import 'package:preptime/timer/speech_indicator.dart';
 import 'package:provider/provider.dart';
 
 /// Manages a timer ring including the ring painter, label, title, and dots.
@@ -26,9 +27,12 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
         aspectRatio: 1.0,
         child: Stack(
           children: <Widget>[
+            /// The large, circular ring animation
             Positioned.fill(
               child: RingPainter(),
             ),
+
+            /// The large, white clock text (eg. 00:00.0)
             Align(
               alignment: FractionalOffset.center,
               child: Text(
@@ -42,6 +46,8 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
                 ),
               ),
             ),
+
+            /// The name of the speech being given.
             Align(
               alignment: FractionalOffset(0.5, 0.69),
               child: Text(
@@ -52,6 +58,12 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
                   fontSize: 18.0,
                 ),
               ),
+            ),
+
+            /// Optional dots indicating which speech is active.
+            Align(
+              alignment: FractionalOffset(0.5, 0.8),
+              child: SpeechIndicator(),
             ),
           ],
         ),
