@@ -8,11 +8,11 @@ import 'package:provider/provider.dart';
 
 /// Returns a row of page indicators.
 class SpeechIndicator extends StatelessWidget {
-  static const EdgeInsetsGeometry _gap = EdgeInsets.symmetric(horizontal: 5.0);
+  static const EdgeInsetsGeometry _gap = EdgeInsets.symmetric(horizontal: 3.5);
   static const MainAxisAlignment _alignCenter = MainAxisAlignment.center;
   static const Duration _fadeDuration = Duration(milliseconds: 500);
-  static const Color _inactiveColor = Colors.black12;
-  static const Color _activeColor = Colors.black38;
+  static const Color _inactiveColor = Colors.white12;
+  static const Color _activeColor = Colors.white38;
   static const Size _indicatorSize = Size(8.0, 8.0);
   static const double _radiusOfBorder = 5.0;
 

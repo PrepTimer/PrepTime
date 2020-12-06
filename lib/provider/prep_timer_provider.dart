@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:preptime/provider/models/speech.dart';
 import 'package:preptime/provider/models/event_controller.dart';
-
 import 'package:preptime/debate_events/debate_events.dart';
 
 /// Manages the providers used in PrepTime.
