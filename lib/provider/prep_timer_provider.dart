@@ -10,11 +10,11 @@ class PrepTimeProvider extends StatelessWidget {
   final Widget child;
 
   /// The eventManager to track.
-  final EventController eventManager = EventController();
+  final EventController eventController = EventController();
 
   /// Provides access to models throughout the widget tree.
   PrepTimeProvider({this.child}) {
-    eventManager.events.add(
+    eventController.events.add(
       SpeechEvent(
         name: 'Event Name',
         description: 'This is a speech event.',
@@ -26,7 +26,7 @@ class PrepTimeProvider extends StatelessWidget {
         ),
       ),
     );
-    eventManager.setEvent(eventManager.events.first);
+    eventController.setEvent(eventController.events.first);
   }
 
   @override
@@ -35,10 +35,10 @@ class PrepTimeProvider extends StatelessWidget {
       child: child,
       providers: [
         ChangeNotifierProvider<Speech>(
-          create: (_) => eventManager.event.speech,
+          create: (_) => eventController.event.speech,
         ),
         ChangeNotifierProvider<EventController>.value(
-          value: eventManager,
+          value: eventController,
         ),
       ],
     );
