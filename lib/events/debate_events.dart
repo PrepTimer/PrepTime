@@ -1,5 +1,8 @@
 library debate_events;
 
-part 'package:preptime/events/policy.dart';
-part 'package:preptime/events/lincoln_douglas.dart';
-part 'package:preptime/events/public_forum.dart';
+import 'package:preptime/provider/models/debate_event.dart';
+import 'package:preptime/provider/models/speech.dart';
+
+part 'lincoln_douglas.dart';
+part 'public_forum.dart';
+part 'policy.dart';

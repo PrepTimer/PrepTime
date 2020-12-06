@@ -1,5 +1,4 @@
-import 'package:preptime/provider/models/debate_event.dart';
-import 'package:preptime/provider/models/speech.dart';
+part of 'debate_events.dart';
 
 abstract class LincolnDouglasDebate {
   /// General rules for lincoln-douglas debate.

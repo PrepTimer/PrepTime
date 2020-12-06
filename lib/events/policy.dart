@@ -1,5 +1,4 @@
-import 'package:preptime/provider/models/debate_event.dart';
-import 'package:preptime/provider/models/speech.dart';
+part of 'debate_events.dart';
 
 /// Defines a list of basic policy debate speeches.
 abstract class PolicyDebate {

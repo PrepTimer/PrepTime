@@ -1,4 +1,4 @@
-import 'package:preptime/provider/models/debate_event.dart';
+part of 'debate_events.dart';
 
 /// Defines two pre-assembled Public Forum format debate events.
 abstract class PublicForum {
