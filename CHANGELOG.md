@@ -1,4 +1,5 @@
 ## [Unreleased]
+## [0.0.2] - 2020-12-06
 ### Added
 - increased opacity of disabled button so that it was more visible
 - policy debate info (debate events library)
@@ -10,4 +11,5 @@
 ### Added
 - added a cider config file
 
-[Unreleased]: https://github.com/PrepTimer/PrepTime/compare/0.0.1...HEAD
+[Unreleased]: https://github.com/PrepTimer/PrepTime/compare/0.0.2...HEAD
+[0.0.2]: https://github.com/PrepTimer/PrepTime/compare/0.0.1...0.0.2
