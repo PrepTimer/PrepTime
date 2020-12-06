@@ -3,9 +3,9 @@ library debate_events;
 import 'package:preptime/provider/models/debate_event.dart';
 import 'package:preptime/provider/models/speech.dart';
 
-part 'lincoln_douglas.dart';
-part 'public_forum.dart';
-part 'policy.dart';
+part 'src/lincoln_douglas.dart';
+part 'src/public_forum.dart';
+part 'src/policy.dart';
 
 /// General rules for lincoln-douglas debate.
 const bool _useJudgeAssisitant = false;

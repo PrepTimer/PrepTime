@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:preptime/provider/models/speech.dart';
-import 'package:preptime/provider/models/speech_event.dart';
 import 'package:preptime/provider/models/event_controller.dart';
+
+import 'package:preptime/debate_events/debate_events.dart';
 
 /// Manages the providers used in PrepTime.
 class PrepTimeProvider extends StatelessWidget {
@@ -14,18 +15,9 @@ class PrepTimeProvider extends StatelessWidget {
 
   /// Provides access to models throughout the widget tree.
   PrepTimeProvider({this.child}) {
-    eventController.events.add(
-      SpeechEvent(
-        name: 'Event Name',
-        description: 'This is a speech event.',
-        speech: Speech(
-          name: 'Speech',
-          length: Duration(seconds: 10),
-          shouldCountUp: false,
-          useJudgeAssistant: false,
-        ),
-      ),
-    );
+    eventController.events.add(Policy.highSchool);
+    eventController.events.add(LincolnDouglas.highSchool);
+    eventController.events.add(PublicForum.highSchool);
     eventController.setEvent(eventController.events.first);
   }
 

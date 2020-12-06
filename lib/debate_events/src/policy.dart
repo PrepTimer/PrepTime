@@ -1,7 +1,7 @@
-part of 'debate_events.dart';
+part of '../debate_events.dart';
 
 /// Defines a list of basic policy debate speeches.
-abstract class PolicyDebate {
+abstract class Policy {
   /// Middle School Policy Debate.
   static const int _msConstructive = 4;
   static const int _msRebuttal = 2;
@@ -21,7 +21,7 @@ abstract class PolicyDebate {
   static const int _univCrossX = 3;
 
   /// The NSDA Default times for middle school policy debate.
-  DebateEvent get msPolicy => DebateEvent(
+  static DebateEvent get middleSchool => DebateEvent(
         name: 'MS Policy Debate',
         description: '$_msPrepTime\' Prep',
         speeches: [
@@ -41,7 +41,7 @@ abstract class PolicyDebate {
       )..initPrepTimers(Duration(minutes: _msPrepTime));
 
   /// The NSDA Default times for high school policy debate.
-  DebateEvent get hsPolicy => DebateEvent(
+  static DebateEvent get highSchool => DebateEvent(
         name: 'HS Policy Debate',
         description: '$_hsPrepTime\' Prep',
         speeches: [
@@ -61,7 +61,7 @@ abstract class PolicyDebate {
       )..initPrepTimers(Duration(minutes: _hsPrepTime));
 
   /// The NSDA Default times for university policy debate.
-  DebateEvent get univPolicy => DebateEvent(
+  static DebateEvent get college => DebateEvent(
         name: 'College Policy Debate',
         description: '$_univPrepTime\' Prep',
         speeches: [

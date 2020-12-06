@@ -1,12 +1,13 @@
-part of 'debate_events.dart';
+part of '../debate_events.dart';
 
 /// Defines a DebateEvent in lincoln-douglas format.
-abstract class LincolnDouglasDebate {
+abstract class LincolnDouglas {
   /// Specific rules for lincoln douglas debate
   static const int _prepTime = 4;
   static const int _crossX = 4;
 
-  DebateEvent get hsLincolnDouglas => DebateEvent(
+  /// High school lincoln-douglas debate.
+  static DebateEvent get highSchool => DebateEvent(
         name: 'HS Lincoln-Douglas',
         description: '$_prepTime\' Prep',
         speeches: [

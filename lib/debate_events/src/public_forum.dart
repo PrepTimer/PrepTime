@@ -1,4 +1,4 @@
-part of 'debate_events.dart';
+part of '../debate_events.dart';
 
 /// Defines two pre-assembled Public Forum format debate events.
 abstract class PublicForum {
@@ -10,7 +10,8 @@ abstract class PublicForum {
   static const int _hsPrepTime = 2;
   static const int _hsCrossfire = 3;
 
-  DebateEvent get hsPublicForum => DebateEvent(
+  /// High school public forum.
+  static DebateEvent get highSchool => DebateEvent(
         name: 'HS Public Forum',
         description: '$_hsPrepTime\' Prep',
         speeches: [
