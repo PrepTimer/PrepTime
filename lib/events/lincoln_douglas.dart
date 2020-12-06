@@ -6,7 +6,7 @@ abstract class LincolnDouglasDebate {
   static const int _prepTime = 4;
   static const int _crossX = 4;
 
-  DebateEvent get hsLincolnDouglasDebate => DebateEvent(
+  DebateEvent get hsLincolnDouglas => DebateEvent(
         name: 'HS Lincoln-Douglas',
         description: '$_prepTime\' Prep',
         speeches: [
