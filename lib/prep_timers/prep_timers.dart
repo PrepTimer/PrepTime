@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:preptime/prep_timers/src/prep_timer.dart';
+import 'package:preptime/provider/models/team.dart';
 
 class PrepTimers extends StatelessWidget {
   @override
@@ -6,8 +8,8 @@ class PrepTimers extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        PrepTimer(),
-        PrepTimer(),
+        PrepTimer(team: Team.left),
+        PrepTimer(team: Team.right),
       ],
     );
   }
