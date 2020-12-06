@@ -24,12 +24,22 @@ mixin PrepTimeMixin on Event {
   /// start(), stop(), reset(), and isRunning on each team's prep timer.
   Map<Team, CountDownTimer> _timers = LinkedHashMap();
 
+  /// The initial amount of time to put on each prep clock.
+  Duration get initialPrep => _initialPrep;
+  Duration _initialPrep;
+
+  /// Whether to use AFF/NEG for prep names or PRO/CON;
+  bool _useAffNeg;
+
   /// Initializes the prep timers.
   ///
   /// The prep timers will each be constructed with the given duration. This
   /// method should only be called once and there should be no timers setup yet.
-  void initPrepTimers(Duration duration) {
+  void initPrepTimers({Duration duration, bool useAffNeg = true}) {
+    assert(duration != null);
     assert(_timers.isEmpty);
+    _initialPrep = duration;
+    _useAffNeg = useAffNeg;
     for (Team team in Team.values) {
       _timers.putIfAbsent(team, () => CountDownTimer(duration));
     }
@@ -60,5 +70,10 @@ mixin PrepTimeMixin on Event {
   /// Returns the currentTime stream of the given team's prep timer.
   Stream<Duration> remainingPrep(Team team) {
     return _timers[team].currentTime;
+  }
+
+  /// The name of each team as displayed above their prep time.
+  String prepName(Team team) {
+    return team.toFormattedString(_useAffNeg);
   }
 }

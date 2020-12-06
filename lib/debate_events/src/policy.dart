@@ -1,7 +1,7 @@
 part of '../debate_events.dart';
 
 /// Defines a list of basic policy debate speeches.
-abstract class Policy {
+class Policy extends DebateEvent {
   /// Middle School Policy Debate.
   static const int _msConstructive = 4;
   static const int _msRebuttal = 2;
@@ -21,62 +21,77 @@ abstract class Policy {
   static const int _univCrossX = 3;
 
   /// The NSDA Default times for middle school policy debate.
-  static DebateEvent get middleSchool => DebateEvent(
-        name: 'MS Policy Debate',
-        description: '$_msPrepTime\' Prep',
-        speeches: [
-          _createSpeech('1AC', _msConstructive),
-          _createSpeech('CX', _msCrossX),
-          _createSpeech('1NC', _msConstructive),
-          _createSpeech('CX', _msCrossX),
-          _createSpeech('2AC', _msConstructive),
-          _createSpeech('CX', _msCrossX),
-          _createSpeech('2NC', _msConstructive),
-          _createSpeech('CX', _msCrossX),
-          _createSpeech('1NR', _msRebuttal),
-          _createSpeech('1AR', _msRebuttal),
-          _createSpeech('2NR', _msRebuttal),
-          _createSpeech('2AR', _msRebuttal),
-        ],
-      )..initPrepTimers(Duration(minutes: _msPrepTime));
+  factory Policy.middleSchool() {
+    return DebateEvent(
+      name: 'MS Policy Debate',
+      description: '$_msPrepTime\' Prep',
+      speeches: [
+        _createSpeech('1AC', _msConstructive),
+        _createSpeech('CX', _msCrossX),
+        _createSpeech('1NC', _msConstructive),
+        _createSpeech('CX', _msCrossX),
+        _createSpeech('2AC', _msConstructive),
+        _createSpeech('CX', _msCrossX),
+        _createSpeech('2NC', _msConstructive),
+        _createSpeech('CX', _msCrossX),
+        _createSpeech('1NR', _msRebuttal),
+        _createSpeech('1AR', _msRebuttal),
+        _createSpeech('2NR', _msRebuttal),
+        _createSpeech('2AR', _msRebuttal),
+      ],
+    )..initPrepTimers(
+        duration: Duration(minutes: _msPrepTime),
+        useAffNeg: true,
+      );
+  }
 
   /// The NSDA Default times for high school policy debate.
-  static DebateEvent get highSchool => DebateEvent(
-        name: 'HS Policy Debate',
-        description: '$_hsPrepTime\' Prep',
-        speeches: [
-          _createSpeech('1AC', _hsConstructive),
-          _createSpeech('CX', _hsCrossX),
-          _createSpeech('1NC', _hsConstructive),
-          _createSpeech('CX', _hsCrossX),
-          _createSpeech('2AC', _hsConstructive),
-          _createSpeech('CX', _hsCrossX),
-          _createSpeech('2NC', _hsConstructive),
-          _createSpeech('CX', _hsCrossX),
-          _createSpeech('1NR', _hsRebuttal),
-          _createSpeech('1AR', _hsRebuttal),
-          _createSpeech('2NR', _hsRebuttal),
-          _createSpeech('2AR', _hsRebuttal),
-        ],
-      )..initPrepTimers(Duration(minutes: _hsPrepTime));
+  factory Policy.highSchool() {
+    return DebateEvent(
+      name: 'HS Policy Debate',
+      description: '$_hsPrepTime\' Prep',
+      speeches: [
+        _createSpeech('1AC', _hsConstructive),
+        _createSpeech('CX', _hsCrossX),
+        _createSpeech('1NC', _hsConstructive),
+        _createSpeech('CX', _hsCrossX),
+        _createSpeech('2AC', _hsConstructive),
+        _createSpeech('CX', _hsCrossX),
+        _createSpeech('2NC', _hsConstructive),
+        _createSpeech('CX', _hsCrossX),
+        _createSpeech('1NR', _hsRebuttal),
+        _createSpeech('1AR', _hsRebuttal),
+        _createSpeech('2NR', _hsRebuttal),
+        _createSpeech('2AR', _hsRebuttal),
+      ],
+    )..initPrepTimers(
+        duration: Duration(minutes: _hsPrepTime),
+        useAffNeg: true,
+      );
+  }
 
   /// The NSDA Default times for university policy debate.
-  static DebateEvent get college => DebateEvent(
-        name: 'College Policy Debate',
-        description: '$_univPrepTime\' Prep',
-        speeches: [
-          _createSpeech('1AC', _univConstructive),
-          _createSpeech('CX', _univCrossX),
-          _createSpeech('1NC', _univConstructive),
-          _createSpeech('CX', _univCrossX),
-          _createSpeech('2AC', _univConstructive),
-          _createSpeech('CX', _univCrossX),
-          _createSpeech('2NC', _univConstructive),
-          _createSpeech('CX', _univCrossX),
-          _createSpeech('1NR', _univRebuttal),
-          _createSpeech('1AR', _univRebuttal),
-          _createSpeech('2NR', _univRebuttal),
-          _createSpeech('2AR', _univRebuttal),
-        ],
-      )..initPrepTimers(Duration(minutes: _univPrepTime));
+  factory Policy.college() {
+    return DebateEvent(
+      name: 'College Policy Debate',
+      description: '$_univPrepTime\' Prep',
+      speeches: [
+        _createSpeech('1AC', _univConstructive),
+        _createSpeech('CX', _univCrossX),
+        _createSpeech('1NC', _univConstructive),
+        _createSpeech('CX', _univCrossX),
+        _createSpeech('2AC', _univConstructive),
+        _createSpeech('CX', _univCrossX),
+        _createSpeech('2NC', _univConstructive),
+        _createSpeech('CX', _univCrossX),
+        _createSpeech('1NR', _univRebuttal),
+        _createSpeech('1AR', _univRebuttal),
+        _createSpeech('2NR', _univRebuttal),
+        _createSpeech('2AR', _univRebuttal),
+      ],
+    )..initPrepTimers(
+        duration: Duration(minutes: _univPrepTime),
+        useAffNeg: true,
+      );
+  }
 }
