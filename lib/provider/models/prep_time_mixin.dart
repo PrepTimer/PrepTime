@@ -53,32 +53,20 @@ mixin PrepTimeMixin on Event {
   }
 
   /// Checks if the prep timer for the given team is running.
-  bool isRunning(Team team) {
-    return _timers[team].isRunning;
-  }
+  bool isRunning(Team team) => _timers[team].isRunning;
 
   /// Starts the prep timer for the given team.
-  void startPrep(Team team) {
-    _timers[team].resume();
-  }
+  void startPrep(Team team) => _timers[team].resume();
 
   /// Stops the prep time for the given team.
-  void stopPrep(Team team) {
-    _timers[team].stop();
-  }
+  void stopPrep(Team team) => _timers[team].stop();
 
   /// Resets the prep time for the given team.
-  void resetPrep(Team team) {
-    _timers[team].reset();
-  }
+  void resetPrep(Team team) => _timers[team].reset();
 
   /// Returns the currentTime stream of the given team's prep timer.
-  Stream<Duration> remainingPrep(Team team) {
-    return _timers[team].currentTime;
-  }
+  Stream<Duration> remainingPrep(Team team) => _timers[team].currentTime;
 
   /// The name of each team as displayed above their prep time.
-  String prepName(Team team) {
-    return team.toFormattedString(_useAffNeg);
-  }
+  String prepName(Team team) => team.toFormattedString(_useAffNeg);
 }
