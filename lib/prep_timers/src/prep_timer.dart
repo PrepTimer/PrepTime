@@ -21,6 +21,7 @@ class PrepTimer extends StatelessWidget {
     DebateEvent event = (context.watch<EventController>().event as DebateEvent);
     return InkWell(
       highlightColor: Colors.transparent,
+      splashColor: Colors.white10,
       borderRadius: BorderRadius.circular(10),
       onTap: () =>
           event.isRunning(team) ? event.stopPrep(team) : event.startPrep(team),
