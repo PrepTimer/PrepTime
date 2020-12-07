@@ -62,15 +62,12 @@ class _PrepTimerState extends State<PrepTimer> {
   }
 
   void _handleTap() {
-    if (isRunning) {
-      event.stopPrep(widget.team);
-    } else {
-      event.startPrep(widget.team);
-    }
+    isRunning ? event.stopPrep(widget.team) : event.startPrep(widget.team);
     _updateState();
   }
 
   void _handleLongPress() {
+    print('handling long press');
     event.resetPrep(widget.team);
     _updateState();
   }
