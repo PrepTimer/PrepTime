@@ -117,11 +117,10 @@ class CountDownTimer implements Timeable {
   /// is stopped (via [dispose]).
   void _updateCurrentTime(Timer _) {
     Duration timeRemaining = initialDuration - _second * _ticks;
+    _controller.add(timeRemaining);
+    _ticks++;
     if (timeRemaining == Duration.zero || timeRemaining.isNegative) {
       dispose();
-    } else {
-      _controller.add(timeRemaining);
-      _ticks++;
     }
   }
 }
