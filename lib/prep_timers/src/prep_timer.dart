@@ -67,7 +67,6 @@ class _PrepTimerState extends State<PrepTimer> {
   }
 
   void _handleLongPress() {
-    print('handling long press');
     event.resetPrep(widget.team);
     _updateState();
   }

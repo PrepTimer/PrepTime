@@ -9,6 +9,9 @@ import 'package:provider/provider.dart';
 
 /// The time label for prep time.
 class TimeLabel extends StatelessWidget {
+  static const Color primaryColor = Color(0xFFFFFFFF);
+  static const Color secondaryColor = Color(0x88FFFFFF);
+
   final Team team;
 
   /// TODO: #12 Add keys to all widget constructors.
@@ -24,7 +27,8 @@ class TimeLabel extends StatelessWidget {
         return AutoSizeText(
           _formatDuration(timeRemaining.data),
           maxLines: 1,
-          style: const TextStyle(
+          style: TextStyle(
+            color: event.isOtherRunning(team) ? secondaryColor : primaryColor,
             fontFeatures: [FontFeature.tabularFigures()],
             fontWeight: FontWeight.w100,
             fontSize: 100.0,

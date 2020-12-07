@@ -7,6 +7,9 @@ import 'package:preptime/provider/models/event_controller.dart';
 
 /// The name of the team whos prep time this widget labels.
 class TeamLabel extends StatelessWidget {
+  static const Color primaryColor = Color(0x88FFFFFF);
+  static const Color secondaryColor = Color(0x44FFFFFF);
+
   final Team team;
 
   const TeamLabel({@required this.team});
@@ -17,10 +20,10 @@ class TeamLabel extends StatelessWidget {
     return AutoSizeText(
       event.prepName(team).toUpperCase() + ' PREP',
       maxLines: 1,
-      style: const TextStyle(
-        fontSize: 30,
-        color: Color(0x88FFFFFF),
+      style: TextStyle(
+        color: event.isOtherRunning(team) ? secondaryColor : primaryColor,
         fontWeight: FontWeight.w200,
+        fontSize: 30,
       ),
     );
   }
