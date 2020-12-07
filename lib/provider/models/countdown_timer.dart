@@ -88,17 +88,9 @@ class CountDownTimer implements Timeable {
   }
 
   /// Resets the [CountDownTimer] to the [initialDuration].
-  ///
-  /// The reset function must only be called when the [CountDownTimer] is not
-  /// running. Calling [reset] does not change the instance of the periodic
-  /// timer, rather it resets the tick counter to zero.
-  ///
-  /// Note: Future implementations of [reset] could potentially allow this
-  /// method to be called while the timer is running.
   void reset() {
-    if (isNotRunning) {
-      _ticks = 0;
-    }
+    _timer.cancel();
+    _ticks = 0;
   }
 
   /// Closes out the resources being used by the controller.
