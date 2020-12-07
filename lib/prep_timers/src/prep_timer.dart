@@ -22,7 +22,8 @@ class PrepTimer extends StatelessWidget {
     return InkWell(
       highlightColor: Colors.transparent,
       borderRadius: BorderRadius.circular(10),
-      onTap: () => event.togglePrep(team),
+      onTap: () =>
+          event.isRunning(team) ? event.stopPrep(team) : event.startPrep(team),
       child: Container(
         width: _buttonSize.width,
         height: _buttonSize.height,
