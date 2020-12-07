@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:preptime/prep_timers/prep_timers.dart';
+import 'package:preptime/provider/models/event.dart';
 import 'package:provider/provider.dart';
 import 'package:preptime/provider/models/debate_event.dart';
-import 'package:preptime/provider/models/event_controller.dart';
 import 'package:preptime/timer_buttons/timer_buttons.dart';
 import 'package:preptime/timer_ring/timer_ring.dart';
 
@@ -19,7 +19,7 @@ class Timer extends StatelessWidget {
             children: <Widget>[
               TimerRing(),
               TimerButtons(),
-              if (context.watch<EventController>().event is DebateEvent) ...[
+              if (context.watch<Event>() is DebateEvent) ...[
                 SizedBox(height: 20),
                 PrepTimers(),
               ]

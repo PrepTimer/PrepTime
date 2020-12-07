@@ -1,9 +1,10 @@
 import 'dart:ui';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:preptime/provider/models/event.dart';
 import 'package:provider/provider.dart';
 import 'package:preptime/provider/models/debate_event.dart';
-import 'package:preptime/provider/models/event_controller.dart';
 import 'package:preptime/provider/models/speech.dart';
 import 'package:preptime/timer_ring/src/ring_painter.dart';
 import 'package:preptime/timer_ring/src/speech_indicator.dart';
@@ -16,13 +17,8 @@ class TimerRing extends StatefulWidget {
 
 class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
   @override
-  void initState() {
-    context.read<Speech>().initController(this);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    context.watch<Speech>().initController(this);
     Speech speech = context.watch<Speech>();
     return Align(
       alignment: FractionalOffset.center,
@@ -36,17 +32,13 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
             ),
 
             /// The large, white clock text (eg. 00:00.0)
-            Align(
+            Container(
               alignment: FractionalOffset.center,
-              child: Text(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: AutoSizeText(
                 speech.timeRemaining,
-                style: const TextStyle(
-                  fontFeatures: [FontFeature.tabularFigures()],
-                  fontWeight: FontWeight.w200,
-                  letterSpacing: -4.0,
-                  color: Colors.white,
-                  fontSize: 85.0,
-                ),
+                style: Theme.of(context).textTheme.headline1,
+                maxLines: 1,
               ),
             ),
 
@@ -64,7 +56,7 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
             ),
 
             /// Dots indicating which speech is active (debate only).
-            if (context.watch<EventController>().event is DebateEvent)
+            if (context.watch<Event>() is DebateEvent)
               Align(
                 alignment: FractionalOffset(0.5, 0.8),
                 child: SpeechIndicator(),
