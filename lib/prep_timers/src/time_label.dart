@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:preptime/provider/models/debate_event.dart';
+import 'package:preptime/provider/models/event.dart';
 import 'package:preptime/provider/models/event_controller.dart';
 import 'package:preptime/provider/models/team.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +20,8 @@ class TimeLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DebateEvent event = (context.watch<EventController>().event as DebateEvent);
+    final isOtherRunning = context.select<Event, bool>(_selectBoolFromEvent);
+    final event = context.watch<Event>() as DebateEvent;
     return StreamBuilder<Duration>(
       initialData: event.initialPrep,
       stream: event.remainingPrep(team),
@@ -28,7 +30,7 @@ class TimeLabel extends StatelessWidget {
           _formatDuration(timeRemaining.data),
           maxLines: 1,
           style: TextStyle(
-            color: event.isOtherRunning(team) ? secondaryColor : primaryColor,
+            color: isOtherRunning ? secondaryColor : primaryColor,
             fontFeatures: [FontFeature.tabularFigures()],
             fontWeight: FontWeight.w100,
             fontSize: 100.0,
@@ -48,5 +50,10 @@ class TimeLabel extends StatelessWidget {
     int minutes = (time.inMinutes % Duration.minutesPerHour);
     if (minutes < 10) return '$minutes:${seconds.padLeft(2, '0')}';
     return '${minutes.toString().padLeft(2, '0')}:${seconds.padLeft(2, '0')}';
+  }
+
+  bool _selectBoolFromEvent(Event event) {
+    DebateEvent debateEvent = event as DebateEvent;
+    return debateEvent.isAnyRunning && !debateEvent.isRunning(team);
   }
 }

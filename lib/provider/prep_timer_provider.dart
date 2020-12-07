@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:preptime/provider/models/event.dart';
 import 'package:provider/provider.dart';
 import 'package:preptime/provider/models/speech.dart';
 import 'package:preptime/provider/models/event_controller.dart';
@@ -25,8 +26,11 @@ class PrepTimeProvider extends StatelessWidget {
     return MultiProvider(
       child: child,
       providers: [
-        ChangeNotifierProvider<Speech>(
-          create: (_) => eventController.event.speech,
+        ChangeNotifierProvider<Speech>.value(
+          value: eventController.event.speech,
+        ),
+        ChangeNotifierProvider<Event>.value(
+          value: eventController.event,
         ),
         ChangeNotifierProvider<EventController>.value(
           value: eventController,
