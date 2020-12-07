@@ -19,8 +19,10 @@ class Timer extends StatelessWidget {
             children: <Widget>[
               TimerRing(),
               TimerButtons(),
-              if (context.watch<EventController>().event is DebateEvent)
+              if (context.watch<EventController>().event is DebateEvent) ...[
+                SizedBox(height: 10),
                 PrepTimers(),
+              ]
             ],
           ),
         ),
