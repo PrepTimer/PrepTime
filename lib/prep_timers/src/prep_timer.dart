@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:preptime/provider/models/debate_event.dart';
 import 'package:preptime/provider/models/event_controller.dart';
@@ -25,11 +26,12 @@ class PrepTimer extends StatelessWidget {
         height: _buttonSize.height,
         child: Column(
           children: [
-            Text(
+            AutoSizeText(
               event.prepName(team).toUpperCase() + ' PREP',
+              maxLines: 1,
               style: const TextStyle(
                 // TODO #9: Fix textScaleFactor bug
-                fontSize: 18.0,
+                fontSize: 30,
                 color: Color(0x88FFFFFF),
                 fontWeight: FontWeight.w200,
               ),
@@ -38,11 +40,12 @@ class PrepTimer extends StatelessWidget {
               initialData: event.initialPrep,
               stream: event.remainingPrep(team),
               builder: (context, timeRemaining) {
-                return Text(
+                return AutoSizeText(
                   _formatDuration(timeRemaining.data),
+                  maxLines: 1,
                   style: const TextStyle(
                     height: 1.3,
-                    fontSize: 32.0,
+                    fontSize: 40.0,
                     fontFeatures: [FontFeature.tabularFigures()],
                     fontWeight: FontWeight.w300,
                   ),
@@ -56,10 +59,11 @@ class PrepTimer extends StatelessWidget {
   }
 
   /// Takes a duration of the amount of time remaining and returns a formatted
-  /// string of the form MM:SS.
+  /// string of the form MM:SS (if MM >= 10) or M:SS (if M < 10).
   String _formatDuration(Duration time) {
-    String minutes = (time.inMinutes % Duration.minutesPerHour).toString();
     String seconds = (time.inSeconds % Duration.secondsPerMinute).toString();
-    return '${minutes.padLeft(2, '0')}:${seconds.padLeft(2, '0')}';
+    int minutes = (time.inMinutes % Duration.minutesPerHour);
+    if (minutes < 10) return '$minutes:${seconds.padLeft(2, '0')}';
+    return '${minutes.toString().padLeft(2, '0')}:${seconds.padLeft(2, '0')}';
   }
 }
