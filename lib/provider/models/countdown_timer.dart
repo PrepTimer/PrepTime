@@ -72,6 +72,7 @@ class CountDownTimer implements Timeable {
   /// and therefore we lose the ticks of the cancelled timer.
   void resume() {
     if (isNotRunning) {
+      _updateCurrentTime(null); // immediatley tick to let user know it worked.
       _timer = Timer.periodic(_second, _updateCurrentTime); // make const?
     }
   }
