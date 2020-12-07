@@ -20,17 +20,19 @@ class PrepTimer extends StatelessWidget {
   Widget build(BuildContext context) {
     DebateEvent event = (context.watch<EventController>().event as DebateEvent);
     return InkWell(
+      highlightColor: Colors.transparent,
+      borderRadius: BorderRadius.circular(10),
       onTap: () => print('Timer Clicked'),
       child: Container(
         width: _buttonSize.width,
         height: _buttonSize.height,
+        padding: EdgeInsets.all(10),
         child: Column(
           children: [
             AutoSizeText(
               event.prepName(team).toUpperCase() + ' PREP',
               maxLines: 1,
               style: const TextStyle(
-                // TODO #9: Fix textScaleFactor bug
                 fontSize: 30,
                 color: Color(0x88FFFFFF),
                 fontWeight: FontWeight.w200,
@@ -45,9 +47,9 @@ class PrepTimer extends StatelessWidget {
                   maxLines: 1,
                   style: const TextStyle(
                     height: 1.3,
-                    fontSize: 40.0,
+                    fontSize: 100.0,
                     fontFeatures: [FontFeature.tabularFigures()],
-                    fontWeight: FontWeight.w300,
+                    fontWeight: FontWeight.w100,
                   ),
                 );
               },
