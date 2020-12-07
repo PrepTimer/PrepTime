@@ -89,7 +89,7 @@ class CountDownTimer implements Timeable {
 
   /// Resets the [CountDownTimer] to the [initialDuration].
   void reset() {
-    _timer.cancel();
+    _timer?.cancel();
     _ticks = 0;
     _updateCurrentTime(null);
   }
