@@ -4,7 +4,7 @@ import 'package:preptime/provider/prep_timer_provider.dart';
 import 'package:preptime/style.dart';
 import 'package:preptime/timer.dart';
 import 'package:provider/provider.dart';
-// import 'package:preptime/home.dart';
+import 'package:preptime/menu.dart';
 
 void main() {
   Provider.debugCheckInvalidValueType = null;
@@ -18,7 +18,12 @@ class PrepTime extends StatelessWidget {
     return PrepTimeProvider(
       child: MaterialApp(
         theme: PrepTimeThemeData.darkTheme,
-        home: Timer(),
+        title: 'Prep Time',
+        initialRoute: '/',
+        routes: {
+          '/': (context) => Timer(),
+          '/menu': (context) => Menu(),
+        },
       ),
     );
   }
