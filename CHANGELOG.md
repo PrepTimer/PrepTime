@@ -1,4 +1,7 @@
 ## [Unreleased]
+### Added
+- new isRunning endpoint in PrepTimeMixin
+
 ## [0.0.2] - 2020-12-06
 ### Added
 - increased opacity of disabled button so that it was more visible
