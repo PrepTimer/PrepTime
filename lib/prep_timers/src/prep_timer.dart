@@ -1,76 +1,54 @@
 import 'dart:ui';
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:preptime/prep_timers/src/team_label.dart';
+import 'package:preptime/prep_timers/src/time_label.dart';
 import 'package:preptime/provider/models/debate_event.dart';
 import 'package:preptime/provider/models/event_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:preptime/provider/models/team.dart';
 
-class PrepTimer extends StatelessWidget {
+class PrepTimer extends StatefulWidget {
   static const Size _buttonSize = Size(100, 90);
+
+  /// Constructs a new prep timer for the given team.
+  const PrepTimer({
+    Key key,
+    @required this.team,
+  }) : super(key: key);
 
   /// The team which this prep timer object represents.
   final Team team;
 
-  /// Constructs a new prep timer for the given team.
-  PrepTimer({@required this.team});
+  @override
+  _PrepTimerState createState() => _PrepTimerState();
+}
 
+class _PrepTimerState extends State<PrepTimer> {
   @override
   Widget build(BuildContext context) {
     DebateEvent event = (context.watch<EventController>().event as DebateEvent);
+    bool isRunning = event.isRunning(widget.team);
     return InkWell(
-      highlightColor: Colors.transparent,
+      // highlightColor: Colors.transparent,
       splashColor: Colors.white10,
       borderRadius: BorderRadius.circular(10),
       onLongPress: () => null,
-      onTap: event.isRunning(team)
-          ? () => event.stopPrep(team)
-          : () => event.startPrep(team),
+      onTap: () {
+        isRunning ? event.stopPrep(widget.team) : event.startPrep(widget.team);
+      },
       child: Container(
-        color: event.isRunning(team) ? Colors.blue : Colors.red,
-        width: _buttonSize.width,
-        height: _buttonSize.height,
+        color: isRunning ? Colors.blue : Colors.red,
+        width: PrepTimer._buttonSize.width,
+        height: PrepTimer._buttonSize.height,
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
-            AutoSizeText(
-              event.prepName(team).toUpperCase() + ' PREP',
-              maxLines: 1,
-              style: const TextStyle(
-                fontSize: 30,
-                color: Color(0x88FFFFFF),
-                fontWeight: FontWeight.w200,
-              ),
-            ),
-            StreamBuilder<Duration>(
-              initialData: event.initialPrep,
-              stream: event.remainingPrep(team),
-              builder: (context, timeRemaining) {
-                return AutoSizeText(
-                  _formatDuration(timeRemaining.data),
-                  maxLines: 1,
-                  style: const TextStyle(
-                    height: 1.3,
-                    fontSize: 100.0,
-                    fontFeatures: [FontFeature.tabularFigures()],
-                    fontWeight: FontWeight.w100,
-                  ),
-                );
-              },
-            )
+            TeamLabel(team: widget.team),
+            TimeLabel(team: widget.team),
           ],
         ),
       ),
     );
-  }
-
-  /// Takes a duration of the amount of time remaining and returns a formatted
-  /// string of the form MM:SS (if MM >= 10) or M:SS (if M < 10).
-  String _formatDuration(Duration time) {
-    String seconds = (time.inSeconds % Duration.secondsPerMinute).toString();
-    int minutes = (time.inMinutes % Duration.minutesPerHour);
-    if (minutes < 10) return '$minutes:${seconds.padLeft(2, '0')}';
-    return '${minutes.toString().padLeft(2, '0')}:${seconds.padLeft(2, '0')}';
   }
 }
