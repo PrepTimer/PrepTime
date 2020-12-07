@@ -91,6 +91,7 @@ class CountDownTimer implements Timeable {
   void reset() {
     _timer.cancel();
     _ticks = 0;
+    _updateCurrentTime(null);
   }
 
   /// Closes out the resources being used by the controller.
