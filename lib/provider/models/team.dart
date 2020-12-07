@@ -19,4 +19,13 @@ extension StringFormatting on Team {
     if (useAffNeg) return this.index == 0 ? 'AFF' : 'NEG';
     return this.index == 0 ? 'PRO' : 'CON';
   }
+
+  /// Returns the other team.index
+  ///
+  /// If this team is [Team.left] the this method returns [Team.right]. If this
+  /// team is [Team.right] then this method returns [Team.left].
+  Team otherTeam() {
+    assert(Team.values.length == 2);
+    return Team.values[(this.index + 1) % 2];
+  }
 }
