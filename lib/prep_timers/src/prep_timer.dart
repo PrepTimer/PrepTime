@@ -22,7 +22,7 @@ class PrepTimer extends StatelessWidget {
     return InkWell(
       highlightColor: Colors.transparent,
       borderRadius: BorderRadius.circular(10),
-      onTap: () => print('Timer Clicked'),
+      onTap: () => event.togglePrep(team),
       child: Container(
         width: _buttonSize.width,
         height: _buttonSize.height,
@@ -53,7 +53,7 @@ class PrepTimer extends StatelessWidget {
                   ),
                 );
               },
-            ),
+            )
           ],
         ),
       ),

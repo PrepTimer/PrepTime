@@ -52,6 +52,11 @@ mixin PrepTimeMixin on Event {
     });
   }
 
+  /// Checks if the prep timer for the given team is running.
+  bool isRunning(Team team) {
+    return _timers[team].isRunning;
+  }
+
   /// Starts the prep timer for the given team.
   void startPrep(Team team) {
     _timers[team].resume();

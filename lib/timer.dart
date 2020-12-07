@@ -20,7 +20,7 @@ class Timer extends StatelessWidget {
               TimerRing(),
               TimerButtons(),
               if (context.watch<EventController>().event is DebateEvent) ...[
-                SizedBox(height: 10),
+                SizedBox(height: 20),
                 PrepTimers(),
               ]
             ],
