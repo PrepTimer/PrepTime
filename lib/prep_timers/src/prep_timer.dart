@@ -9,8 +9,6 @@ import 'package:provider/provider.dart';
 import 'package:preptime/provider/models/team.dart';
 
 class PrepTimer extends StatefulWidget {
-  static const Size _buttonSize = Size(100, 90);
-
   /// Constructs a new prep timer for the given team.
   const PrepTimer({
     Key key,
@@ -25,30 +23,62 @@ class PrepTimer extends StatefulWidget {
 }
 
 class _PrepTimerState extends State<PrepTimer> {
+  static const Size _buttonSize = Size(100, 90);
+
+  DebateEvent event;
+  bool isOtherRunning;
+  bool isRunning;
+
+  @override
+  void initState() {
+    event = (context.read<EventController>().event as DebateEvent);
+    isOtherRunning = event.isOtherRunning(widget.team);
+    isRunning = event.isRunning(widget.team);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    DebateEvent event = (context.watch<EventController>().event as DebateEvent);
-    bool isRunning = event.isRunning(widget.team);
-    return InkWell(
-      // highlightColor: Colors.transparent,
-      splashColor: Colors.white10,
-      borderRadius: BorderRadius.circular(10),
-      onLongPress: () => null,
-      onTap: () {
-        isRunning ? event.stopPrep(widget.team) : event.startPrep(widget.team);
-      },
-      child: Container(
-        color: isRunning ? Colors.blue : Colors.red,
-        width: PrepTimer._buttonSize.width,
-        height: PrepTimer._buttonSize.height,
-        padding: EdgeInsets.all(10),
-        child: Column(
-          children: [
-            TeamLabel(team: widget.team),
-            TimeLabel(team: widget.team),
-          ],
+    return GestureDetector(
+      onLongPressUp: _handleLongPress,
+      child: InkWell(
+        onTap: _handleTap,
+        borderRadius: BorderRadius.circular(10),
+        highlightColor: Colors.transparent,
+        splashColor: Colors.white10,
+        child: Container(
+          padding: EdgeInsets.all(10),
+          height: _buttonSize.height,
+          width: _buttonSize.width,
+          child: Column(
+            children: [
+              TeamLabel(team: widget.team),
+              TimeLabel(team: widget.team),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  void _handleTap() {
+    if (isRunning) {
+      event.stopPrep(widget.team);
+    } else {
+      event.startPrep(widget.team);
+    }
+    _updateState();
+  }
+
+  void _handleLongPress() {
+    event.resetPrep(widget.team);
+    _updateState();
+  }
+
+  void _updateState() {
+    setState(() {
+      isOtherRunning = event.isOtherRunning(widget.team);
+      isRunning = event.isRunning(widget.team);
+    });
   }
 }
