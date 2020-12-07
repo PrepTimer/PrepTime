@@ -23,9 +23,12 @@ class PrepTimer extends StatelessWidget {
       highlightColor: Colors.transparent,
       splashColor: Colors.white10,
       borderRadius: BorderRadius.circular(10),
-      onTap: () =>
-          event.isRunning(team) ? event.stopPrep(team) : event.startPrep(team),
+      onLongPress: () => null,
+      onTap: event.isRunning(team)
+          ? () => event.stopPrep(team)
+          : () => event.startPrep(team),
       child: Container(
+        color: event.isRunning(team) ? Colors.blue : Colors.red,
         width: _buttonSize.width,
         height: _buttonSize.height,
         padding: EdgeInsets.all(10),

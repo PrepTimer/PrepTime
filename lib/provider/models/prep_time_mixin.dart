@@ -56,19 +56,25 @@ mixin PrepTimeMixin on Event {
   bool isRunning(Team team) => _timers[team].isRunning;
 
   /// Checks if the other team's prep timer is running.
-  bool isOtherRunning(Team team) {
-    Team otherTeam = Team.values[0];
-    return _timers[otherTeam].isRunning;
-  }
+  bool isOtherRunning(Team team) => _timers[team.otherTeam()].isRunning;
 
   /// Starts the prep timer for the given team.
-  void startPrep(Team team) => _timers[team].resume();
+  void startPrep(Team team) {
+    _timers[team].resume();
+    notifyListeners();
+  }
 
   /// Stops the prep time for the given team.
-  void stopPrep(Team team) => _timers[team].stop();
+  void stopPrep(Team team) {
+    _timers[team].stop();
+    notifyListeners();
+  }
 
   /// Resets the prep time for the given team.
-  void resetPrep(Team team) => _timers[team].reset();
+  void resetPrep(Team team) {
+    _timers[team].reset();
+    notifyListeners();
+  }
 
   /// Returns the currentTime stream of the given team's prep timer.
   Stream<Duration> remainingPrep(Team team) => _timers[team].currentTime;
