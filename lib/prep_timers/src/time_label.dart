@@ -4,14 +4,13 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:preptime/provider/models/debate_event.dart';
 import 'package:preptime/provider/models/event.dart';
-import 'package:preptime/provider/models/event_controller.dart';
 import 'package:preptime/provider/models/team.dart';
 import 'package:provider/provider.dart';
 
 /// The time label for prep time.
 class TimeLabel extends StatelessWidget {
   static const Color primaryColor = Color(0xFFFFFFFF);
-  static const Color secondaryColor = Color(0x88FFFFFF);
+  static const Color secondaryColor = Color(0x44FFFFFF);
 
   final Team team;
 
