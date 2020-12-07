@@ -46,6 +46,8 @@ class _TimerButtonState extends State<TimerButton> {
   Widget build(BuildContext context) {
     /// Whether the speech timer is running or not.
     SpeechStatus status = context.watch<Speech>().status;
+
+    /// TODO: #10 Add shimmer to the button.
     return Container(
       width: _buttonSize.width,
       height: _buttonSize.height,
