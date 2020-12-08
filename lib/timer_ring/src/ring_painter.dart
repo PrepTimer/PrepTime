@@ -1,5 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:preptime/provider/models/debate_event.dart';
+import 'package:preptime/provider/models/event.dart';
 import 'package:preptime/provider/models/speech.dart';
 import 'package:provider/provider.dart';
 
@@ -11,8 +13,16 @@ import 'package:provider/provider.dart';
 class RingPainter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: _CustomRingPainter(context.watch<Speech>().controller),
+    bool isPrepRunning = false;
+    Event event = context.watch<Event>();
+    if (event is DebateEvent) isPrepRunning = event.isAnyRunning;
+    return Positioned.fill(
+      child: CustomPaint(
+        painter: _CustomRingPainter(
+          animation: context.watch<Speech>().controller,
+          isDisabled: isPrepRunning,
+        ),
+      ),
     );
   }
 }
@@ -29,14 +39,20 @@ class _CustomRingPainter extends CustomPainter {
   /// The animation object that tracks the path of the object.
   final Animation<double> animation;
 
+  /// Whether the circle ring should be disabled.
+  final bool isDisabled;
+
   /// Constructs a new timer ring with the given animation object and colors.
-  _CustomRingPainter(this.animation) : super(repaint: animation);
+  _CustomRingPainter({
+    @required this.animation,
+    @required this.isDisabled,
+  }) : super(repaint: animation);
 
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = _createPaint();
     _drawBackground(canvas, size, paint);
-    _drawForeground(canvas, size, paint);
+    if (!isDisabled) _drawForeground(canvas, size, paint);
   }
 
   @override
