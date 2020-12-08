@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:preptime/provider/models/debate_event.dart';
+import 'package:preptime/provider/models/event.dart';
 import 'package:preptime/provider/models/speech.dart';
 import 'package:preptime/provider/models/speech_status.dart';
 import 'package:preptime/timer_buttons/src/timer_button.dart';
@@ -8,6 +10,8 @@ class TimerButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Speech speech = context.watch<Speech>();
+    Event event = context.watch<Event>();
+    bool isDisabled = (event is DebateEvent) && event.isAnyRunning;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -15,8 +19,8 @@ class TimerButtons extends StatelessWidget {
         TimerButton(
           callback: {
             SpeechStatus.stoppedAtBeginning: null,
-            SpeechStatus.runningForward: speech.reset,
-            SpeechStatus.pausedInMiddle: speech.reset,
+            SpeechStatus.runningForward: isDisabled ? null : speech.reset,
+            SpeechStatus.pausedInMiddle: isDisabled ? null : speech.reset,
             SpeechStatus.completed: null,
           },
           color: {
@@ -34,10 +38,10 @@ class TimerButtons extends StatelessWidget {
         ),
         TimerButton(
           callback: {
-            SpeechStatus.stoppedAtBeginning: speech.start,
-            SpeechStatus.runningForward: speech.stop,
-            SpeechStatus.pausedInMiddle: speech.resume,
-            SpeechStatus.completed: speech.start,
+            SpeechStatus.stoppedAtBeginning: isDisabled ? null : speech.start,
+            SpeechStatus.runningForward: isDisabled ? null : speech.stop,
+            SpeechStatus.pausedInMiddle: isDisabled ? null : speech.resume,
+            SpeechStatus.completed: isDisabled ? null : speech.start,
           },
           color: {
             SpeechStatus.stoppedAtBeginning: Color(0xFF32D74B),
