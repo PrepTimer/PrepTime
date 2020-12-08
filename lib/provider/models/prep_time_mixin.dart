@@ -60,6 +60,9 @@ mixin PrepTimeMixin on Event {
   /// Checks if the prep timer for the given team is running.
   bool isRunning(Team team) => _timers[team].isRunning;
 
+  /// Checks if the prep timer for the given team is not running.
+  bool isNotRunning(Team team) => !_timers[team].isRunning;
+
   /// Checks if the other team's prep timer is running.
   bool isOtherRunning(Team team) => _timers[team.otherTeam()].isRunning;
 

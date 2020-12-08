@@ -27,15 +27,13 @@ class PrepTimer extends StatefulWidget {
 class _PrepTimerState extends State<PrepTimer> {
   static const Size _buttonSize = Size(100, 90);
 
-  DebateEvent event;
-  bool isOtherRunning;
-  bool isRunning;
+  bool isDisabled;
 
   @override
   void initState() {
-    event = (context.read<EventController>().event as DebateEvent);
-    isOtherRunning = event.isOtherRunning(widget.team);
-    isRunning = event.isRunning(widget.team);
+    DebateEvent event = (context.read<EventController>().event as DebateEvent);
+    bool isOtherRunning = event.isAnyRunning;
+    bool isRunning = event.isRunning(widget.team);
     super.initState();
   }
 
