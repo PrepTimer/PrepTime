@@ -1,4 +1,5 @@
 ## [Unreleased]
+## [0.1.0] - 2020-12-07
 ### Added
 - togglePrep endpoint to PrepTimeMixin
 - isNotRunning endpoint to PrepTimeMixin
@@ -19,5 +20,6 @@
 ### Added
 - added a cider config file
 
-[Unreleased]: https://github.com/PrepTimer/PrepTime/compare/0.0.2...HEAD
+[Unreleased]: https://github.com/PrepTimer/PrepTime/compare/0.1.0...HEAD
+[0.1.0]: https://github.com/PrepTimer/PrepTime/compare/0.0.2...0.1.0
 [0.0.2]: https://github.com/PrepTimer/PrepTime/compare/0.0.1...0.0.2
