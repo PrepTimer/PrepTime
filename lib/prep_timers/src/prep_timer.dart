@@ -72,17 +72,19 @@ class _PrepTimerState extends State<PrepTimer> {
     );
   }
 
-  /// Returns whether or not the event's prep timer is
+  /// Returns whether or not the event's isDisabled property has changed.
   bool _handleSelector(Event event) {
     assert(event is DebateEvent);
     DebateEvent debateEvent = event as DebateEvent;
     return debateEvent.isAnyRunning && debateEvent.isNotRunning(widget.team);
   }
 
+  /// Handles the start and stop actions.
   void _handleStartStop() {
     if (!_isDisabled) _debateEvent.togglePrep(widget.team);
   }
 
+  /// Handles the reset callback.
   void _handleReset(BuildContext context) {
     if (_debateEvent.isRunning(widget.team)) _debateEvent.stopPrep(widget.team);
     ClearTimer.showDialog(
