@@ -37,10 +37,10 @@ class _TimerButtonState extends State<TimerButton> {
   static const Size _buttonSize = Size(100, 90);
   static const double _strokeWidth = 2.5;
   static const double _fontSize = 17;
-  static const int initialAlpha = 80;
+  static const int _initialAlpha = 80;
 
   /// The opacity of the background.
-  int alpha = initialAlpha;
+  int alpha = _initialAlpha;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +63,7 @@ class _TimerButtonState extends State<TimerButton> {
         disabledColor: _buttonColor(status),
         shape: _circularRingWithColor(Colors.black), // background color
         onHighlightChanged: (bool isPressed) => this.setState(() {
-          alpha = isPressed ? initialAlpha ~/ 2 : initialAlpha;
+          alpha = isPressed ? _initialAlpha ~/ 2 : _initialAlpha;
         }),
         child: Text(
           _buttonText(status),
