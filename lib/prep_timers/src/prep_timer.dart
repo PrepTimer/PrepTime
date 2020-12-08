@@ -5,7 +5,6 @@ import 'package:preptime/prep_timers/src/team_label.dart';
 import 'package:preptime/prep_timers/src/time_label.dart';
 import 'package:preptime/provider/models/debate_event.dart';
 import 'package:preptime/provider/models/event.dart';
-import 'package:preptime/provider/models/event_controller.dart';
 import 'package:preptime/utilities/utilities.dart';
 import 'package:provider/provider.dart';
 import 'package:preptime/provider/models/team.dart';
@@ -18,6 +17,11 @@ class PrepTimer extends StatefulWidget {
   }) : super(key: key);
 
   /// The team which this prep timer object represents.
+  ///
+  /// A [Team] is either the left team or the right team. Each event will have
+  /// a specific name that they call each team by calling the toFormattedString
+  /// extension method on the team. For example, Policy calls the left team the
+  /// "AFF" and the right team the 'NEG".
   final Team team;
 
   @override
@@ -27,23 +31,29 @@ class PrepTimer extends StatefulWidget {
 class _PrepTimerState extends State<PrepTimer> {
   static const Size _buttonSize = Size(100, 90);
 
-  bool isDisabled;
+  /// Whether the prep timer is disabled.
+  ///
+  /// A [PrepTimer] is defined as disabled if [isAnyRunning] and [isNotRunning]
+  /// are both true, meaning one of the prepTimers is running, but it is not
+  /// this one. Therefore, this one should be disabled.
+  bool _isDisabled;
 
-  @override
-  void initState() {
-    DebateEvent event = (context.read<EventController>().event as DebateEvent);
-    bool isOtherRunning = event.isAnyRunning;
-    bool isRunning = event.isRunning(widget.team);
-    super.initState();
-  }
+  /// The current debate event.
+  ///
+  /// A [DebateEvent] is an event that uses the [PrepTimeMixin] to support
+  /// the starting and stopping of PrepTimers. Each timer implements the
+  /// [Timeable] interface, allowing you to call `start`, `stop`, `reset` on
+  /// each countdown timer.
+  DebateEvent _debateEvent;
 
   @override
   Widget build(BuildContext context) {
-    bool isDisabled = context.select<Event, bool>(_handleSelector);
+    _isDisabled = context.select<Event, bool>(_handleSelector);
+    _debateEvent = context.watch<Event>() as DebateEvent;
     return GestureDetector(
-      onLongPressStart: (_) => _resetTimer(context),
+      onLongPressStart: (_) => _handleReset(context),
       child: InkWell(
-        onTap: _handleStartStop,
+        onTap: () => _handleStartStop(),
         borderRadius: BorderRadius.circular(10),
         highlightColor: Colors.transparent,
         splashColor: Colors.white10,
@@ -62,40 +72,30 @@ class _PrepTimerState extends State<PrepTimer> {
     );
   }
 
-  /// Returns whether or not the event's
+  /// Returns whether or not the event's prep timer is
   bool _handleSelector(Event event) {
     assert(event is DebateEvent);
     DebateEvent debateEvent = event as DebateEvent;
-    return false;
+    return debateEvent.isAnyRunning && debateEvent.isNotRunning(widget.team);
   }
 
   void _handleStartStop() {
-    isRunning ? event.stopPrep(widget.team) : event.startPrep(widget.team);
-    _updateState();
+    if (!_isDisabled) _debateEvent.togglePrep(widget.team);
   }
 
-  void _updateState() {
-    setState(() {
-      isOtherRunning = event.isOtherRunning(widget.team);
-      isRunning = event.isRunning(widget.team);
-    });
-  }
-
-  void _resetTimer(BuildContext context) {
-    event.stopPrep(widget.team);
+  void _handleReset(BuildContext context) {
+    if (_debateEvent.isRunning(widget.team)) _debateEvent.stopPrep(widget.team);
     ClearTimer.showDialog(
       context,
       title: 'Reset Prep',
-      content: 'Are you sure you want to reset the timer?',
+      content: 'Are you sure you want to reset the prep timer?',
       destructiveActionLabel: 'Reset',
       cancelActionLabel: 'Cancel',
       destructiveAction: () {
-        event.resetPrep(widget.team);
-        _updateState();
+        _debateEvent.resetPrep(widget.team);
         Navigator.of(context).pop();
       },
       cancelAction: () => Navigator.of(context).pop(),
     );
-    _updateState();
   }
 }
