@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:preptime/prep_timers/src/team_label.dart';
 import 'package:preptime/prep_timers/src/time_label.dart';
 import 'package:preptime/provider/models/debate_event.dart';
@@ -86,6 +87,7 @@ class _PrepTimerState extends State<PrepTimer> {
 
   /// Handles the reset callback.
   void _handleReset(BuildContext context) {
+    HapticFeedback.selectionClick();
     if (_debateEvent.isRunning(widget.team)) _debateEvent.stopPrep(widget.team);
     ClearTimer.showDialog(
       context,
