@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:preptime/prep_timers/src/team_label.dart';
 import 'package:preptime/prep_timers/src/time_label.dart';
 import 'package:preptime/provider/models/debate_event.dart';
+import 'package:preptime/provider/models/event.dart';
 import 'package:preptime/provider/models/event_controller.dart';
+import 'package:preptime/utilities/utilities.dart';
 import 'package:provider/provider.dart';
 import 'package:preptime/provider/models/team.dart';
 
@@ -39,10 +41,11 @@ class _PrepTimerState extends State<PrepTimer> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDisabled = context.select<Event, bool>(_handleSelector);
     return GestureDetector(
-      onLongPressUp: _handleLongPress,
+      onLongPressStart: (_) => _resetTimer(context),
       child: InkWell(
-        onTap: _handleTap,
+        onTap: _handleStartStop,
         borderRadius: BorderRadius.circular(10),
         highlightColor: Colors.transparent,
         splashColor: Colors.white10,
@@ -61,13 +64,15 @@ class _PrepTimerState extends State<PrepTimer> {
     );
   }
 
-  void _handleTap() {
-    isRunning ? event.stopPrep(widget.team) : event.startPrep(widget.team);
-    _updateState();
+  /// Returns whether or not the event's
+  bool _handleSelector(Event event) {
+    assert(event is DebateEvent);
+    DebateEvent debateEvent = event as DebateEvent;
+    return false;
   }
 
-  void _handleLongPress() {
-    event.resetPrep(widget.team);
+  void _handleStartStop() {
+    isRunning ? event.stopPrep(widget.team) : event.startPrep(widget.team);
     _updateState();
   }
 
@@ -76,5 +81,23 @@ class _PrepTimerState extends State<PrepTimer> {
       isOtherRunning = event.isOtherRunning(widget.team);
       isRunning = event.isRunning(widget.team);
     });
+  }
+
+  void _resetTimer(BuildContext context) {
+    event.stopPrep(widget.team);
+    ClearTimer.showDialog(
+      context,
+      title: 'Reset Prep',
+      content: 'Are you sure you want to reset the timer?',
+      destructiveActionLabel: 'Reset',
+      cancelActionLabel: 'Cancel',
+      destructiveAction: () {
+        event.resetPrep(widget.team);
+        _updateState();
+        Navigator.of(context).pop();
+      },
+      cancelAction: () => Navigator.of(context).pop(),
+    );
+    _updateState();
   }
 }

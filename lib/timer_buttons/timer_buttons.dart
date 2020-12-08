@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:preptime/provider/models/speech.dart';
 import 'package:preptime/provider/models/speech_status.dart';
 import 'package:preptime/timer_buttons/src/timer_button.dart';
-import 'package:preptime/utilities/utilities.dart';
 import 'package:provider/provider.dart';
 
 class TimerButtons extends StatelessWidget {
@@ -16,8 +15,8 @@ class TimerButtons extends StatelessWidget {
         TimerButton(
           callback: {
             SpeechStatus.stoppedAtBeginning: null,
-            SpeechStatus.runningForward: () => _resetTimer(context, speech),
-            SpeechStatus.pausedInMiddle: () => _resetTimer(context, speech),
+            SpeechStatus.runningForward: speech.reset,
+            SpeechStatus.pausedInMiddle: speech.reset,
             SpeechStatus.completed: null,
           },
           color: {
@@ -54,18 +53,6 @@ class TimerButtons extends StatelessWidget {
           },
         ),
       ],
-    );
-  }
-
-  void _resetTimer(BuildContext context, Speech speech) {
-    ClearTimer.showDialog(
-      context,
-      title: 'Clear Timer',
-      content: 'Are you sure you want to reset the timer?',
-      destructiveActionLabel: 'Clear',
-      cancelActionLabel: 'Cancel',
-      destructiveAction: speech.reset,
-      cancelAction: () {}, // TODO: dismiss dialog!
     );
   }
 }

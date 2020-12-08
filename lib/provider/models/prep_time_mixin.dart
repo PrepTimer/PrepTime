@@ -75,6 +75,11 @@ mixin PrepTimeMixin on Event {
     notifyListeners();
   }
 
+  /// Toggles the given team's prep timer between start and stop.
+  void togglePrep(Team team) {
+    isRunning(team) ? stopPrep(team) : startPrep(team);
+  }
+
   /// Resets the prep time for the given team.
   void resetPrep(Team team) {
     _timers[team].reset();
