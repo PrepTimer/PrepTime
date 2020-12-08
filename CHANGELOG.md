@@ -1,7 +1,10 @@
 ## [Unreleased]
 ### Added
-- new isRunning endpoint in PrepTimeMixin
-- togglePrep endpoint to prepTimeMixin
+- togglePrep endpoint to PrepTimeMixin
+- isNotRunning endpoint to PrepTimeMixin
+
+### Changed
+- isRunning endpoint in PrepTimeMixin
 
 ## [0.0.2] - 2020-12-06
 ### Added
