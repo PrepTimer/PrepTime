@@ -6,6 +6,7 @@ import 'package:preptime/prep_timers/src/team_label.dart';
 import 'package:preptime/prep_timers/src/time_label.dart';
 import 'package:preptime/provider/models/debate_event.dart';
 import 'package:preptime/provider/models/event.dart';
+import 'package:preptime/provider/models/speech.dart';
 import 'package:preptime/utilities/utilities.dart';
 import 'package:provider/provider.dart';
 import 'package:preptime/provider/models/team.dart';
@@ -47,14 +48,22 @@ class _PrepTimerState extends State<PrepTimer> {
   /// each countdown timer.
   DebateEvent _debateEvent;
 
+  /// The current speech event.
+  ///
+  /// We will watch the speech event for changes when start, stop, cancel, or
+  /// resume are called on the speech event. In particular, we want to disable
+  /// the PrepTime buttons when the speech timer is active.
+  Speech _speech;
+
   @override
   Widget build(BuildContext context) {
-    _isDisabled = context.select<Event, bool>(_handleSelector);
+    _speech = context.watch<Speech>();
     _debateEvent = context.watch<Event>() as DebateEvent;
+    _isDisabled = context.select<Event, bool>(_didChangeDisability);
     return GestureDetector(
       onLongPressStart: (_) => _handleReset(context),
       child: InkWell(
-        onTap: () => _handleStartStop(),
+        onTap: _isDisabled ? null : () => _debateEvent.togglePrep(widget.team),
         borderRadius: BorderRadius.circular(10),
         highlightColor: Colors.transparent,
         splashColor: Colors.white10,
@@ -64,8 +73,8 @@ class _PrepTimerState extends State<PrepTimer> {
           width: _buttonSize.width,
           child: Column(
             children: [
-              TeamLabel(team: widget.team),
-              TimeLabel(team: widget.team),
+              TeamLabel(team: widget.team, isDisabled: _isDisabled),
+              TimeLabel(team: widget.team, isDisabled: _isDisabled),
             ],
           ),
         ),
@@ -73,16 +82,21 @@ class _PrepTimerState extends State<PrepTimer> {
     );
   }
 
-  /// Returns whether or not the event's isDisabled property has changed.
-  bool _handleSelector(Event event) {
-    assert(event is DebateEvent);
-    DebateEvent debateEvent = event as DebateEvent;
-    return debateEvent.isAnyRunning && debateEvent.isNotRunning(widget.team);
-  }
-
-  /// Handles the start and stop actions.
-  void _handleStartStop() {
-    if (!_isDisabled) _debateEvent.togglePrep(widget.team);
+  /// Decides if the current team's prep timer should be disabled.
+  ///
+  /// This [PrepTimer] should be disabled when either of the following are true:
+  ///
+  /// - The other [PrepTimer] is currently running (`isOtherTimerRunning`)
+  /// - The [Speech] is currently running (`Event.speech.isRunning`)
+  ///
+  /// The other PrepTimer is running when there is at least one timer that is
+  /// running (`Event.isAnyRunning` is `true`) and the current PrepTimer is not
+  /// running (`Event.isNotRunning(this.team)`);
+  bool _didChangeDisability(Event _) {
+    bool isAnyTimerRunning = _debateEvent.isAnyRunning;
+    bool isThisTimerNotRunning = _debateEvent.isNotRunning(widget.team);
+    bool isOtherTimerRunning = isAnyTimerRunning && isThisTimerNotRunning;
+    return isOtherTimerRunning || _speech.isRunning;
   }
 
   /// Handles the reset callback.
