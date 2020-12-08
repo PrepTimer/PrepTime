@@ -2,6 +2,7 @@
 ### Added
 - togglePrep endpoint to PrepTimeMixin
 - isNotRunning endpoint to PrepTimeMixin
+- HapticFeedback on PrepTime longPress
 
 ### Changed
 - isRunning endpoint in PrepTimeMixin

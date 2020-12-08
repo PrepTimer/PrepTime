@@ -9,17 +9,21 @@ import 'package:provider/provider.dart';
 
 /// The time label for prep time.
 class TimeLabel extends StatelessWidget {
-  static const Color primaryColor = Color(0xFFFFFFFF);
-  static const Color secondaryColor = Color(0x44FFFFFF);
+  static const List<FontFeature> _fontFeatures = [FontFeature.tabularFigures()];
+  static const Color _primaryColor = Color(0xFFFFFFFF);
+  static const Color _secondaryColor = Color(0x44FFFFFF);
+  static const FontWeight _fontWeight = FontWeight.w100;
+  static const double _fontSize = 100.0;
+  static const double _height = 1.3;
 
   final Team team;
+  final bool isDisabled;
 
   /// TODO: #12 Add keys to all widget constructors.
-  const TimeLabel({@required this.team});
+  const TimeLabel({@required this.team, @required this.isDisabled});
 
   @override
   Widget build(BuildContext context) {
-    final isOtherRunning = context.select<Event, bool>(_selectBoolFromEvent);
     final event = context.watch<Event>() as DebateEvent;
     return StreamBuilder<Duration>(
       initialData: event.initialPrep,
@@ -29,11 +33,11 @@ class TimeLabel extends StatelessWidget {
           _formatDuration(timeRemaining.data),
           maxLines: 1,
           style: TextStyle(
-            color: isOtherRunning ? secondaryColor : primaryColor,
-            fontFeatures: [FontFeature.tabularFigures()],
-            fontWeight: FontWeight.w100,
-            fontSize: 100.0,
-            height: 1.3,
+            color: isDisabled ? _secondaryColor : _primaryColor,
+            fontFeatures: _fontFeatures,
+            fontWeight: _fontWeight,
+            fontSize: _fontSize,
+            height: _height,
           ),
         );
       },
@@ -49,10 +53,5 @@ class TimeLabel extends StatelessWidget {
     int minutes = (time.inMinutes % Duration.minutesPerHour);
     if (minutes < 10) return '$minutes:${seconds.padLeft(2, '0')}';
     return '${minutes.toString().padLeft(2, '0')}:${seconds.padLeft(2, '0')}';
-  }
-
-  bool _selectBoolFromEvent(Event event) {
-    DebateEvent debateEvent = event as DebateEvent;
-    return debateEvent.isAnyRunning && !debateEvent.isRunning(team);
   }
 }
