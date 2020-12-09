@@ -1,0 +1,66 @@
+name: build
+
+on:
+  push: # Run this workflow on every push to any branch
+  workflow_dispatch: # Allow workflow to be run manually
+  schedule:
+    - cron: '0 0 * * 0' # “At 00:00 (UTC) every Sunday.”
+
+jobs:
+  # Build project and install dependencies
+  flutter_build:
+    name: Flutter Build
+    runs-on: macos-10.15
+    container:
+      image: cirrusci/flutter:latest
+    steps:
+      - id: checkout
+        name: Checking Out Repository
+        uses: actions/checkout@v2
+      - id: dependencies
+        name: Installing Dependencies
+        run: flutter pub get
+      - id: tests
+        name: Running Tests
+        run: flutter build ios
+    
+  # Lint the codebase for bugs
+  dart_lint:
+    name: Dart Lint
+    needs: flutter_build
+    runs-on: macos-10.15
+    container:
+      image: cirrusci/flutter:latest
+    steps:
+      - id: lint
+        name: Dart Linter
+        run: flutter analyze
+
+  # Run the unit tests
+#   unit_test:
+#     name: Unit Test
+#     needs: dart_lint
+  
+  # Run the widget tests
+#   widget_test:
+#     name: Widget Test
+#     needs: unit_test
+
+  # Run the integration tests
+#   integration_test:
+#     name: Integration Test
+#     needs: widget_test
+  
+  # Deploy the build to the app stores
+#   deploy:
+#     name: Deploy App
+#     needs: integration_test
+#     strategy:
+#       matrix:
+#         platform: [iOS, Android]
+
+#   labeler:
+#     if: always() 
+#     runs-on: ubuntu-latest
+#     steps
+#       - id: 
