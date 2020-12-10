@@ -1,45 +1,4 @@
-name: build
-
-on:
-  push: # Run this workflow on every push to any branch
-  workflow_dispatch: # Allow workflow to be run manually
-  schedule:
-    - cron: '0 0 * * 0' # “At 00:00 (UTC) every Sunday.”
-
-jobs:
-  # Build project and install dependencies
-  flutter_setup:
-    name: Flutter Build
-    runs-on: macos-10.15
-    steps:
-      - id: checkout
-        name: Checking Out Repository
-        uses: actions/checkout@v2
-      - id: java
-        name: Setup Java
-        uses: actions/setup-java@v1
-        with:
-          java-version: '12.x'
-      - id: flutter
-        name: Setup Flutter
-        uses: subosito/flutter-action@v1
-        with:
-          flutter-version: '1.22.4'
-      - id: dependencies
-        name: Installing Dependencies
-        run: flutter pub get
-    
-  # Lint the codebase for bugs
-  dart_lint:
-    name: Dart Lint
-    needs: flutter_setup
-    runs-on: macos-10.15
-    steps:
-      - id: lint
-        name: Dart Linter
-        run: flutter analyze
-
-  # Run the unit tests
+# Run the unit tests
 #   unit_test:
 #     name: Unit Test
 #     needs: dart_lint
@@ -68,24 +27,89 @@ jobs:
 #     steps
 #       - id: 
 
-# FROM THE OLD BUILD CI WORKFLOW:
-# jobs:
-#   build:
-#     runs-on: macos-latest
-#     steps:
-#     - name: checkout repository
-#       uses: actions/checkout@v2
-#     - name: setup java
-#       uses: actions/setup-java@v1
-#       with:
-#         java-version: '12.x'
-#     - name: setup Flutter environment
-#       uses: subosito/flutter-action@v1
-#       with:
-#         flutter-version: '1.22.4'
-#     - name: install dependencies
-#       run: flutter pub get
-#     - name: build apk
-#       run: flutter build apk
-#     - name: build ios
-#       run: flutter build ios --release --no-codesign
+name: build
+
+on:
+  push: # Run this workflow on every push to any branch
+  workflow_dispatch: # Allow workflow to be run manually
+  schedule:
+    - cron: '0 0 * * 0' # “At 00:00 (UTC) every Sunday.”
+
+jobs:
+  # Set up Flutter for all other tasks.
+  setup:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            flutter_path: /opt/hostedtoolcache/flutter
+          - os: macos-latest
+            flutter_path: /Users/runner/hostedtoolcache/flutter
+      fail-fast: false
+
+    steps:
+      # Checkout the current repository
+      - id: checkout
+        name: Checking Out Repo...
+        uses: actions/checkout@v2
+      
+      # Cach the dependencies from flutter
+      - name: Caching Flutter Dependencies...
+        uses: actions/cache@v1
+        with:
+          path: ${{ matrix.flutter_path }}
+          key: ${{ runner.os }}-flutter
+      
+      # Set up a flutter environment
+      - id: flutter
+        name: Settting Up Flutter...
+        uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+
+  lint:
+    runs-on: ${{ matrix.os }}
+    needs: setup
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            flutter_path: /opt/hostedtoolcache/flutter
+          - os: macos-latest
+            flutter_path: /Users/runner/hostedtoolcache/flutter
+      fail-fast: false
+
+    steps:
+      # Checkout the current repository
+      - id: checkout
+        name: Checking Out Repo...
+        uses: actions/checkout@v2
+      
+      # Cach the dependencies from flutter
+      - name: Caching Flutter Dependencies...
+        uses: actions/cache@v1
+        with:
+          path: ${{ matrix.flutter_path }}
+          key: ${{ runner.os }}-flutter
+      
+      # Set up a flutter environment
+      - id: flutter
+        name: Settting Up Flutter...
+        uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+      
+      # Install the package dependencies
+      - id: dependencies
+        name: Installing Dependencies...
+        run: flutter pub get
+        
+      # Run the dart Linter
+      - id: lint
+        name: Linting Dart Files...
+        run: flutter analyze
