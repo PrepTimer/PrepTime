@@ -1,32 +1,3 @@
-# Run the unit tests
-#   unit_test:
-#     name: Unit Test
-#     needs: dart_lint
-  
-  # Run the widget tests
-#   widget_test:
-#     name: Widget Test
-#     needs: unit_test
-
-  # Run the integration tests
-#   integration_test:
-#     name: Integration Test
-#     needs: widget_test
-  
-  # Deploy the build to the app stores
-#   deploy:
-#     name: Deploy App
-#     needs: integration_test
-#     strategy:
-#       matrix:
-#         platform: [iOS, Android]
-
-#   labeler:
-#     if: always() 
-#     runs-on: ubuntu-latest
-#     steps
-#       - id: 
-
 name: build
 
 on:
@@ -113,3 +84,24 @@ jobs:
       - id: lint
         name: Linting Dart Files...
         run: flutter analyze
+
+    # Run the unit tests
+#   - id: unit_test:
+#       name: Unit Testing...
+#       run: flutter test
+  
+    # Run the widget tests
+#   - id: widget_test:
+#       name: Widget Testing...
+#       run: flutter widget_tests.dart
+
+    # Run the integration tests
+#   - id: integration_test:
+#       name: Integration Test
+#       run: flutter integration_tests.dart
+  
+    # Deploy the build to the app stores
+#   - id: deploy
+#       name: Deploying App...
+#       run: ## TODO
+
