@@ -1,6 +1,8 @@
 ![build](https://github.com/PrepTimer/PrepTime/workflows/build/badge.svg)
 # PrepTimer
-The codebase for the PrepTime app refresh. The app is being rewritten with the Flutter framework. The target date for launch will be January of 2021.
+The codebase for the PrepTime app refresh.
+The app is being rewritten with the Flutter framework.
+The target date for launch will be January of 2021.
 
 ## Cider CI
 We will be using the [cider](https://pub.dev/packages/cider) command-line utility to automate package maintenance. This tool assumes that the changelog:
