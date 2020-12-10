@@ -3,11 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:preptime/provider/prep_timer_provider.dart';
 import 'package:preptime/style.dart';
 import 'package:preptime/timer.dart';
-import 'package:provider/provider.dart';
 import 'package:preptime/menu.dart';
 
 void main() {
-  Provider.debugCheckInvalidValueType = null;
+  // TODO: #17 Fix status bar color for non-dark themes.
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
   runApp(PrepTime());
 }

@@ -7,16 +7,14 @@ import 'package:preptime/provider/models/debate_event.dart';
 
 /// The name of the team whos prep time this widget labels.
 class TeamLabel extends StatelessWidget {
-  static const Color _primaryColor = Color(0x88FFFFFF);
-  static const Color _secondaryColor = Color(0x44FFFFFF);
-  static const FontWeight _fontWeight = FontWeight.w200;
-  static const double _fontSize = 30.0;
-
   final Team team;
   final bool isDisabled;
 
-  const TeamLabel({Key key, @required this.team, @required this.isDisabled})
-      : super(key: key);
+  const TeamLabel({
+    Key key,
+    @required this.team,
+    @required this.isDisabled,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +22,9 @@ class TeamLabel extends StatelessWidget {
     return AutoSizeText(
       prepName + ' PREP',
       maxLines: 1,
-      style: TextStyle(
-        color: isDisabled ? _secondaryColor : _primaryColor,
-        fontWeight: _fontWeight,
-        fontSize: _fontSize,
-      ),
+      style: isDisabled
+          ? Theme.of(context).textTheme.caption
+          : Theme.of(context).textTheme.overline,
     );
   }
 }

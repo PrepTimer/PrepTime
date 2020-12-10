@@ -13,16 +13,15 @@ class ClockLabel extends StatelessWidget {
     Speech speech = context.watch<Speech>();
     Event event = context.watch<Event>();
     bool isDisabled = (event is DebateEvent) && event.isAnyRunning;
-    ThemeData theme = Theme.of(context);
     return Container(
       alignment: FractionalOffset.center,
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: AutoSizeText(
         speech.timeRemaining,
-        style: isDisabled
-            ? theme.textTheme.headline1.copyWith(color: Colors.white24)
-            : theme.textTheme.headline1,
         maxLines: 1,
+        style: isDisabled
+            ? Theme.of(context).textTheme.headline2
+            : Theme.of(context).textTheme.headline1,
       ),
     );
   }

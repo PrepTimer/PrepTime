@@ -14,11 +14,9 @@ class SpeechLabel extends StatelessWidget {
     bool isDisabled = (event is DebateEvent) && event.isAnyRunning;
     return Text(
       speech.name.toUpperCase(),
-      style: TextStyle(
-        fontWeight: FontWeight.w300,
-        color: isDisabled ? Color(0x44FFFFFF) : Color(0x88FFFFFF),
-        fontSize: 18.0,
-      ),
+      style: isDisabled
+          ? Theme.of(context).textTheme.subtitle2
+          : Theme.of(context).textTheme.subtitle1,
     );
   }
 }
