@@ -15,7 +15,8 @@ class TeamLabel extends StatelessWidget {
   final Team team;
   final bool isDisabled;
 
-  const TeamLabel({@required this.team, @required this.isDisabled});
+  const TeamLabel({Key key, @required this.team, @required this.isDisabled})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

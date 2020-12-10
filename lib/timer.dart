@@ -7,6 +7,8 @@ import 'package:preptime/timer_buttons/timer_buttons.dart';
 import 'package:preptime/timer_ring/timer_ring.dart';
 
 class Timer extends StatelessWidget {
+  Timer({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -6,6 +6,7 @@ import 'package:preptime/timer_buttons/src/timer_button.dart';
 import 'package:provider/provider.dart';
 
 class TimerButtons extends StatelessWidget {
+  TimerButtons({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     Speech speech = context.watch<Speech>();
@@ -14,7 +15,6 @@ class TimerButtons extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // TODO: #7 Clean up timer buttons.
         TimerButton.cancel(isDisabled, speech),
         TimerButton.action(isDisabled, speech),
       ],

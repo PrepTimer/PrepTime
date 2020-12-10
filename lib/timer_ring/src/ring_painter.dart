@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 /// with the given background color underneath a colored arc that animates
 /// from full to empty.
 class RingPainter extends StatelessWidget {
+  RingPainter({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     bool isPrepRunning = false;

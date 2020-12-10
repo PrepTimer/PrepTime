@@ -10,6 +10,7 @@ import 'package:preptime/timer_ring/src/speech_indicator.dart';
 
 /// Manages a timer ring including the ring painter, label, title, and dots.
 class TimerRing extends StatefulWidget {
+  TimerRing({Key key}) : super(key: key);
   @override
   _TimerRingState createState() => _TimerRingState();
 }

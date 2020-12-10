@@ -15,6 +15,8 @@ class SpeechIndicator extends StatelessWidget {
   static const Size _indicatorSize = Size(8.0, 8.0);
   static const double _radiusOfBorder = 5.0;
 
+  SpeechIndicator({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     Event event = context.watch<Event>();
