@@ -14,38 +14,48 @@ class TimerButton extends StatefulWidget {
   /// Tracks the behavior of the button across each animation state.
   final Map<SpeechStatus, ButtonProperties> behavior;
 
-  /// Constructs a new TimerButton.
-  const TimerButton({Key key, @required this.behavior}) : super(key: key);
-
-  /// Constructs a cancel button.
-  TimerButton.cancel(bool isDisabled, Speech speech, {Key key})
-      : behavior = {
-          SpeechStatus.stoppedAtBeginning: ButtonProperties.cancelButton(),
-          SpeechStatus.runningForward:
-              ButtonProperties.cancelButton(isDisabled ? null : speech.reset),
-          SpeechStatus.pausedInMiddle:
-              ButtonProperties.cancelButton(isDisabled ? null : speech.reset),
-          SpeechStatus.completed: ButtonProperties.cancelButton(),
+  /// Constructs a [cancel button].
+  ///
+  /// The button takes the given [BuildContext] to lookup the current theme and
+  /// the callback [onTap] function which is called when the cancel button is
+  /// tapped and active.
+  TimerButton.cancel(
+    BuildContext context,
+    void Function() onTap, {
+    Key key,
+  })  : behavior = {
+          SpeechStatus.values[0]: ButtonProperties.grayButton(context),
+          SpeechStatus.values[1]: ButtonProperties.grayButton(context, onTap),
+          SpeechStatus.values[2]: ButtonProperties.grayButton(context, onTap),
+          SpeechStatus.values[3]: ButtonProperties.grayButton(context),
         },
         super(key: key);
 
-  /// Constructs an action button.
-  TimerButton.action(bool isDisabled, Speech speech, {Key key})
-      : behavior = {
-          SpeechStatus.stoppedAtBeginning: ButtonProperties.startButton(
-            callback: isDisabled ? null : speech.start,
-          ),
-          SpeechStatus.runningForward: ButtonProperties.pauseButton(
-            callback: isDisabled ? null : speech.stop,
-          ),
-          SpeechStatus.pausedInMiddle: ButtonProperties.startButton(
-            callback: isDisabled ? null : speech.resume,
-            text: 'Resume',
-          ),
-          SpeechStatus.completed: ButtonProperties.startButton(
-            callback: isDisabled ? null : speech.start,
-            text: 'Restart',
-          ),
+  /// Constructs an [action button].
+  ///
+  /// The button takes the given [BuildContext] to lookup the current theme and
+  /// the boolean [isDisabled] along with the current [Speech] to determine the
+  /// correct action that should be taken for the button on the right side of
+  /// the screen.
+  ///
+  /// Typically, this button is a green 'Start' button, that can turn in to an
+  /// orange 'Pause' button. When the timer is stopped, the button again turns
+  /// green and the original text is replaced with 'Resume'. When the timer ends
+  /// the text is once again replaced with the phrase 'Restart'.
+  TimerButton.action(
+    BuildContext context,
+    bool isDisabled,
+    Speech speech, {
+    Key key,
+  })  : behavior = {
+          SpeechStatus.values[0]: ButtonProperties.greenButton(
+              context, isDisabled ? null : speech.start),
+          SpeechStatus.values[1]: ButtonProperties.orangeButton(
+              context, isDisabled ? null : speech.stop),
+          SpeechStatus.values[2]: ButtonProperties.greenButton(
+              context, isDisabled ? null : speech.resume, 'Resume'),
+          SpeechStatus.values[3]: ButtonProperties.greenButton(
+              context, isDisabled ? null : speech.start, 'Restart'),
         },
         super(key: key);
 
@@ -56,11 +66,10 @@ class TimerButton extends StatefulWidget {
 class _TimerButtonState extends State<TimerButton> {
   static const BorderStyle _borderStyle = BorderStyle.solid;
   static const FontWeight _fontWeight = FontWeight.w300;
-  static const Color _transparent = Colors.transparent;
   static const Size _buttonSize = Size(100, 90);
   static const double _strokeWidth = 2.5;
-  static const double _fontSize = 17;
   static const int _initialAlpha = 80;
+  static const double _fontSize = 17;
 
   /// The opacity of the background.
   int alpha = _initialAlpha;
@@ -79,8 +88,8 @@ class _TimerButtonState extends State<TimerButton> {
       ),
       child: MaterialButton(
         padding: EdgeInsets.zero,
-        splashColor: _transparent,
-        highlightColor: _transparent,
+        splashColor: Theme.of(context).splashColor,
+        highlightColor: Theme.of(context).highlightColor,
         color: _buttonColor(status),
         onPressed: _handlePress(status),
         disabledColor: _buttonColor(status),

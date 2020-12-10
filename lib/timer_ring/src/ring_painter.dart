@@ -20,6 +20,7 @@ class RingPainter extends StatelessWidget {
     return Positioned.fill(
       child: CustomPaint(
         painter: _CustomRingPainter(
+          context: context,
           animation: context.watch<Speech>().controller,
           isDisabled: isPrepRunning,
         ),
@@ -30,12 +31,10 @@ class RingPainter extends StatelessWidget {
 
 /// Paints the timer and ring from the given speech controller.
 class _CustomRingPainter extends CustomPainter {
-  static const PaintingStyle paintStrokeStyle = PaintingStyle.stroke;
-  static const StrokeCap strokeCapStyle = StrokeCap.round;
-  static const Color foregroundColor = Color(0xFF32D74B);
-  static const Color backgroundColor = Colors.white10;
-  static const bool timerShouldStartEmpty = false;
-  static const double width = 7.0;
+  static const PaintingStyle _paintStrokeStyle = PaintingStyle.stroke;
+  static const StrokeCap _strokeCapStyle = StrokeCap.round;
+  static const bool _timerShouldStartEmpty = false;
+  static const double _width = 7.0;
 
   /// The animation object that tracks the path of the object.
   final Animation<double> animation;
@@ -43,8 +42,12 @@ class _CustomRingPainter extends CustomPainter {
   /// Whether the circle ring should be disabled.
   final bool isDisabled;
 
+  /// The context of this painter widget.
+  final BuildContext context;
+
   /// Constructs a new timer ring with the given animation object and colors.
   _CustomRingPainter({
+    @required this.context,
     @required this.animation,
     @required this.isDisabled,
   }) : super(repaint: animation);
@@ -64,10 +67,10 @@ class _CustomRingPainter extends CustomPainter {
   /// Creates a new Paint object.
   Paint _createPaint() {
     return Paint()
-      ..color = backgroundColor
-      ..strokeWidth = width
-      ..strokeCap = strokeCapStyle
-      ..style = paintStrokeStyle;
+      ..color = Theme.of(context).shadowColor
+      ..strokeWidth = _width
+      ..strokeCap = _strokeCapStyle
+      ..style = _paintStrokeStyle;
   }
 
   /// Draws the background circle to the canvas with the given paint object.
@@ -77,10 +80,10 @@ class _CustomRingPainter extends CustomPainter {
 
   /// Draws the foreground arc to the canvas with the given paint object.
   void _drawForeground(Canvas canvas, Size size, Paint paint) {
-    paint.color = foregroundColor;
+    paint.color = Theme.of(context).primaryColor;
     Rect rect = Offset.zero & size;
     double startAngle, sweepAngle;
-    if (timerShouldStartEmpty) {
+    if (_timerShouldStartEmpty) {
       startAngle = math.pi * 1.5;
       sweepAngle = (animation.value - 1.0) * 2 * math.pi;
     } else {

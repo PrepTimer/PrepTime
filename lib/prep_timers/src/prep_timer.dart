@@ -11,6 +11,12 @@ import 'package:preptime/utilities/utilities.dart';
 import 'package:provider/provider.dart';
 import 'package:preptime/provider/models/team.dart';
 
+/// Tracks the used prep for a single team.
+///
+/// A [PrepTimer] is composed of a [TeamLabel] which describes the team name in
+/// language specific to the event (eg. AFF/NEG for policy and PRO/CON for pofo)
+/// and a [TimeLabel] which shows the amount of time remaining on the given
+/// team's PrepTimer.
 class PrepTimer extends StatefulWidget {
   /// Constructs a new prep timer for the given team.
   const PrepTimer({
@@ -65,8 +71,8 @@ class _PrepTimerState extends State<PrepTimer> {
       child: InkWell(
         onTap: _isDisabled ? null : () => _debateEvent.togglePrep(widget.team),
         borderRadius: BorderRadius.circular(10),
-        highlightColor: Colors.transparent,
-        splashColor: Colors.white10,
+        highlightColor: Theme.of(context).highlightColor,
+        splashColor: Theme.of(context).shadowColor,
         child: Container(
           padding: EdgeInsets.all(10),
           height: _buttonSize.height,
@@ -84,7 +90,8 @@ class _PrepTimerState extends State<PrepTimer> {
 
   /// Decides if the current team's prep timer should be disabled.
   ///
-  /// This [PrepTimer] should be disabled when either of the following are true:
+  /// This [PrepTimer] should be disabled when either of the following are
+  /// considered to be true:
   ///
   /// - The other [PrepTimer] is currently running (`isOtherTimerRunning`)
   /// - The [Speech] is currently running (`Event.speech.isRunning`)
@@ -99,7 +106,13 @@ class _PrepTimerState extends State<PrepTimer> {
     return isOtherTimerRunning || _speech.isRunning;
   }
 
-  /// Handles the reset callback.
+  /// Handles the [reset] callback.
+  ///
+  /// This method pauses the timer if it is currently running and displays a
+  /// modal dialog which asks the user if the are sure they want to reset the
+  /// prep time. The user can either select `cancel` or `reset` and the modal
+  /// will dismiss. If the user selects `reset` then the prep time will also be
+  /// reset to the initial value.
   void _handleReset(BuildContext context) {
     HapticFeedback.selectionClick();
     if (_debateEvent.isRunning(widget.team)) _debateEvent.stopPrep(widget.team);

@@ -10,7 +10,7 @@ class Menu extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        backgroundColor: Colors.black,
+        backgroundColor: Theme.of(context).backgroundColor,
       ),
       body: Center(
         child: Text('foo'),

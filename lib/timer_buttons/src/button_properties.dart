@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
+
 /// Tracks the behavior of a [TimerButton] during a specific [SpeechStatus].
 ///
 /// For each status, the button will have a specific behavior (defined here).
@@ -15,41 +17,36 @@ class ButtonProperties {
   /// The text label of the button during a certain [speech_status].
   final String text;
 
-  /// Constructs a button properties object.
-  const ButtonProperties({
-    this.callback,
-    this.color,
-    this.text,
-  });
-
-  /// Constructs a cancel button.
+  /// Constructs the properties of a [gray button].
   ///
   /// By default, this will return an object with [callback] set to `null`, the
-  /// [color] property set to `Color(0xFF8E8E93)` and the [text] property set to
-  /// `Cancel`.
-  const ButtonProperties.cancelButton([this.callback])
-      : this.color = const Color(0xFF8E8E93),
-        this.text = 'Cancel';
+  /// [color] property set to the buttonColor fo the current theme and the
+  /// [text] property set to `Cancel`.
+  ButtonProperties.grayButton(
+    BuildContext context, [
+    this.callback,
+    this.text = 'Cancel',
+  ]) : this.color = Theme.of(context).buttonColor;
 
-  /// Constructs a start button.
+  /// Constructs the properties of a [green button].
   ///
   /// By default, this will return an object with [callback] set to `null`, the
-  /// [color] property set to `Color(0xFF32D74B)` and the [text] property set
-  /// to `Start`.
-  const ButtonProperties.startButton({
+  /// [color] property set to the primary color of the current theme and the
+  /// [text] property set to `Start`.
+  ButtonProperties.greenButton(
+    BuildContext context, [
     this.callback,
-    this.color = const Color(0xFF32D74B),
     this.text = 'Start',
-  });
+  ]) : color = Theme.of(context).primaryColor;
 
-  /// Constructs a new pause button.
+  /// Constructs the properties of an [orange button].
   ///
   /// By default, this will return an object with [callback] set to `null`, the
-  /// [color] property set to `Color(0xFFFF9F0A)` and the [text] property set
-  /// to `Pause`.
-  const ButtonProperties.pauseButton({
+  /// [color] property set to the accent color of the current theme and the
+  /// [text] property set to `Pause`.
+  ButtonProperties.orangeButton(
+    BuildContext context, [
     this.callback,
-    this.color = const Color(0xFFFF9F0A),
     this.text = 'Pause',
-  });
+  ]) : color = Theme.of(context).accentColor;
 }

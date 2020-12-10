@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:preptime/provider/models/debate_event.dart';
@@ -9,18 +7,14 @@ import 'package:provider/provider.dart';
 
 /// The time label for prep time.
 class TimeLabel extends StatelessWidget {
-  static const List<FontFeature> _fontFeatures = [FontFeature.tabularFigures()];
-  static const Color _primaryColor = Color(0xFFFFFFFF);
-  static const Color _secondaryColor = Color(0x44FFFFFF);
-  static const FontWeight _fontWeight = FontWeight.w100;
-  static const double _fontSize = 100.0;
-  static const double _height = 1.3;
-
   final Team team;
   final bool isDisabled;
 
-  const TimeLabel({Key key, @required this.team, @required this.isDisabled})
-      : super(key: key);
+  const TimeLabel({
+    Key key,
+    @required this.team,
+    @required this.isDisabled,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +26,9 @@ class TimeLabel extends StatelessWidget {
         return AutoSizeText(
           _formatDuration(timeRemaining.data),
           maxLines: 1,
-          style: TextStyle(
-            color: isDisabled ? _secondaryColor : _primaryColor,
-            fontFeatures: _fontFeatures,
-            fontWeight: _fontWeight,
-            fontSize: _fontSize,
-            height: _height,
-          ),
+          style: isDisabled
+              ? Theme.of(context).textTheme.bodyText2
+              : Theme.of(context).textTheme.bodyText1,
         );
       },
     );

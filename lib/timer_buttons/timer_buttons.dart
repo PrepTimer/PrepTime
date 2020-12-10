@@ -15,8 +15,8 @@ class TimerButtons extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        TimerButton.cancel(isDisabled, speech),
-        TimerButton.action(isDisabled, speech),
+        TimerButton.cancel(context, isDisabled ? null : speech.reset),
+        TimerButton.action(context, isDisabled, speech),
       ],
     );
   }
