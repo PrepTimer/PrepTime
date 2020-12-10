@@ -19,8 +19,8 @@ class TimeLabel extends StatelessWidget {
   final Team team;
   final bool isDisabled;
 
-  /// TODO: #12 Add keys to all widget constructors.
-  const TimeLabel({@required this.team, @required this.isDisabled});
+  const TimeLabel({Key key, @required this.team, @required this.isDisabled})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

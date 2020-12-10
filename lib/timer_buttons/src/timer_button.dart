@@ -15,10 +15,10 @@ class TimerButton extends StatefulWidget {
   final Map<SpeechStatus, ButtonProperties> behavior;
 
   /// Constructs a new TimerButton.
-  const TimerButton({@required this.behavior});
+  const TimerButton({Key key, @required this.behavior}) : super(key: key);
 
   /// Constructs a cancel button.
-  TimerButton.cancel(bool isDisabled, Speech speech)
+  TimerButton.cancel(bool isDisabled, Speech speech, {Key key})
       : behavior = {
           SpeechStatus.stoppedAtBeginning: ButtonProperties.cancelButton(),
           SpeechStatus.runningForward:
@@ -26,10 +26,11 @@ class TimerButton extends StatefulWidget {
           SpeechStatus.pausedInMiddle:
               ButtonProperties.cancelButton(isDisabled ? null : speech.reset),
           SpeechStatus.completed: ButtonProperties.cancelButton(),
-        };
+        },
+        super(key: key);
 
   /// Constructs an action button.
-  TimerButton.action(bool isDisabled, Speech speech)
+  TimerButton.action(bool isDisabled, Speech speech, {Key key})
       : behavior = {
           SpeechStatus.stoppedAtBeginning: ButtonProperties.startButton(
             callback: isDisabled ? null : speech.start,
@@ -45,7 +46,8 @@ class TimerButton extends StatefulWidget {
             callback: isDisabled ? null : speech.start,
             text: 'Restart',
           ),
-        };
+        },
+        super(key: key);
 
   @override
   _TimerButtonState createState() => _TimerButtonState();

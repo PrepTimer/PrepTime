@@ -5,6 +5,7 @@ import 'package:preptime/style.dart';
 import 'package:preptime/timer.dart';
 import 'package:provider/provider.dart';
 import 'package:preptime/menu.dart';
+
 void main() {
   Provider.debugCheckInvalidValueType = null;
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
@@ -12,6 +13,7 @@ void main() {
 }
 
 class PrepTime extends StatelessWidget {
+  PrepTime({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return PrepTimeProvider(
@@ -21,11 +23,9 @@ class PrepTime extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) => Timer(),
-          '/menu': (context) => Menu(), 
+          '/menu': (context) => Menu(),
         },
       ),
     );
   }
-
-  
 }

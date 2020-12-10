@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Menu extends StatelessWidget {
+  Menu({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

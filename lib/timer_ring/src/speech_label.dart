@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 /// The name of the speech currently being given.
 class SpeechLabel extends StatelessWidget {
+  SpeechLabel({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     Speech speech = context.watch<Speech>();

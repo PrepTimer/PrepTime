@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 /// The amount of time left on the clock.
 class ClockLabel extends StatelessWidget {
+  ClockLabel({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     Speech speech = context.watch<Speech>();
