@@ -1,25 +1,15 @@
 name: build
 
 on:
-  push: # Run this workflow on every push to any branch
-  workflow_dispatch: # Allow workflow to be run manually
+  push:
+  pull_request:
+  workflow_dispatch:
   schedule:
     - cron: '0 0 * * 0' # “At 00:00 (UTC) every Sunday.”
 
 jobs:
-  # Set up Flutter for all other tasks.
-  setup:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-        include:
-          - os: ubuntu-latest
-            flutter_path: /opt/hostedtoolcache/flutter
-          - os: macos-latest
-            flutter_path: /Users/runner/hostedtoolcache/flutter
-      fail-fast: false
+  build:
+    runs-on: macos-latest
 
     steps:
       # Checkout the current repository
@@ -31,41 +21,7 @@ jobs:
       - name: Caching Flutter Dependencies...
         uses: actions/cache@v1
         with:
-          path: ${{ matrix.flutter_path }}
-          key: ${{ runner.os }}-flutter
-      
-      # Set up a flutter environment
-      - id: flutter
-        name: Settting Up Flutter...
-        uses: subosito/flutter-action@v1
-        with:
-          channel: 'stable'
-
-  lint:
-    runs-on: ${{ matrix.os }}
-    needs: setup
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-        include:
-          - os: ubuntu-latest
-            flutter_path: /opt/hostedtoolcache/flutter
-          - os: macos-latest
-            flutter_path: /Users/runner/hostedtoolcache/flutter
-      fail-fast: false
-
-    steps:
-      # Checkout the current repository
-      - id: checkout
-        name: Checking Out Repo...
-        uses: actions/checkout@v2
-      
-      # Cach the dependencies from flutter
-      - name: Caching Flutter Dependencies...
-        uses: actions/cache@v1
-        with:
-          path: ${{ matrix.flutter_path }}
+          path: /Users/runner/hostedtoolcache/flutter
           key: ${{ runner.os }}-flutter
       
       # Set up a flutter environment
@@ -86,9 +42,10 @@ jobs:
         run: flutter analyze
 
     # Run the unit tests
-#   - id: unit_test:
-#       name: Unit Testing...
-#       run: flutter test
+      - id: unit_test
+        name: Unit Testing...
+        run: flutter test
+        if: github.event == 'pull_request'
   
     # Run the widget tests
 #   - id: widget_test:
