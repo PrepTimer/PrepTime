@@ -3,7 +3,7 @@
 ![build](https://github.com/PrepTimer/PrepTime/workflows/build/badge.svg)
 
 # PrepTimer
-PrepTimer is a mobile timer for speech and debate tournaments. The app uses the Flutter framework and is written in Dart.
+PrepTimer is a mobile timer for speech and debate tournaments.
 
 ## History
 What’s up Debate community!
