@@ -1,6 +1,7 @@
 <p align="center"><img height="200px" align="center" src="https://user-images.githubusercontent.com/46334750/101449879-6eef3e00-38de-11eb-97f8-c2c74068988a.png"></p>
 
-![build](https://github.com/PrepTimer/PrepTime/workflows/build/badge.svg)
+![Build](https://github.com/PrepTimer/PrepTime/workflows/build/badge.svg)
+![Greetings](https://github.com/PrepTimer/PrepTime/workflows/greetings/badge.svg)
 
 # PrepTimer
 PrepTimer is a mobile timer for speech and debate tournaments.
