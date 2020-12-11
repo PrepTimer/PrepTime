@@ -1,4 +1,7 @@
 ## [Unreleased]
+### Added
+- depended on shimmer package
+
 ## [0.2.0] - 2020-12-10
 ### Added
 - widget keys for all main widget constructors
