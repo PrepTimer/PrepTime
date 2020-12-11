@@ -21,7 +21,7 @@ In addition to all the same functionality you know and love, we are introducing 
 ## Giving Back
 In an attempt to make a truly community-based debate app, last year I promised to donate 100% of all net profits to the Urban Debate League. It’s been a year. So, in the spirit of [full disclosure](https://m.imgur.com/a/UR0jayt): here’s the summary of our financials since Apr 2018.
 
-It’s been a pleasure working with so many of you to implement the ideas you’ve come up with to build what is truly an app built by debaters, for debaters. I have many more ideas that I have been working on and am excited to introduce in the coming year. If you would like to help with that process, you can submit a pull request on this repo, or support me on GitHub!
+It’s been a pleasure working with so many of you to implement the ideas you’ve come up with to build what is truly an app built by debaters, for debaters. I have many more ideas that I have been working on and am excited to introduce in the coming year. If you would like to help with that process, you can submit a pull request on this repo, or [support me on GitHub](https://github.com/sponsors/justinalexandershaw)!
 
 I have really enjoyed working with all of you to develop this tool, and can’t wait to expand it into more platforms and with more tools so that everybody can join in on the fun.
 
