@@ -1,6 +1,7 @@
 ## [Unreleased]
 ### Added
 - depended on shimmer package
+- launcher icons to the app
 
 ## [0.2.0] - 2020-12-10
 ### Added
