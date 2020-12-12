@@ -5,6 +5,7 @@ import 'package:preptime/style.dart';
 import 'package:preptime/timer.dart';
 import 'package:preptime/menu.dart';
 
+// TODO: #21 Migrate package to Null Safety (Dart 2.0)
 void main() {
   // TODO: #17 Fix status bar color for non-dark themes.
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);

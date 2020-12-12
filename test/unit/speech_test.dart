@@ -1,9 +1,7 @@
-import 'package:mockito/mockito.dart';
+import 'package:fake_async/fake_async.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:preptime/provider/models/speech.dart';
 import 'package:preptime/provider/models/speech_status.dart';
-import 'package:test/test.dart';
-
-class MockSpeech extends Mock implements Speech {}
 
 void main() {
   group('Speech', () {
@@ -58,11 +56,20 @@ void main() {
   });
 
   group('MockSpeech', () {
-    Speech speech = MockSpeech();
-    test('status is runningForward when you press start()', () {},
-        skip: 'Test SpeechStatus');
-    test('status is pausedInMiddle after pressing start then stop', () {},
-        skip: 'Test SpeechStatus');
+    Speech speech;
+    setUp(() {
+      speech = Speech()..initController(TestVSync());
+    });
+    test('status is pausedInMiddle after pressing start then stop', () {
+      fakeAsync((async) {
+        expect(speech.status, equals(SpeechStatus.stoppedAtBeginning));
+        async.run((self) => null);
+        speech.start();
+        async.elapse(Duration(minutes: 1));
+        speech.stop();
+        expect(speech.status, equals(SpeechStatus.pausedInMiddle));
+      });
+    });
     test('status is completed after finishing at the end', () {},
         skip: 'Test SpeechStatus');
     test('reset sets the timer back to the initial value', () {},
@@ -78,5 +85,8 @@ void main() {
         skip: 'Test SpeechStatus');
     test('isNotRunning is true after stop and false after start', () {},
         skip: 'Test SpeechStatus');
+    tearDown(() {
+      speech.dispose();
+    });
   });
 }

@@ -101,7 +101,7 @@ class Speech extends ChangeNotifier implements Timeable {
   /// Starts the speech animation from the beginning.
   ///
   /// If the speech [shouldCountUp], then the controller will starts the
-  /// animation from 0.0 and count up toward 1.0. Otherwise, the controlelr
+  /// animation from 0.0 and count up toward 1.0. Otherwise, the controller
   /// will tick in reverse starting at 1.0 and decreasing toward 0.0.
   void start() {
     _checkControllerNotNull();
