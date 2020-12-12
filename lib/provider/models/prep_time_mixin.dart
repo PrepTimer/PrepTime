@@ -25,11 +25,16 @@ mixin PrepTimeMixin on Event {
   Map<Team, CountDownTimer> _timers = LinkedHashMap();
 
   /// The initial amount of time to put on each prep clock.
-  Duration get initialPrep => _initialPrep;
+  Duration get initialPrep {
+    if (_initialPrep == null) throw StateError('Must call initPrepTimers.');
+    return _initialPrep;
+  }
+
+  /// The initial duration of the prep timer.
   Duration _initialPrep;
 
   /// Whether to use AFF/NEG for prep names or PRO/CON;
-  bool _useAffNeg;
+  bool _useAffNeg = true;
 
   /// Initializes the prep timers.
   ///
@@ -50,30 +55,35 @@ mixin PrepTimeMixin on Event {
     _timers.forEach((_, timer) {
       timer.dispose();
     });
-  }
-
-  /// Returns true if either team's prep timer is running.
-  bool get isAnyRunning {
-    return _timers[Team.left].isRunning || _timers[Team.right].isRunning;
+    _timers.clear();
   }
 
   /// Checks if the prep timer for the given team is running.
-  bool isRunning(Team team) => _timers[team].isRunning;
+  bool isRunning(Team team) {
+    CountDownTimer timer = _timers[team];
+    if (timer == null) throw StateError('Must call initPrepTimers');
+    return timer.isRunning;
+  }
 
   /// Checks if the prep timer for the given team is not running.
-  bool isNotRunning(Team team) => !_timers[team].isRunning;
+  bool isNotRunning(Team team) => !isRunning(team);
 
   /// Checks if the other team's prep timer is running.
-  bool isOtherRunning(Team team) => _timers[team.otherTeam()].isRunning;
+  bool isOtherRunning(Team team) => isRunning(team.otherTeam());
+  
+  /// Returns true if either team's prep timer is running.
+  bool get isAnyRunning => isRunning(Team.left) || isRunning(Team.right);
 
   /// Starts the prep timer for the given team.
   void startPrep(Team team) {
+    if (_timers[team] == null) throw StateError('Must call initPrepTimers');
     _timers[team].resume();
     notifyListeners();
   }
 
   /// Stops the prep time for the given team.
   void stopPrep(Team team) {
+    if (_timers[team] == null) throw StateError('Must call initPrepTimers');
     _timers[team].stop();
     notifyListeners();
   }
@@ -85,15 +95,19 @@ mixin PrepTimeMixin on Event {
 
   /// Resets the prep time for the given team.
   void resetPrep(Team team) {
+    if (_timers[team] == null) throw StateError('Must call initPrepTimers');
     _timers[team].reset();
     notifyListeners();
   }
 
   /// Returns the currentTime stream of the given team's prep timer.
-  /// 
+  ///
   /// This method assumes that the timer has alredy been initialized. If it is
   /// not initialized, then this method will throw a RangeError.
-  Stream<Duration> remainingPrep(Team team) => _timers[team]?.currentTime;
+  Stream<Duration> remainingPrep(Team team) {
+    if (_timers[team] == null) throw StateError('Must call initPrepTimers');
+    return _timers[team].currentTime;
+  }
 
   /// The name of each team as displayed above their prep time.
   String prepName(Team team) => team.toFormattedString(_useAffNeg);

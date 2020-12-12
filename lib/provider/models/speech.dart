@@ -171,6 +171,7 @@ class Speech extends ChangeNotifier implements Timeable {
   @override
   void dispose() {
     controller?.dispose();
+    controller = null;
     super.dispose();
   }
 

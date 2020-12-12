@@ -1,4 +1,7 @@
 ## [Unreleased]
+### Added
+- code coverage folder
+
 ### Changed
 - DebateEvent now throws IndexError
 
