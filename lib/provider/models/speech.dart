@@ -32,7 +32,8 @@ class Speech extends ChangeNotifier implements Timeable {
   final bool useJudgeAssistant;
 
   /// A reference to the animation controller object.
-  AnimationController controller;
+  AnimationController get controller => _controller;
+  AnimationController _controller;
 
   /// Tracks the state of this speech object.
   SpeechStatus status = SpeechStatus.stoppedAtBeginning;
@@ -46,11 +47,15 @@ class Speech extends ChangeNotifier implements Timeable {
   });
 
   /// Whether the [Speech] is running.
-  bool get isRunning => controller.isAnimating;
+  bool get isRunning {
+    _checkControllerNotNull();
+    return _controller.isAnimating;
+  }
 
   /// Whether the [Speech] is not running.
-  bool get isNotRunning => !controller.isAnimating;
+  bool get isNotRunning => !isRunning;
 
+  // TODO: Put the string formatting in the UI section, not in the models.
   /// Returns a string representation of this `Duration`.
   ///
   /// Returns a string with minutes, seconds, and milliseconds, in the
@@ -85,7 +90,7 @@ class Speech extends ChangeNotifier implements Timeable {
     }
 
     _checkControllerNotNull();
-    Duration t = controller.duration * controller.value;
+    Duration t = _controller.duration * _controller.value;
 
     String mm = two(t.inMinutes.remainder(Duration.minutesPerHour));
     String ss = two(t.inSeconds.remainder(Duration.secondsPerMinute));
@@ -101,9 +106,9 @@ class Speech extends ChangeNotifier implements Timeable {
   void start() {
     _checkControllerNotNull();
     if (shouldCountUp) {
-      controller.forward(from: 0.0);
+      _controller.forward(from: 0.0);
     } else {
-      controller.reverse(from: 1.0);
+      _controller.reverse(from: 1.0);
     }
     status = SpeechStatus.runningForward;
     notifyListeners();
@@ -117,7 +122,7 @@ class Speech extends ChangeNotifier implements Timeable {
   /// decreasing toward 0.0.
   void resume() {
     _checkControllerNotNull();
-    shouldCountUp ? controller.forward() : controller.reverse();
+    shouldCountUp ? _controller.forward() : _controller.reverse();
     status = SpeechStatus.runningForward;
     notifyListeners();
   }
@@ -125,7 +130,7 @@ class Speech extends ChangeNotifier implements Timeable {
   /// Stops the speech animation.
   void stop() {
     _checkControllerNotNull();
-    controller.stop();
+    _controller.stop();
     status = SpeechStatus.pausedInMiddle;
     notifyListeners();
   }
@@ -133,7 +138,7 @@ class Speech extends ChangeNotifier implements Timeable {
   /// Resets the speech animation.
   void reset() {
     _checkControllerNotNull();
-    shouldCountUp ? controller.reset() : controller.value = 1.0;
+    shouldCountUp ? _controller.reset() : _controller.value = 1.0;
     status = SpeechStatus.stoppedAtBeginning;
     notifyListeners();
   }
@@ -150,7 +155,7 @@ class Speech extends ChangeNotifier implements Timeable {
     TickerProvider ticker, {
     void Function(AnimationStatus) onStatusChange,
   }) {
-    controller ??= AnimationController(duration: length, vsync: ticker)
+    _controller ??= AnimationController(duration: length, vsync: ticker)
       ..value = shouldCountUp ? 0.0 : 1.0
       ..addListener(() => notifyListeners())
       ..addStatusListener((controllerStatus) {
@@ -164,23 +169,23 @@ class Speech extends ChangeNotifier implements Timeable {
     // controller.addListener(() => handleValueChange); // for time signals
     // controller.addStatusListener((status) => onStatusChange); // auto-move
     // }
-    return controller;
+    return _controller;
   }
 
   /// Disposes the resources used by the [Speech] object.
   @override
   void dispose() {
-    controller?.dispose();
-    controller = null;
+    _controller?.dispose();
+    _controller = null;
     super.dispose();
   }
 
   /// Checks that the controller is not null.
   ///
-  /// If the controller is null, throws [ArgumentError].
+  /// If the controller is null, throws [StateError].
   void _checkControllerNotNull() {
     if (controller == null) {
-      throw ArgumentError('Controller should not be null.');
+      throw StateError('Must call initController() before using it.');
     }
   }
 }
