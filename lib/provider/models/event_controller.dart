@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:preptime/provider/models/event.dart';
 
@@ -7,46 +9,51 @@ import 'package:preptime/provider/models/event.dart';
 /// has created timers for, as well as a singular [Event] that is assigned when
 /// the user selects an event from the list.
 class EventController extends ChangeNotifier {
-  /// The selected [Event].
-  Event event;
-
   /// A set of [Event]s that the user has timers for.
-  final Set<Event> events = Set();
+  final Set<Event> events = LinkedHashSet();
 
-  /// Adds the event to the list.
-  void add(Event event) {
-    events.add(event);
-    notifyListeners();
-  }
+  Event _event;
 
-  /// Removes the event to the list.
-  void remove(Event e) {
-    events.remove(e);
-    notifyListeners();
-  }
+  /// The selected [Event].
+  Event get event => _event;
 
   /// Selects the given event.
   ///
   /// The given event must be in the set of [events].
-  void setEvent(Event e) {
+  set event(Event e) {
     if (events.contains(e)) {
-      event = e;
+      _event = e;
       notifyListeners();
     }
   }
 
+  /// Adds the event to the list.
+  ///
+  /// If the event (or an equal event) was already in the list, nothing happens.
+  void add(Event event) {
+    if (events.add(event)) notifyListeners();
+  }
+
+  /// Removes the event to the list.
+  ///
+  /// If the event is not in the list, nothing happens.
+  void remove(Event e) {
+    if (events.remove(e)) notifyListeners();
+  }
+
   /// Removes the selected event.
   void clearEvent() {
-    event = null;
+    _event = null;
     notifyListeners();
   }
 
   @override
   void dispose() {
-    event = null;
+    _event = null;
     for (Event eachEvent in events) {
       eachEvent.dispose();
     }
+    events.clear();
     super.dispose();
   }
 }

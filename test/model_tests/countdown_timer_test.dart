@@ -71,6 +71,7 @@ void main() {
       countDownTimer.resume();
       countDownTimer.dispose();
       expect(() => countDownTimer.resume(), throwsStateError);
+      countDownTimer = CountDownTimer(_initialDuration); // setup for teardown
     });
 
     tearDown(() {

@@ -1,4 +1,7 @@
 ## [Unreleased]
+### Changed
+- DebateEvent now throws IndexError
+
 ## [0.2.1] - 2020-12-11
 ### Added
 - depended on shimmer package

@@ -18,7 +18,7 @@ class PrepTimeProvider extends StatelessWidget {
     eventController.events.add(Policy.highSchool());
     eventController.events.add(LincolnDouglas.highSchool());
     eventController.events.add(PublicForum.highSchool());
-    eventController.setEvent(eventController.events.first);
+    eventController.event = eventController.events.first;
   }
 
   @override

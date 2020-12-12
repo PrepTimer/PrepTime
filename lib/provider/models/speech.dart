@@ -38,7 +38,12 @@ class Speech extends ChangeNotifier implements Timeable {
   SpeechStatus status = SpeechStatus.stoppedAtBeginning;
 
   /// Constructs a new Speech object
-  Speech({this.name, this.length, this.shouldCountUp, this.useJudgeAssistant});
+  Speech({
+    this.name = 'speech',
+    this.length = const Duration(minutes: 8),
+    this.shouldCountUp = false,
+    this.useJudgeAssistant = false,
+  });
 
   /// Whether the [Speech] is running.
   bool get isRunning => controller.isAnimating;
@@ -57,18 +62,24 @@ class Speech extends ChangeNotifier implements Timeable {
   String get timeRemaining {
     String one(int number) {
       String numberAsSingleDigit = '';
-      if (number >= 1000 || number < 0) throw ArgumentError();
-      else if (number < 100) numberAsSingleDigit = "0";
-      else numberAsSingleDigit = "${number ~/ 100}";
+      if (number >= 1000 || number < 0)
+        throw ArgumentError();
+      else if (number < 100)
+        numberAsSingleDigit = "0";
+      else
+        numberAsSingleDigit = "${number ~/ 100}";
       assert(numberAsSingleDigit.length == 1);
       return numberAsSingleDigit;
     }
 
     String two(int number) {
       String numberAsTwoDigits = '';
-      if (number >= 100 || number < 0) throw ArgumentError();
-      else if (number >= 10) numberAsTwoDigits = "$number";
-      else numberAsTwoDigits = "0$number";
+      if (number >= 100 || number < 0)
+        throw ArgumentError();
+      else if (number >= 10)
+        numberAsTwoDigits = "$number";
+      else
+        numberAsTwoDigits = "0$number";
       assert(numberAsTwoDigits.length == 2);
       return numberAsTwoDigits;
     }
@@ -157,8 +168,9 @@ class Speech extends ChangeNotifier implements Timeable {
   }
 
   /// Disposes the resources used by the [Speech] object.
+  @override
   void dispose() {
-    controller.dispose();
+    controller?.dispose();
     super.dispose();
   }
 

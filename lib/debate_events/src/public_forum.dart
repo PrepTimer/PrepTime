@@ -34,4 +34,12 @@ class PublicForum extends DebateEvent {
       useAffNeg: false,
     );
   }
+
+  @override
+  int get hashCode => 2;
+
+  @override
+  bool operator ==(Object other) {
+    return this.hashCode == other.hashCode;
+  }
 }

@@ -97,4 +97,12 @@ class Policy extends DebateEvent {
       useAffNeg: true,
     );
   }
+
+  @override
+  int get hashCode => 0;
+
+  @override
+  bool operator ==(Object other) {
+    return this.hashCode == other.hashCode;
+  }
 }

@@ -90,6 +90,9 @@ mixin PrepTimeMixin on Event {
   }
 
   /// Returns the currentTime stream of the given team's prep timer.
+  /// 
+  /// This method assumes that the timer has alredy been initialized. If it is
+  /// not initialized, then this method will throw a RangeError.
   Stream<Duration> remainingPrep(Team team) => _timers[team].currentTime;
 
   /// The name of each team as displayed above their prep time.

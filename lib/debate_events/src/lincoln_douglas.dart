@@ -26,4 +26,12 @@ class LincolnDouglas extends DebateEvent {
       useAffNeg: true,
     );
   }
+
+  @override
+  int get hashCode => 1;
+
+  @override
+  bool operator ==(Object other) {
+    return this.hashCode == other.hashCode;
+  }
 }

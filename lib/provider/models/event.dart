@@ -22,14 +22,15 @@ abstract class Event extends ChangeNotifier {
   Event({this.name, this.description, this.speech});
 
   /// Selects and returns the next speech.
-  void nextSpeech();
+  void nextSpeech() => throw UnimplementedError();
 
   /// Selects and returns the previous speech.
-  void prevSpeech();
+  void prevSpeech() => throw UnimplementedError();
 
   @override
   void dispose() {
     speech?.dispose();
+    speech = null;
     super.dispose();
   }
 }
