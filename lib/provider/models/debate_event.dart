@@ -21,11 +21,13 @@ class DebateEvent extends Event with PrepTimeMixin {
 
   /// Sets the current speech to be the next speech.
   ///
-  /// The current speech must not be the last speech.
+  /// Throws IndexError if the current speech is the last speech.
   @override
   void nextSpeech() {
-    if (super.speech != speeches.last) {
-      int currentIndex = speeches.indexOf(super.speech);
+    int currentIndex = speeches.indexOf(super.speech);
+    if (currentIndex == speeches.length - 1) {
+      throw IndexError(currentIndex, speeches);
+    } else {
       super.speech = speeches[currentIndex++];
       notifyListeners();
     }
@@ -33,11 +35,13 @@ class DebateEvent extends Event with PrepTimeMixin {
 
   /// Sets the current speech to be the previous speech.
   ///
-  /// The current speech must not be the first speech.
+  /// Throws IndexError if the current speech is the first speech.
   @override
   void prevSpeech() {
-    if (super.speech != speeches.first) {
-      int currentIndex = speeches.indexOf(super.speech);
+    int currentIndex = speeches.indexOf(super.speech);
+    if (currentIndex == 0) {
+      throw IndexError(currentIndex, speeches);
+    } else {
       super.speech = speeches[currentIndex--];
       notifyListeners();
     }
@@ -48,6 +52,7 @@ class DebateEvent extends Event with PrepTimeMixin {
     for (Speech s in speeches) {
       s.dispose();
     }
+    speeches.clear();
     disposePrepTimers();
     super.dispose();
   }
