@@ -1,5 +1,6 @@
 import 'package:preptime/provider/models/prep_time_mixin.dart';
 import 'package:preptime/provider/models/speech_event.dart';
+import 'package:preptime/provider/models/team.dart';
 import 'package:test/test.dart';
 
 /// This is probably an anti-pattern.
@@ -26,7 +27,13 @@ void main() {
       prepTimeMixin.initPrepTimers(duration: _duration);
       expect(prepTimeMixin.initialPrep, equals(_duration));
     });
-    test('initTimers constructs ', () {});
+    test('initTimers constructs timers for each team', () {
+      expect(prepTimeMixin.remainingPrep(Team.left), isNull);
+      expect(prepTimeMixin.remainingPrep(Team.right), isNull);
+      prepTimeMixin.initPrepTimers(duration: const Duration(minutes: 3));
+      expect(prepTimeMixin.remainingPrep(Team.left), isNotNull);
+      expect(prepTimeMixin.remainingPrep(Team.right), isNotNull);
+    });
     test('disposePrepTimers', () {});
     test('isRunning', () {});
     test('isNotRunning', () {});
