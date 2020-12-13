@@ -76,17 +76,42 @@ void main() {
       speech.reset();
       expect(speech.timeRemaining, equals(const Duration(minutes: 8)));
     });
-    // test('stop pauses the timer', () {}, skip: 'Test SpeechStatus');
-    // test('resume starts the timer from a stop', () {},
-    //     skip: 'Test SpeechStatus');
-    // test('start makes the timer tick forward', () {},
-    //     skip: 'Test SpeechStatus');
-    // test('timeRemaining returns a string representation of the clock', () {},
-    //     skip: 'Test SpeechStatus');
-    // test('isRunning is true after start and false after stop', () {},
-    //     skip: 'Test SpeechStatus');
-    // test('isNotRunning is true after stop and false after start', () {},
-    //     skip: 'Test SpeechStatus');
+    test('stop pauses the timer', () {
+      speech.stop();
+      expect(speech.status, equals(SpeechStatus.pausedInMiddle));
+      expect(speech.isNotRunning, isTrue);
+    });
+    test('resume starts the timer from a stop', () {
+      speech.start();
+      speech.controller.value = 0.5;
+      speech.stop();
+      speech.resume();
+      expect(speech.timeRemaining, equals(const Duration(minutes: 4)));
+      expect(speech.isRunning, isTrue);
+    });
+    test('start makes the timer tick forward', () {
+      speech.start();
+      expect(speech.status, equals(SpeechStatus.runningForward));
+    });
+    test('timeRemaining returns a duration', () {
+      expect(speech.timeRemaining, isA<Duration>());
+    });
+    test('isRunning is true after start', () {
+      speech.start();
+      expect(speech.isRunning, isTrue);
+    });
+    test('isRunning is false after stop', () {
+      speech.stop();
+      expect(speech.isRunning, isFalse);
+    });
+    test('isNotRunning is false after start', () {
+      speech.start();
+      expect(speech.isNotRunning, isFalse);
+    });
+    test('isNotRunning is true after stop', () {
+      speech.stop();
+      expect(speech.isNotRunning, isTrue);
+    });
     tearDown(() {
       speech.dispose();
     });
