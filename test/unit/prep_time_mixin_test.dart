@@ -1,7 +1,7 @@
 import 'package:fake_async/fake_async.dart';
-import 'package:preptime/provider/models/prep_time_mixin.dart';
-import 'package:preptime/provider/models/speech_event.dart';
-import 'package:preptime/provider/models/team.dart';
+import 'package:preptime/models/team.dart';
+import 'package:preptime/models/prep_time_mixin.dart';
+import 'package:preptime/models/speech_event.dart';
 import 'package:test/test.dart';
 
 /// This is probably an anti-pattern.

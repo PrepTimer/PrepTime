@@ -1,5 +1,5 @@
-import 'package:preptime/provider/models/speech.dart';
-import 'package:preptime/provider/models/speech_event.dart';
+import 'package:preptime/models/speech.dart';
+import 'package:preptime/models/speech_event.dart';
 import 'package:test/test.dart';
 
 void main() {

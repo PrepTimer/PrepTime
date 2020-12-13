@@ -1,8 +1,6 @@
-import 'package:fake_async/fake_async.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:preptime/provider/models/speech.dart';
-import 'package:preptime/provider/models/speech_status.dart';
+import 'package:preptime/models/speech.dart';
+import 'package:preptime/models/speech_status.dart';
 
 void main() {
   group('Speech', () {

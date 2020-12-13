@@ -1,6 +1,6 @@
 import 'package:fake_async/fake_async.dart';
 import 'package:test/test.dart';
-import 'package:preptime/provider/models/countdown_timer.dart';
+import 'package:preptime/models/countdown_timer.dart';
 
 void main() {
   group('CountDownTimer', () {

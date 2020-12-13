@@ -1,5 +1,5 @@
-import 'package:preptime/provider/models/event.dart';
-import 'package:preptime/provider/models/speech.dart';
+import 'package:preptime/models/event.dart';
+import 'package:preptime/models/speech.dart';
 import 'package:test/test.dart';
 
 class MockEvent extends Event {

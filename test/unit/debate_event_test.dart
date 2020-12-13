@@ -1,6 +1,6 @@
-import 'package:preptime/debate_events/debate_events.dart';
-import 'package:preptime/provider/models/debate_event.dart';
-import 'package:preptime/provider/models/speech.dart';
+import 'package:preptime/models/debate_event.dart';
+import 'package:preptime/models/speech.dart';
+import 'package:preptime/utilities/debate_events/debate_events.dart';
 import 'package:test/test.dart';
 
 void main() {

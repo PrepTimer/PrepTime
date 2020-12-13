@@ -55,8 +55,10 @@ class Speech extends ChangeNotifier implements Timeable {
   /// Whether the [Speech] is not running.
   bool get isNotRunning => !isRunning;
 
-  // TODO: #23 Put the string formatting in the UI section, not in the models.
-  Duration get timeRemaining => _controller.duration * _controller.value;
+  Duration get timeRemaining {
+    _checkControllerNotNull();
+    return _controller.duration * _controller.value;
+  }
 
   /// Starts the speech animation from the beginning.
   ///

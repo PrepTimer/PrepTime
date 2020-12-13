@@ -1,5 +1,5 @@
-import 'package:preptime/debate_events/debate_events.dart';
-import 'package:preptime/provider/models/event_controller.dart';
+import 'package:preptime/models/event_controller.dart';
+import 'package:preptime/utilities/debate_events/debate_events.dart';
 import 'package:test/test.dart';
 
 void main() {
