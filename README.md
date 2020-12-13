@@ -1,4 +1,4 @@
-<p align="center"><img height="200px" align="center" src="https://user-images.githubusercontent.com/46334750/101449879-6eef3e00-38de-11eb-97f8-c2c74068988a.png"></p>
+<p align="center"><img height="300px" align="center" src="https://user-images.githubusercontent.com/46334750/101449879-6eef3e00-38de-11eb-97f8-c2c74068988a.png"></p>
 
 ![Build](https://github.com/PrepTimer/PrepTime/workflows/build/badge.svg)
 ![Greetings](https://github.com/PrepTimer/PrepTime/workflows/greetings/badge.svg)
