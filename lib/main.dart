@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:preptime/provider/prep_timer_provider.dart';
-import 'package:preptime/style.dart';
-import 'package:preptime/timer.dart';
-import 'package:preptime/menu.dart';
+import 'package:preptime/models/provider.dart';
+import 'package:preptime/theme/style.dart';
+import 'package:preptime/screens/timer/timer.dart';
+import 'package:preptime/screens/menu/menu.dart';
 
 // TODO: #21 Migrate package to Null Safety (Dart 2.0)
 void main() {

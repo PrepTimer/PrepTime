@@ -1,4 +1,5 @@
 import 'package:fake_async/fake_async.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:preptime/provider/models/speech.dart';
 import 'package:preptime/provider/models/speech_status.dart';
@@ -56,35 +57,38 @@ void main() {
   });
 
   group('MockSpeech', () {
+    TestWidgetsFlutterBinding.ensureInitialized();
     Speech speech;
     setUp(() {
-      speech = Speech()..initController(TestVSync());
+      speech = Speech()..initController(const TestVSync());
     });
     test('status is pausedInMiddle after pressing start then stop', () {
-      fakeAsync((async) {
-        expect(speech.status, equals(SpeechStatus.stoppedAtBeginning));
-        async.run((self) => null);
-        speech.start();
-        async.elapse(Duration(minutes: 1));
-        speech.stop();
-        expect(speech.status, equals(SpeechStatus.pausedInMiddle));
-      });
+      speech.start();
+      speech.stop();
+      expect(speech.status, equals(SpeechStatus.pausedInMiddle));
     });
-    test('status is completed after finishing at the end', () {},
-        skip: 'Test SpeechStatus');
-    test('reset sets the timer back to the initial value', () {},
-        skip: 'Test SpeechStatus');
-    test('stop pauses the timer', () {}, skip: 'Test SpeechStatus');
-    test('resume starts the timer from a stop', () {},
-        skip: 'Test SpeechStatus');
-    test('start makes the timer tick forward', () {},
-        skip: 'Test SpeechStatus');
-    test('timeRemaining returns a string representation of the clock', () {},
-        skip: 'Test SpeechStatus');
-    test('isRunning is true after start and false after stop', () {},
-        skip: 'Test SpeechStatus');
-    test('isNotRunning is true after stop and false after start', () {},
-        skip: 'Test SpeechStatus');
+    test('status is completed after finishing at the end', () {
+      speech.start();
+      speech.controller.value = 0.0;
+      expect(speech.status, equals(SpeechStatus.completed));
+    });
+    test('reset sets the timer back to the initial value', () {
+      speech.start();
+      speech.controller.value = 0.5;
+      speech.reset();
+      expect(speech.timeRemaining, equals(const Duration(minutes: 8)));
+    });
+    // test('stop pauses the timer', () {}, skip: 'Test SpeechStatus');
+    // test('resume starts the timer from a stop', () {},
+    //     skip: 'Test SpeechStatus');
+    // test('start makes the timer tick forward', () {},
+    //     skip: 'Test SpeechStatus');
+    // test('timeRemaining returns a string representation of the clock', () {},
+    //     skip: 'Test SpeechStatus');
+    // test('isRunning is true after start and false after stop', () {},
+    //     skip: 'Test SpeechStatus');
+    // test('isNotRunning is true after stop and false after start', () {},
+    //     skip: 'Test SpeechStatus');
     tearDown(() {
       speech.dispose();
     });
