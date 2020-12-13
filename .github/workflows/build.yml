@@ -57,9 +57,11 @@ jobs:
 #       name: Integration Test
 #       run: flutter integration_tests.dart
   
-    # Upload the code coverage to codecov
+    # Upload the code coverage to coveralls
       - id: code_coverage
-        uses: codecov/codecov-action@v1.0.15
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
   
     # Deploy the build to the app stores
 #   - id: deploy
