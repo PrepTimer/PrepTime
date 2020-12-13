@@ -2,6 +2,7 @@
 
 ![Build](https://github.com/PrepTimer/PrepTime/workflows/build/badge.svg)
 ![Greetings](https://github.com/PrepTimer/PrepTime/workflows/greetings/badge.svg)
+![Coverage Status](https://coveralls.io/repos/github/PrepTimer/PrepTime/badge.svg?branch=main)
 
 # PrepTimer
 PrepTimer is a mobile timer for speech and debate tournaments.
