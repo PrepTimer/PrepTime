@@ -44,7 +44,7 @@ jobs:
     # Run the unit tests
       - id: unit_test
         name: Unit Testing...
-        run: flutter test
+        run: flutter test --coverage
         if: github.event == 'pull_request'
   
     # Run the widget tests
@@ -56,6 +56,10 @@ jobs:
 #   - id: integration_test:
 #       name: Integration Test
 #       run: flutter integration_tests.dart
+  
+    # Upload the code coverage to codecov
+      - id: code_coverage
+        uses: codecov/codecov-action@v1.0.15
   
     # Deploy the build to the app stores
 #   - id: deploy
