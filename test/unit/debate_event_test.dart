@@ -36,15 +36,15 @@ void main() {
     test('dispose() clears the list of speeches.', () {
       debateEvent.dispose();
       expect(debateEvent.speeches, isEmpty);
-      debateEvent = Policy.highSchool(); // set back up for teardown
+      debateEvent = null; // make safe value for teardown
     });
     test('dispose() clears the Event speech.', () {
       debateEvent.dispose();
       expect(debateEvent.speech, isNull);
-      debateEvent = Policy.highSchool(); // set back up for teardown
+      debateEvent = null; // make safe value for teardown
     });
     tearDown(() {
-      debateEvent.dispose();
+      debateEvent?.dispose();
     });
   });
 }

@@ -24,14 +24,19 @@ class EventController extends ChangeNotifier {
     if (events.contains(e)) {
       _event = e;
       notifyListeners();
+    } else {
+      throw ArgumentError();
     }
   }
 
   /// Adds the event to the list.
   ///
   /// If the event (or an equal event) was already in the list, nothing happens.
+  /// If the new event is the only event in the eventController, the new event
+  /// will automatically be set (in eventController.event).
   void add(Event event) {
     if (events.add(event)) notifyListeners();
+    if (events.length == 1) _event = event;
   }
 
   /// Removes the event to the list.

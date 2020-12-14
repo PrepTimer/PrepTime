@@ -28,10 +28,10 @@ class LincolnDouglas extends DebateEvent {
   }
 
   @override
-  int get hashCode => 1;
+  int get hashCode => runtimeType.hashCode;
 
   @override
   bool operator ==(Object other) {
-    return this.hashCode == other.hashCode;
+    return other is LincolnDouglas && this.hashCode == other.hashCode;
   }
 }

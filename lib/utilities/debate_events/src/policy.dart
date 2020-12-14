@@ -99,10 +99,10 @@ class Policy extends DebateEvent {
   }
 
   @override
-  int get hashCode => 0;
+  int get hashCode => runtimeType.hashCode;
 
   @override
   bool operator ==(Object other) {
-    return this.hashCode == other.hashCode;
+    return other is Policy && this.hashCode == other.hashCode;
   }
 }

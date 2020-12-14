@@ -32,10 +32,10 @@ void main() {
       expect(event.speech, isNotNull);
       event.dispose();
       expect(event.speech, isNull);
-      event = MockEvent();
+      event = null; // make safe value for tearDown
     });
     tearDown(() {
-      event.dispose();
+      event?.dispose();
     });
   });
 }

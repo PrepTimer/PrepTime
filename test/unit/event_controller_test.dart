@@ -7,48 +7,62 @@ void main() {
     EventController eventController;
     setUp(() {
       eventController = EventController();
-      eventController.events.add(Policy.highSchool());
-      eventController.events.add(LincolnDouglas.highSchool());
-      eventController.event = eventController.events.first;
     });
     test('event getter returns the set event', () {
+      eventController.add(Policy.highSchool());
       expect(eventController.event, isA<Policy>());
     });
     test('event setter sets if event is contained in events', () {
-      eventController.event = eventController.events.last;
+      eventController.add(Policy.middleSchool());
+      eventController.add(LincolnDouglas.highSchool());
+      eventController.event = eventController.events.last; // set event to LD
       expect(eventController.event, isA<LincolnDouglas>());
     });
+    test('event setter throws ArgumentError if event is not in events', () {
+      eventController.add(Policy.middleSchool());
+      expect(
+        () => eventController.event = PublicForum.highSchool(), // not in events
+        throwsArgumentError,
+      );
+    });
     test('adding a unique event makes the set longer', () {
-      expect(eventController.events.length, equals(2));
-      eventController.events.add(PublicForum.highSchool());
-      expect(eventController.events.length, equals(3));
-    });
-    test('adding a duplicate event does nothing', () {
-      expect(eventController.events.length, equals(2));
-      eventController.events.add(LincolnDouglas.highSchool());
-      expect(eventController.events.length, equals(2));
-    });
-    test('removing an existing event makes the set shorter', () {
-      expect(eventController.events.length, equals(2));
-      eventController.remove(LincolnDouglas.highSchool());
+      expect(eventController.events.length, equals(0));
+      eventController.add(Policy.college());
       expect(eventController.events.length, equals(1));
     });
+    test('adding a duplicate event does nothing', () {
+      expect(eventController.events.length, equals(0));
+      eventController.add(PublicForum.highSchool());
+      expect(eventController.events.length, equals(1)); // adds a new event
+      eventController.add(PublicForum.highSchool());
+      expect(eventController.events.length, equals(1)); // drops duplicate event
+    });
+    test('removing an existing event makes the set shorter', () {
+      eventController.add(LincolnDouglas.highSchool());
+      expect(eventController.events.length, equals(1));
+      eventController.remove(LincolnDouglas.highSchool());
+      expect(eventController.events.length, equals(0));
+    });
     test('removing an event that was not in the set does nothing', () {
-      expect(eventController.events.length, equals(2));
+      eventController.add(Policy.highSchool());
+      expect(eventController.events.length, equals(1));
       eventController.remove(PublicForum.highSchool());
-      expect(eventController.events.length, equals(2));
+      expect(eventController.events.length, equals(1));
     });
     test('clearEvent makes event null', () {
+      eventController.add(Policy.highSchool());
       expect(eventController.event, isNotNull);
       eventController.clearEvent();
       expect(eventController.event, isNull);
     });
     test('dispose makes event null', () {
+      eventController.add(Policy.highSchool());
       expect(eventController.event, isNotNull);
       eventController.dispose();
       expect(eventController.event, isNull);
     });
     test('dispose makes events empty', () {
+      eventController.add(Policy.highSchool());
       expect(eventController.events, isNotEmpty);
       eventController.dispose();
       expect(eventController.events, isEmpty);

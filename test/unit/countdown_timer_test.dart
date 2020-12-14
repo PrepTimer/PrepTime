@@ -26,26 +26,27 @@ void main() {
         expect(currentTime, equals(Duration(minutes: 4)));
       });
     });
-    test('Resume() makes isRunning true.', () {
+    test('Resume() disposes the sink when timer runs out.', () {
+      fakeAsync((async) {
+        countDownTimer.resume();
+        async.elapse(_initialDuration);
+        // if dispose was called, a second call to resume throws state erorr
+        expect(() => countDownTimer.resume(), throwsStateError);
+      });
+    });
+    test('Resume() makes isRunning true and isNotRunning false.', () {
       countDownTimer.resume();
       expect(countDownTimer.isRunning, isTrue);
-    });
-    test('Resume() makes isNotRunning false.', () {
-      countDownTimer.resume();
       expect(countDownTimer.isNotRunning, isFalse);
     });
-    test('Stop() makes isRunning false.', () {
+    test('Stop() makes isRunning false and isNotRunning true.', () {
       countDownTimer.resume();
       countDownTimer.stop();
       expect(countDownTimer.isRunning, isFalse);
-    });
-    test('Stop() makes isNotRunning true.', () {
-      countDownTimer.resume();
-      countDownTimer.stop();
       expect(countDownTimer.isNotRunning, isTrue);
     });
-    test('Reset() causes the currentTime to equal initialDuration.', () async {
-      fakeAsync((async) async {
+    test('Reset() causes the currentTime to equal initialDuration.', () {
+      fakeAsync<void>((async) async {
         /// Start the timer, fast-forward 4 minutes and expect new currentTime.
         countDownTimer.resume();
         async.elapse(Duration(minutes: 4));
@@ -57,25 +58,20 @@ void main() {
         expect(currentTime, equals(_initialDuration));
       });
     });
-    test('Dispose() makes isRunning false.', () {
+    test('Dispose() makes isRunning false and isNotRunning true.', () {
       countDownTimer.resume();
       countDownTimer.dispose();
       expect(countDownTimer.isRunning, isFalse);
-    });
-    test('Dispose() makes isNotRunning true.', () {
-      countDownTimer.resume();
-      countDownTimer.dispose();
       expect(countDownTimer.isNotRunning, isTrue);
     });
     test('Dispose() closes the sink.', () {
       countDownTimer.resume();
       countDownTimer.dispose();
       expect(() => countDownTimer.resume(), throwsStateError);
-      countDownTimer = CountDownTimer(_initialDuration); // setup for teardown
+      countDownTimer = null; // make safe value for teardown
     });
-
     tearDown(() {
-      countDownTimer.dispose();
+      countDownTimer?.dispose();
     });
   });
 }

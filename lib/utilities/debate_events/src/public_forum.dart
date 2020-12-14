@@ -36,10 +36,10 @@ class PublicForum extends DebateEvent {
   }
 
   @override
-  int get hashCode => 2;
+  int get hashCode => runtimeType.hashCode;
 
   @override
   bool operator ==(Object other) {
-    return this.hashCode == other.hashCode;
+    return other is PublicForum && this.hashCode == other.hashCode;
   }
 }

@@ -33,10 +33,10 @@ void main() {
       expect(speechEvent.speech, isNotNull);
       speechEvent.dispose();
       expect(speechEvent.speech, isNull);
-      speechEvent = SpeechEvent();
+      speechEvent = null; // make safe value for tearDown
     });
     tearDown(() {
-      speechEvent.dispose();
+      speechEvent?.dispose();
     });
   });
 }
