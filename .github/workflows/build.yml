@@ -44,7 +44,7 @@ jobs:
     # Run the unit tests
       - id: unit_test
         name: Unit Testing...
-        run: flutter test
+        run: flutter test --coverage
   
     # Run the widget tests
 #   - id: widget_test:
@@ -56,6 +56,12 @@ jobs:
 #       name: Integration Test
 #       run: flutter integration_tests.dart
 
+    # Upload the code coverage to coveralls
+      - id: code_coverage
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+  
     # Upload the code coverage to coveralls
       - id: code_coverage
         uses: coverallsapp/github-action@master
