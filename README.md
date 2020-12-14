@@ -1,6 +1,6 @@
 <p align="center">
- <img width="100px" src="https://user-images.githubusercontent.com/46334750/101449879-6eef3e00-38de-11eb-97f8-c2c74068988a.png" align="center" alt="PrepTimer" />
- <h2 align="center">Prep Timer</h2>
+ <img width="150px" src="https://user-images.githubusercontent.com/46334750/101449879-6eef3e00-38de-11eb-97f8-c2c74068988a.png" align="center" alt="PrepTimer" />
+ <h1 align="center">Prep Timer</h1>
  <p align="center">A customizable, extensible mobile timer for speech and debate tournaments.</p>
 </p>
 
