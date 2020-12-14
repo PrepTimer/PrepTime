@@ -31,7 +31,7 @@
   </a>
 </p>
 <p align="center">
-  <a href="#history">About</a>
+  <a href="#-history">About</a>
   ·
   <a href="https://github.com/PrepTimer/PrepTime/issues/new/choose">Report Bug</a>
   ·
