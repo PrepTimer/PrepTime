@@ -22,20 +22,20 @@
   </a>
   <br />
   <br />
-  <a href="javascript://alert('Test');">
+  <a href="javascript:alert('Test');">
     <img src="https://img.shields.io/badge/Download%20on%20App%20Store-foo.svg?colorB=0D96F6&style=for-the-badge&logo=google-play&logoColor=white"/>
   </a>
  &nbsp;
-  <a href="javascript://alert('Test');">
+  <a href="javascript:alert('Test');">
     <img src="https://img.shields.io/badge/Download%20on%20Play%20Store-foo.svg?colorB=188E46&style=for-the-badge&logo=app-store&logoColor=white"/>
   </a>
 </p>
 <p align="center">
   <a href="#-history">About</a>
   ·
-  <a href="https://github.com/PrepTimer/PrepTime/issues/new/choose">Report Bug</a>
+  <a href="https://github.com/PrepTimer/PrepTime/issues/new/bug">Report Bug</a>
   ·
-  <a href="https://github.com/PrepTimer/PrepTime/issues/new/choose">Request Feature</a>
+  <a href="https://github.com/PrepTimer/PrepTime/issues/new/feature">Request Feature</a>
 </p>
 <p align="center">Love the project? Please consider <a href="https://github.com/sponsors/justinalexandershaw">donating</a> to help it improve!
 
