@@ -1,4 +1,12 @@
 ## [Unreleased]
+## [0.3.0] - 2020-12-13
+### Added
+- code coverage folder
+
+### Changed
+- DebateEvent now throws IndexError
+- timeRemaining now returns a duration not a string
+
 ## [0.2.1] - 2020-12-11
 ### Added
 - depended on shimmer package
@@ -33,7 +41,8 @@
 ### Added
 - added a cider config file
 
-[Unreleased]: https://github.com/PrepTimer/PrepTime/compare/0.2.1...HEAD
+[Unreleased]: https://github.com/PrepTimer/PrepTime/compare/0.3.0...HEAD
+[0.3.0]: https://github.com/PrepTimer/PrepTime/compare/0.2.1...0.3.0
 [0.2.1]: https://github.com/PrepTimer/PrepTime/compare/0.2.0...0.2.1
 [0.2.0]: https://github.com/PrepTimer/PrepTime/compare/0.1.0...0.2.0
 [0.1.0]: https://github.com/PrepTimer/PrepTime/compare/0.0.2...0.1.0
