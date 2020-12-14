@@ -25,6 +25,7 @@
   <a href="javascript://alert('Test');">
     <img src="https://img.shields.io/badge/Download%20on%20App%20Store-foo.svg?colorB=0D96F6&style=for-the-badge&logo=google-play&logoColor=white"/>
   </a>
+ &nbsp;
   <a href="javascript://alert('Test');">
     <img src="https://img.shields.io/badge/Download%20on%20Play%20Store-foo.svg?colorB=188E46&style=for-the-badge&logo=app-store&logoColor=white"/>
   </a>
@@ -38,7 +39,7 @@
 </p>
 <p align="center">Love the project? Please consider <a href="https://github.com/sponsors/justinalexandershaw">donating</a> to help it improve!
 
-## History
+## 👀 History
 What’s up Debate community!
 
 After a few short months of hard work and sleepless nights in the summer of 2018, I announced that PrepTimer, the debate timer made by debaters for debaters, was available on the App Store. Since then, a lot has changed. New phones have come out in different shapes and sizes. A lot of users have requested an android version of the app. 
@@ -47,10 +48,10 @@ Overall, the app usage has grown dramatically. It went from an app that I starte
 
 Today, we are remaking the app from the ground-up. We are using an entirely new framework, and a sleek new UI to match. Doing so will allow us to reach more users than ever including Android users on the Google Play Store.
 
-## What's New
+## ✨ What's New
 In addition to all the same functionality you know and love, we are introducing a brand new feature that we're calling "Judge Assistant". This is a sleek new feature meant for judges who are new to debate. It walks them through every speech of every round and explains what to watch out for. With "Judge Assistant", the timer will automatically rotate through the speeches and prompt the judge to start prep timers. In speech events, the timer will automatically show time signals and visually show the judge the right hand signal to use.
 
-## Giving Back
+## 🙏🏻 Giving Back
 In an attempt to make a truly community-based debate app, last year I promised to donate 100% of all net profits to the Urban Debate League. It’s been a year. So, in the spirit of [full disclosure](https://m.imgur.com/a/UR0jayt): here’s the summary of our financials since Apr 2018.
 
 It’s been a pleasure working with so many of you to implement the ideas you’ve come up with to build what is truly an app built by debaters, for debaters. I have many more ideas that I have been working on and am excited to introduce in the coming year. If you would like to help with that process, you can submit a pull request on this repo, or [support me on GitHub](https://github.com/sponsors/justinalexandershaw)!
