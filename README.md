@@ -30,13 +30,13 @@
   </a>
 </p>
 <p align="center">
-  <a href="#demo">View Demo</a>
+  <a href="#history">About</a>
   ·
   <a href="https://github.com/PrepTimer/PrepTime/issues/new/choose">Report Bug</a>
   ·
   <a href="https://github.com/PrepTimer/PrepTime/issues/new/choose">Request Feature</a>
 </p>
-<p align="center">Love the project? Please consider <a href="">donating</a> to help it improve!
+<p align="center">Love the project? Please consider <a href="https://github.com/sponsors/justinalexandershaw">donating</a> to help it improve!
 
 ## History
 What’s up Debate community!
