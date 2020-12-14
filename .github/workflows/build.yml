@@ -62,12 +62,6 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
   
-    # Upload the code coverage to coveralls
-      - id: code_coverage
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-  
     # Deploy the build to the app stores
 #   - id: deploy
 #       name: Deploying App...
