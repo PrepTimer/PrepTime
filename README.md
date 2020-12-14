@@ -1,11 +1,38 @@
-<p align="center"><img height="300px" align="center" src="https://user-images.githubusercontent.com/46334750/101449879-6eef3e00-38de-11eb-97f8-c2c74068988a.png"></p>
+<p align="center">
+ <img width="100px" src="https://user-images.githubusercontent.com/46334750/101449879-6eef3e00-38de-11eb-97f8-c2c74068988a.png" align="center" alt="PrepTimer" />
+ <h2 align="center">Prep Timer</h2>
+ <p align="center">A customizable, extensible mobile timer for speech and debate tournaments.</p>
+</p>
 
-![Build](https://github.com/PrepTimer/PrepTime/workflows/build/badge.svg)
-![Greetings](https://github.com/PrepTimer/PrepTime/workflows/greetings/badge.svg)
-![Coverage Status](https://coveralls.io/repos/github/PrepTimer/PrepTime/badge.svg?branch=main)
+<p align="center">
+  <a href="https://github.com/PrepTimer/PrepTime/actions">
+    <img alt="Build Passing" src="https://github.com/PrepTimer/PrepTime/workflows/build/badge.svg" />
+  </a>
+  <a href="https://coveralls.io/github/PrepTimer/PrepTime">
+    <img src="https://coveralls.io/repos/github/PrepTimer/PrepTime/badge.svg?branch=main" />
+  </a>
+  <a href="https://github.com/PrepTimer/PrepTime">
+    <img alt="Lines of Code" src="https://img.shields.io/tokei/lines/github/PrepTimer/PrepTime?color=0088ff" />
+  </a>
+  <a href="https://github.com/PrepTimer/PrepTime/releases/">
+    <img alt="Version" src="https://img.shields.io/github/v/release/PrepTimer/PrepTime?color=0088ff&label=version" />
+  </a>
+  <a href="https://github.com/PrepTimer/PrepTime/issues">
+    <img alt="GitHub Issues" src="https://img.shields.io/github/issues/PrepTimer/PrepTime?color=0088ff" />
+  </a>
+  <br />
+  <br />
+  <a href="javascript://alert('Test');">
+    <img src="https://img.shields.io/badge/Download%20on%20App%20Store-foo.svg?colorB=0D96F6&style=for-the-badge&logo=google-play&logoColor=white"/>
+  </a>
+  <a href="javascript://alert('Test');">
+    <img src="https://img.shields.io/badge/Download%20on%20Play%20Store-foo.svg?colorB=188E46&style=for-the-badge&logo=app-store&logoColor=white"/>
+  </a>
+</p>
 
-# PrepTimer
-PrepTimer is a mobile timer for speech and debate tournaments.
+<p>
+  ![Download iOS](https://img.shields.io/badge/Download%20on-%20iOs%20-0088ff)
+</p>
 
 ## History
 What’s up Debate community!
