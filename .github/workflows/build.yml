@@ -45,7 +45,6 @@ jobs:
       - id: unit_test
         name: Unit Testing...
         run: flutter test
-        if: github.event == 'pull_request'
   
     # Run the widget tests
 #   - id: widget_test:
@@ -56,6 +55,12 @@ jobs:
 #   - id: integration_test:
 #       name: Integration Test
 #       run: flutter integration_tests.dart
+
+    # Upload the code coverage to coveralls
+      - id: code_coverage
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
   
     # Deploy the build to the app stores
 #   - id: deploy
