@@ -52,7 +52,7 @@ Today, we are remaking the app from the ground-up. We are using an entirely new 
 In addition to all the same functionality you know and love, we are introducing a brand new feature that we're calling "Judge Assistant". This is a sleek new feature meant for judges who are new to debate. It walks them through every speech of every round and explains what to watch out for. With "Judge Assistant", the timer will automatically rotate through the speeches and prompt the judge to start prep timers. In speech events, the timer will automatically show time signals and visually show the judge the right hand signal to use.
 
 ## 🙏🏻 Giving Back
-In an attempt to make a truly community-based debate app, last year I promised to donate 100% of all net profits to the Urban Debate League. It’s been a year. So, in the spirit of [full disclosure](https://m.imgur.com/a/UR0jayt): here’s the summary of our financials since Apr 2018.
+In an attempt to make a truly community-based debate app, last year I promised to donate 100% of all net profits to the Urban Debate League. It’s been a year. So, in the spirit of [full disclosure](https://m.imgur.com/a/UR0jayt), here's our financial statement.
 
 It’s been a pleasure working with so many of you to implement the ideas you’ve come up with to build what is truly an app built by debaters, for debaters. I have many more ideas that I have been working on and am excited to introduce in the coming year. If you would like to help with that process, you can submit a pull request on this repo, or [support me on GitHub](https://github.com/sponsors/justinalexandershaw)!
 
