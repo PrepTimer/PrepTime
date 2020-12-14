@@ -29,10 +29,14 @@
     <img src="https://img.shields.io/badge/Download%20on%20Play%20Store-foo.svg?colorB=188E46&style=for-the-badge&logo=app-store&logoColor=white"/>
   </a>
 </p>
-
-<p>
-  ![Download iOS](https://img.shields.io/badge/Download%20on-%20iOs%20-0088ff)
+<p align="center">
+  <a href="#demo">View Demo</a>
+  ·
+  <a href="https://github.com/PrepTimer/PrepTime/issues/new/choose">Report Bug</a>
+  ·
+  <a href="https://github.com/PrepTimer/PrepTime/issues/new/choose">Request Feature</a>
 </p>
+<p align="center">Love the project? Please consider <a href="">donating</a> to help it improve!
 
 ## History
 What’s up Debate community!
