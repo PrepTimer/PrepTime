@@ -31,14 +31,7 @@ class Speech extends ChangeNotifier implements Timeable {
   /// Whether the speech should use JudgeAssistant mode.
   final bool useJudgeAssistant;
 
-  /// A reference to the animation controller object.
-  AnimationController get controller => _controller;
-  AnimationController _controller;
-
-  /// Tracks the state of this speech object.
-  SpeechStatus status = SpeechStatus.stoppedAtBeginning;
-
-  /// Constructs a new Speech object
+  /// Constructs a new Speech object.
   Speech({
     this.name = 'speech',
     this.length = const Duration(minutes: 8),
@@ -46,15 +39,30 @@ class Speech extends ChangeNotifier implements Timeable {
     this.useJudgeAssistant = false,
   });
 
+  /// A reference to the animation controller object.
+  AnimationController get controller => _controller;
+  AnimationController _controller; // intentionally not set in constructor
+
+  /// Tracks the state of this speech object.
+  SpeechStatus get status => _status;
+  SpeechStatus _status = SpeechStatus.stoppedAtBeginning;
+
   /// Whether the [Speech] is running.
+  /// 
+  /// Throws [StateError] if the speechController is null.
   bool get isRunning {
     _checkControllerNotNull();
     return _controller.isAnimating;
   }
 
   /// Whether the [Speech] is not running.
+  /// 
+  /// Throws [StateError] if the speechController is null.
   bool get isNotRunning => !isRunning;
 
+  /// The duration of time remaining in the speech.
+  /// 
+  /// Throws [StateError] if the speechController is null.
   Duration get timeRemaining {
     _checkControllerNotNull();
     return _controller.duration * _controller.value;
@@ -65,15 +73,15 @@ class Speech extends ChangeNotifier implements Timeable {
   /// If the speech [shouldCountUp], then the controller will starts the
   /// animation from 0.0 and count up toward 1.0. Otherwise, the controller
   /// will tick in reverse starting at 1.0 and decreasing toward 0.0.
+  /// 
+  /// Throws [StateError] if the speechController is null.
   void start() {
     _checkControllerNotNull();
-    status = SpeechStatus.runningForward;
     if (shouldCountUp) {
       _controller.forward(from: 0.0);
     } else {
       _controller.reverse(from: 1.0);
     }
-    // notifyListeners();
   }
 
   /// Resumes the speech animation.
@@ -82,27 +90,28 @@ class Speech extends ChangeNotifier implements Timeable {
   /// animation from the current value and count up toward 1.0. Otherwise, the
   /// controller will tick in reverse starting at the current value and
   /// decreasing toward 0.0.
+  /// 
+  /// Throws [StateError] if the speechController is null.
   void resume() {
     _checkControllerNotNull();
     shouldCountUp ? _controller.forward() : _controller.reverse();
-    status = SpeechStatus.runningForward;
-    notifyListeners();
   }
 
   /// Stops the speech animation.
+  /// 
+  /// Throws [StateError] if the speechController is null.
   void stop() {
     _checkControllerNotNull();
+    _status = SpeechStatus.pausedInMiddle;
     _controller.stop();
-    status = SpeechStatus.pausedInMiddle;
-    notifyListeners();
   }
 
   /// Resets the speech animation.
+  /// 
+  /// Throws [StateError] if the speechController is null.
   void reset() {
     _checkControllerNotNull();
-    shouldCountUp ? _controller.reset() : _controller.value = 1.0;
-    status = SpeechStatus.stoppedAtBeginning;
-    notifyListeners();
+    _controller.value = shouldCountUp ? 0.0 : 1.0;
   }
 
   /// Initializes the controller.
@@ -117,23 +126,28 @@ class Speech extends ChangeNotifier implements Timeable {
     TickerProvider ticker, {
     void Function(AnimationStatus) onStatusChange,
   }) {
-    void updateStatus() {
-      
+    void _statusListener(AnimationStatus animationStatus) {
+      switch (animationStatus) {
+        case AnimationStatus.completed:
+          _status = SpeechStatus.completed;
+          break;
+        case AnimationStatus.dismissed:
+          _status = SpeechStatus.stoppedAtBeginning;
+          break;
+        default:
+          _status = SpeechStatus.runningForward;
+          break;
+      }
     }
+
+    void _valueListener() {
+      notifyListeners();
+    }
+
     _controller ??= AnimationController(duration: length, vsync: ticker)
       ..value = shouldCountUp ? 0.0 : 1.0
-      ..addListener(() => notifyListeners())
-      ..addStatusListener((controllerStatus) {
-        if (controllerStatus == AnimationStatus.dismissed ||
-            controllerStatus == AnimationStatus.completed) {
-          status = SpeechStatus.completed;
-        }
-      });
-    // TODO: #6 Implement time signals and auto-move speeches.
-    // if (useJudgeAssistant) {
-    // controller.addListener(() => handleValueChange); // for time signals
-    // controller.addStatusListener((status) => onStatusChange); // auto-move
-    // }
+      ..addListener(_valueListener)
+      ..addStatusListener(_statusListener);
     return _controller;
   }
 
@@ -147,9 +161,9 @@ class Speech extends ChangeNotifier implements Timeable {
 
   /// Checks that the controller is not null.
   ///
-  /// If the controller is null, throws [StateError].
+  /// Throws [StateError] if the speechController is null.
   void _checkControllerNotNull() {
-    if (controller == null) {
+    if (_controller == null) {
       throw StateError('Must call initController() before using it.');
     }
   }
