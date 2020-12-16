@@ -39,6 +39,47 @@ class Speech extends ChangeNotifier implements Timeable {
     this.useJudgeAssistant = false,
   });
 
+  /// Initializes the controller.
+  ///
+  /// Binds the TickerProvider to the AnimationController and if the speech
+  /// uses JudgeAssistant, the controller will also add the onStatusChange
+  /// callback to the controller.
+  ///
+  /// - [ticker] a reference to the current context's TickerProvider.
+  /// - [onSpeechEnd] a callback for when the speech is completed.
+  /// - [onValueChanged] a callback for when the speech value changes.
+  AnimationController initController(
+    TickerProvider ticker, {
+    void Function() onSpeechEnd,
+    void Function() onValueChanged,
+  }) {
+    void _statusListener(AnimationStatus animationStatus) {
+      switch (animationStatus) {
+        case AnimationStatus.completed:
+          _status = SpeechStatus.completed;
+          onSpeechEnd();
+          break;
+        case AnimationStatus.dismissed:
+          _status = SpeechStatus.stoppedAtBeginning;
+          break;
+        default:
+          _status = SpeechStatus.runningForward;
+          break;
+      }
+    }
+
+    void _valueListener() {
+      onValueChanged();
+      notifyListeners();
+    }
+
+    _controller ??= AnimationController(duration: length, vsync: ticker)
+      ..value = shouldCountUp ? 0.0 : 1.0
+      ..addListener(_valueListener)
+      ..addStatusListener(_statusListener);
+    return _controller;
+  }
+
   /// A reference to the animation controller object.
   AnimationController get controller => _controller;
   AnimationController _controller; // intentionally not set in constructor
@@ -48,7 +89,7 @@ class Speech extends ChangeNotifier implements Timeable {
   SpeechStatus _status = SpeechStatus.stoppedAtBeginning;
 
   /// Whether the [Speech] is running.
-  /// 
+  ///
   /// Throws [StateError] if the speechController is null.
   bool get isRunning {
     _checkControllerNotNull();
@@ -56,12 +97,12 @@ class Speech extends ChangeNotifier implements Timeable {
   }
 
   /// Whether the [Speech] is not running.
-  /// 
+  ///
   /// Throws [StateError] if the speechController is null.
   bool get isNotRunning => !isRunning;
 
   /// The duration of time remaining in the speech.
-  /// 
+  ///
   /// Throws [StateError] if the speechController is null.
   Duration get timeRemaining {
     _checkControllerNotNull();
@@ -73,7 +114,7 @@ class Speech extends ChangeNotifier implements Timeable {
   /// If the speech [shouldCountUp], then the controller will starts the
   /// animation from 0.0 and count up toward 1.0. Otherwise, the controller
   /// will tick in reverse starting at 1.0 and decreasing toward 0.0.
-  /// 
+  ///
   /// Throws [StateError] if the speechController is null.
   void start() {
     _checkControllerNotNull();
@@ -90,7 +131,7 @@ class Speech extends ChangeNotifier implements Timeable {
   /// animation from the current value and count up toward 1.0. Otherwise, the
   /// controller will tick in reverse starting at the current value and
   /// decreasing toward 0.0.
-  /// 
+  ///
   /// Throws [StateError] if the speechController is null.
   void resume() {
     _checkControllerNotNull();
@@ -98,7 +139,7 @@ class Speech extends ChangeNotifier implements Timeable {
   }
 
   /// Stops the speech animation.
-  /// 
+  ///
   /// Throws [StateError] if the speechController is null.
   void stop() {
     _checkControllerNotNull();
@@ -107,48 +148,11 @@ class Speech extends ChangeNotifier implements Timeable {
   }
 
   /// Resets the speech animation.
-  /// 
+  ///
   /// Throws [StateError] if the speechController is null.
   void reset() {
     _checkControllerNotNull();
     _controller.value = shouldCountUp ? 0.0 : 1.0;
-  }
-
-  /// Initializes the controller.
-  ///
-  /// Binds the TickerProvider to the AnimationController and if the speech
-  /// uses JudgeAssistant, the controller will also add the onStatusChange
-  /// callback to the controller.
-  ///
-  /// - [ticker] a reference to the current context's TickerProvider.
-  /// - [onStatusChange] an optional function called when the status changes.
-  AnimationController initController(
-    TickerProvider ticker, {
-    void Function(AnimationStatus) onStatusChange,
-  }) {
-    void _statusListener(AnimationStatus animationStatus) {
-      switch (animationStatus) {
-        case AnimationStatus.completed:
-          _status = SpeechStatus.completed;
-          break;
-        case AnimationStatus.dismissed:
-          _status = SpeechStatus.stoppedAtBeginning;
-          break;
-        default:
-          _status = SpeechStatus.runningForward;
-          break;
-      }
-    }
-
-    void _valueListener() {
-      notifyListeners();
-    }
-
-    _controller ??= AnimationController(duration: length, vsync: ticker)
-      ..value = shouldCountUp ? 0.0 : 1.0
-      ..addListener(_valueListener)
-      ..addStatusListener(_statusListener);
-    return _controller;
   }
 
   /// Disposes the resources used by the [Speech] object.

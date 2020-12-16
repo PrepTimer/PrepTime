@@ -4,6 +4,7 @@ import 'package:preptime/screens/timer/src/timer_ring/src/clock_label.dart';
 import 'package:preptime/screens/timer/src/timer_ring/src/ring_painter.dart';
 import 'package:preptime/screens/timer/src/timer_ring/src/speech_indicator.dart';
 import 'package:preptime/screens/timer/src/timer_ring/src/speech_label.dart';
+import 'package:preptime/utilities/modals/modals.dart';
 import 'package:provider/provider.dart';
 import 'package:preptime/models/debate_event.dart';
 import 'package:preptime/models/speech.dart';
@@ -18,7 +19,11 @@ class TimerRing extends StatefulWidget {
 class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    context.watch<Speech>().initController(this);
+    context.watch<Speech>().initController(
+          this,
+          onSpeechEnd: () => _autoMoveSpeeches(context),
+          onValueChanged: () => _showTimeSignal(),
+        );
     return Align(
       alignment: FractionalOffset.center,
       child: AspectRatio(
@@ -41,4 +46,18 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
       ),
     );
   }
+
+  void _autoMoveSpeeches(BuildContext context) {
+    if (context.read<Speech>().useJudgeAssistant) {
+      String body;
+      Alerts.showAlertDialogWithTwoOptions(
+        context,
+        title: 'Time\'s up!',
+        content: body,
+        destructiveActionLabel: 'Foo'
+      );
+    }
+  }
+
+  void _showTimeSignal() {}
 }

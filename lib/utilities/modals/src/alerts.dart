@@ -1,7 +1,7 @@
 part of modals;
 
-class ClearTimer {
-  static void showDialog(
+class Alerts {
+  static void showAlertDialogWithTwoOptions(
     BuildContext context, {
     String title,
     String content,
