@@ -15,9 +15,9 @@ class PrepTimeProvider extends StatelessWidget {
 
   /// Provides access to models throughout the widget tree.
   PrepTimeProvider({this.child}) {
-    eventController.events.add(Policy.highSchool());
-    eventController.events.add(LincolnDouglas.highSchool());
-    eventController.events.add(PublicForum.highSchool());
+    eventController.add(Policy.highSchool());
+    eventController.add(LincolnDouglas.highSchool());
+    eventController.add(PublicForum.highSchool());
   }
 
   @override

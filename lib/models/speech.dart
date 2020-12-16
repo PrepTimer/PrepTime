@@ -117,6 +117,9 @@ class Speech extends ChangeNotifier implements Timeable {
     TickerProvider ticker, {
     void Function(AnimationStatus) onStatusChange,
   }) {
+    void updateStatus() {
+      
+    }
     _controller ??= AnimationController(duration: length, vsync: ticker)
       ..value = shouldCountUp ? 0.0 : 1.0
       ..addListener(() => notifyListeners())
