@@ -32,8 +32,9 @@ class _ClockLabelState extends State<ClockLabel> {
 
   @override
   Widget build(BuildContext context) {
-    bool isDisabled = _isSpeechDisabledFromEvent(context.watch<Event>());
-    List<Speech> speeches = _getListOfSpeechesFromEvent(context.watch<Event>());
+    Speech speech = context.watch<Speech>();
+    Event event = context.watch<Event>();
+    bool isDisabled = (event is DebateEvent) && event.isAnyRunning;
     return PageView.builder(
       scrollDirection: Axis.horizontal,
       physics: ClampingScrollPhysics(),
@@ -44,7 +45,7 @@ class _ClockLabelState extends State<ClockLabel> {
           alignment: FractionalOffset.center,
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: AutoSizeText(
-            speeches[index].timeRemaining.toStringAsClock(),
+            _getTimeRemaining(index, speech),
             maxLines: 1,
             style: isDisabled
                 ? Theme.of(context).textTheme.headline2
@@ -53,6 +54,26 @@ class _ClockLabelState extends State<ClockLabel> {
         );
       },
     );
+  }
+
+  void _updateNextOrPrevSpeech(int newPageIndex) {
+    Event event = context.read<Event>();
+    setState(() {
+      if (newPageIndex > currentPageIndex) {
+        event.nextSpeech();
+      } else if (newPageIndex < currentPageIndex) {
+        event.prevSpeech();
+      }
+      currentPageIndex = newPageIndex;
+    });
+  }
+
+  String _getTimeRemaining(int index, Speech speech) {
+    List<Speech> speeches = _getListOfSpeechesFromEvent(context.read<Event>());
+    if (speech != speeches[index]) {
+      speech = speeches[index];
+    }
+    return _getTimeRemainingFromSpeech(speech);
   }
 
   List<Speech> _getListOfSpeechesFromEvent(Event event) {
@@ -67,19 +88,7 @@ class _ClockLabelState extends State<ClockLabel> {
     return speeches;
   }
 
-  bool _isSpeechDisabledFromEvent(Event event) {
-    return (event is DebateEvent) && event.isAnyRunning;
-  }
-
-  void _updateNextOrPrevSpeech(int newPageIndex) {
-    Event event = context.read<Event>();
-    setState(() {
-      if (newPageIndex > currentPageIndex) {
-        event.nextSpeech();
-      } else if (newPageIndex < currentPageIndex) {
-        event.prevSpeech();
-      }
-      currentPageIndex = newPageIndex;
-    });
+  String _getTimeRemainingFromSpeech(Speech speech) {
+    return speech.timeRemaining.toStringAsClock();
   }
 }
