@@ -10,7 +10,6 @@ class TimerButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     Event event = Provider.of<Event>(context);
     bool isDisabled = (event is DebateEvent) && event.isAnyRunning;
-    print('Building timer buttons for ' + event.speech.name + '...');
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

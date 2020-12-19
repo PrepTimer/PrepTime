@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:preptime/models/speech.dart';
 
 /// An academic forensics event.
@@ -18,8 +18,14 @@ abstract class Event extends ChangeNotifier {
   /// The current speech being given.
   Speech speech;
 
+  /// The number of speeches in this event.
+  int get numSpeeches => 1;
+
   /// Constructs a new Event with the given name and description.
-  Event({this.name, this.description, this.speech});
+  Event({this.name, this.description, this.speech})
+      : assert(name != null),
+        assert(description != null),
+        assert(speech != null);
 
   /// Selects and returns the next speech.
   void nextSpeech() => throw UnimplementedError();

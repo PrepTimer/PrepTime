@@ -2,7 +2,6 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:preptime/models/debate_event.dart';
 import 'package:preptime/models/event.dart';
-import 'package:preptime/models/speech.dart';
 import 'package:provider/provider.dart';
 
 /// Manages the animation of a circle and arc of the timer ring.
@@ -14,14 +13,13 @@ class RingPainter extends StatelessWidget {
   RingPainter({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    bool isPrepRunning = false;
     Event event = context.watch<Event>();
-    if (event is DebateEvent) isPrepRunning = event.isAnyRunning;
+    bool isPrepRunning = (event is DebateEvent) && event.isAnyRunning;
     return Positioned.fill(
       child: CustomPaint(
         painter: _CustomRingPainter(
           context: context,
-          animation: context.watch<Speech>().controller,
+          animation: context.watch<Event>().speech.controller,
           isDisabled: isPrepRunning,
         ),
       ),

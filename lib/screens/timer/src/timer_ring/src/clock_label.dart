@@ -33,22 +33,19 @@ class _ClockLabelState extends State<ClockLabel> {
   @override
   Widget build(BuildContext context) {
     Event event = context.watch<Event>();
-    Speech speech = context.select((Speech newSpeech) {
-      return event.speech == newSpeech ? newSpeech : event.speech;
-    });
-    print('Building clock label for ' + speech.name + '...');
     bool isDisabled = (event is DebateEvent) && event.isAnyRunning;
     return PageView.builder(
       scrollDirection: Axis.horizontal,
       physics: BouncingScrollPhysics(),
       controller: controller,
       onPageChanged: _updateNextOrPrevSpeech,
+      itemCount: event.,
       itemBuilder: (context, index) {
         return Container(
           alignment: FractionalOffset.center,
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: AutoSizeText(
-            _getTimeRemaining(index, speech),
+            _getTimeRemaining(index, event.speech),
             maxLines: 1,
             style: isDisabled
                 ? Theme.of(context).textTheme.headline2

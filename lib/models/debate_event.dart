@@ -19,17 +19,21 @@ class DebateEvent extends Event with PrepTimeMixin {
     this.speeches,
   }) : super(name: name, description: description, speech: speeches.first);
 
+  /// The number of speeches in this event.
+  @override
+  int get numSpeeches => this.speeches.length;
+
   /// Sets the current speech to be the next speech.
   ///
   /// Throws RangeError if the current speech is the last speech.
   @override
   void nextSpeech() {
     int currentIndex = speeches.indexOf(super.speech);
-    if (currentIndex == speeches.length - 1) {
-      throw RangeError('NextSpeech: Index out of range.');
-    } else {
+    if (currentIndex >= 0 && currentIndex < speeches.length - 1) {
       super.speech = speeches[currentIndex + 1];
       notifyListeners();
+    } else {
+      throw RangeError('NextSpeech: Index out of range.');
     }
   }
 

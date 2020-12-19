@@ -50,7 +50,7 @@ class TimerButton extends StatefulWidget {
     Key key,
   })  : behavior = {
           SpeechStatus.values[0]: ButtonProperties.greenButton(
-              context, isDisabled ? null : speech.start),
+              context, isDisabled ? null : speech.start,),
           SpeechStatus.values[1]: ButtonProperties.orangeButton(
               context, isDisabled ? null : speech.stop),
           SpeechStatus.values[2]: ButtonProperties.greenButton(
