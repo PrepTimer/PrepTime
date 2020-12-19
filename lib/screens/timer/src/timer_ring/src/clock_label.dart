@@ -42,7 +42,7 @@ class _ClockLabelState extends State<ClockLabel> {
       itemBuilder: (context, index) {
         return Container(
           alignment: FractionalOffset.center,
-          padding: EdgeInsets.zero,
+          padding: EdgeInsets.symmetric(horizontal: 20),
           child: AutoSizeText(
             speeches[index].timeRemaining.toStringAsClock(),
             maxLines: 1,

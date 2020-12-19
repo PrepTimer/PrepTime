@@ -43,7 +43,7 @@ extension stringFormatting on Duration {
     int minutes = this.inMinutes.remainder(Duration.minutesPerHour);
     int seconds = this.inSeconds.remainder(Duration.secondsPerMinute);
     int ms = this.inMilliseconds.remainder(Duration.millisecondsPerSecond);
-    String mm = minutes < 10 ? oneDigitOf(minutes) : twoDigitsOf(minutes);
+    String mm = minutes < 10 && minutes != 0 ? oneDigitOf(minutes) : minutes;
     String ss = twoDigitsOf(seconds);
     String m = oneDigitOf(ms);
     return "$mm:$ss.$m";

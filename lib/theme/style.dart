@@ -39,7 +39,7 @@ abstract class PrepTimeThemeData {
         fontWeight: FontWeight.w200,
         letterSpacing: -4.0,
         color: Colors.white,
-        fontSize: 90.0,
+        fontSize: 190.0,
       ),
 
       /// The [Disabled] text style for the [ClockLabel].
@@ -48,7 +48,7 @@ abstract class PrepTimeThemeData {
         fontWeight: FontWeight.w200,
         letterSpacing: -4.0,
         color: Colors.white24,
-        fontSize: 90.0,
+        fontSize: 190.0,
       ),
 
       /// The [Enabled] text style for a [SpeechLabel].
