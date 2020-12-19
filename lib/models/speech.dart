@@ -136,6 +136,7 @@ class Speech extends ChangeNotifier implements Timeable {
   void resume() {
     _checkControllerNotNull();
     shouldCountUp ? _controller.forward() : _controller.reverse();
+    _status = SpeechStatus.runningForward;
   }
 
   /// Stops the speech animation.
@@ -153,6 +154,7 @@ class Speech extends ChangeNotifier implements Timeable {
   void reset() {
     _checkControllerNotNull();
     _controller.value = shouldCountUp ? 0.0 : 1.0;
+    _status = SpeechStatus.stoppedAtBeginning;
   }
 
   /// Disposes the resources used by the [Speech] object.

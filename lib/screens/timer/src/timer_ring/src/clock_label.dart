@@ -32,12 +32,15 @@ class _ClockLabelState extends State<ClockLabel> {
 
   @override
   Widget build(BuildContext context) {
-    Speech speech = context.watch<Speech>();
     Event event = context.watch<Event>();
+    Speech speech = context.select((Speech newSpeech) {
+      return event.speech == newSpeech ? newSpeech : event.speech;
+    });
+    print('Building clock label for ' + speech.name + '...');
     bool isDisabled = (event is DebateEvent) && event.isAnyRunning;
     return PageView.builder(
       scrollDirection: Axis.horizontal,
-      physics: ClampingScrollPhysics(),
+      physics: BouncingScrollPhysics(),
       controller: controller,
       onPageChanged: _updateNextOrPrevSpeech,
       itemBuilder: (context, index) {
@@ -57,13 +60,13 @@ class _ClockLabelState extends State<ClockLabel> {
   }
 
   void _updateNextOrPrevSpeech(int newPageIndex) {
-    Event event = context.read<Event>();
+    DebateEvent event = Provider.of<Event>(context, listen: false);
+    if (newPageIndex > currentPageIndex) {
+      event.nextSpeech();
+    } else if (newPageIndex < currentPageIndex) {
+      event.prevSpeech();
+    }
     setState(() {
-      if (newPageIndex > currentPageIndex) {
-        event.nextSpeech();
-      } else if (newPageIndex < currentPageIndex) {
-        event.prevSpeech();
-      }
       currentPageIndex = newPageIndex;
     });
   }
