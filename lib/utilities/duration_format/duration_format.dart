@@ -6,8 +6,14 @@ extension stringFormatting on Duration {
   ///
   /// For example,
   /// ```dart
+  /// Duration foo = Duration(minutes: 10, milliseconds: 100);
+  /// foo.toStringAsClock(); // 10:00.1
+  /// ```
+  ///
+  /// If the number of minutes is less than 10, the minutes is a signle digit.
+  /// ```dart
   /// Duration foo = Duration(seconds: 90);
-  /// foo.toStringAsClock(); // 01:30.0
+  /// foo.toStringAsClock(); // 1:30.0
   /// ```
   String toStringAsClock() {
     String oneDigitOf(int number) {
@@ -37,7 +43,7 @@ extension stringFormatting on Duration {
     int minutes = this.inMinutes.remainder(Duration.minutesPerHour);
     int seconds = this.inSeconds.remainder(Duration.secondsPerMinute);
     int ms = this.inMilliseconds.remainder(Duration.millisecondsPerSecond);
-    String mm = twoDigitsOf(minutes);
+    String mm = minutes < 10 ? oneDigitOf(minutes) : twoDigitsOf(minutes);
     String ss = twoDigitsOf(seconds);
     String m = oneDigitOf(ms);
     return "$mm:$ss.$m";

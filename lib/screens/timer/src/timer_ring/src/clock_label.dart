@@ -21,11 +21,7 @@ class _ClockLabelState extends State<ClockLabel> {
   @override
   initState() {
     super.initState();
-    controller = PageController(
-      initialPage: currentPageIndex,
-      keepPage: false,
-      viewportFraction: 0.5,
-    );
+    controller = PageController();
   }
 
   @override
@@ -38,38 +34,15 @@ class _ClockLabelState extends State<ClockLabel> {
   Widget build(BuildContext context) {
     bool isDisabled = _isSpeechDisabledFromEvent(context.watch<Event>());
     List<Speech> speeches = _getListOfSpeechesFromEvent(context.watch<Event>());
-    Event event = context.watch<Event>();
     return PageView.builder(
       scrollDirection: Axis.horizontal,
       physics: ClampingScrollPhysics(),
       controller: controller,
-      onPageChanged: (newPageIndex) {
-        setState(() {
-          if (newPageIndex > currentPageIndex) {
-            event.nextSpeech();
-          } else if (newPageIndex < currentPageIndex) {
-            event.prevSpeech();
-          }
-          currentPageIndex = newPageIndex;
-        });
-      },
+      onPageChanged: _updateNextOrPrevSpeech,
       itemBuilder: (context, index) {
-        return AnimatedBuilder(
-          animation: controller,
-          builder: (context, child) {
-            double value = 1.0;
-            if (controller.position.haveDimensions) {
-              value = controller.page - index;
-              value = (1 - (value.abs() * .5)).clamp(0.0, 1.0);
-            }
-            return Container(
-              alignment: FractionalOffset.center,
-              height: Curves.easeOut.transform(value) * 300,
-              width: Curves.easeOut.transform(value) * 200,
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: child,
-            );
-          },
+        return Container(
+          alignment: FractionalOffset.center,
+          padding: EdgeInsets.zero,
           child: AutoSizeText(
             speeches[index].timeRemaining.toStringAsClock(),
             maxLines: 1,
@@ -96,5 +69,17 @@ class _ClockLabelState extends State<ClockLabel> {
 
   bool _isSpeechDisabledFromEvent(Event event) {
     return (event is DebateEvent) && event.isAnyRunning;
+  }
+
+  void _updateNextOrPrevSpeech(int newPageIndex) {
+    Event event = context.read<Event>();
+    setState(() {
+      if (newPageIndex > currentPageIndex) {
+        event.nextSpeech();
+      } else if (newPageIndex < currentPageIndex) {
+        event.prevSpeech();
+      }
+      currentPageIndex = newPageIndex;
+    });
   }
 }
