@@ -63,8 +63,8 @@ class _PrepTimerState extends State<PrepTimer> {
 
   @override
   Widget build(BuildContext context) {
-    _speech = context.watch<Speech>();
     _debateEvent = context.watch<Event>() as DebateEvent;
+    _speech = _debateEvent.speech;
     _isDisabled = context.select<Event, bool>(_didChangeDisability);
     return GestureDetector(
       onLongPressStart: (_) => _handleReset(context),

@@ -28,13 +28,12 @@ class PrepTimeProvider extends StatelessWidget {
         ChangeNotifierProvider<EventController>.value(
           value: eventController,
         ),
-        ChangeNotifierProxyProvider<Event, Speech>(
-          create: (_) => eventController.event.speech,
-          update: (_, event, speech) => speech..update(event.speech),
-        ),
         ChangeNotifierProxyProvider<EventController, Event>(
           create: (_) => eventController.event,
-          update: (_, controller, __) => controller.event,
+          update: (_, controller, __) {
+            print('updating Event');
+            return controller.event;
+          },
         ),
       ],
     );

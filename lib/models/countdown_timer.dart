@@ -18,9 +18,6 @@ import 'package:preptime/models/timeable.dart';
 /// you can dispose of the [CountDownTimer]'s resources with the [dispose]
 /// method.
 class CountDownTimer implements Timeable {
-  /// The duration of a single second.
-  static const Duration _second = Duration(seconds: 1);
-
   /// The timer that serves up periodic callbacks to add values to the sink.
   Timer _timer;
 
@@ -73,7 +70,7 @@ class CountDownTimer implements Timeable {
   void resume() {
     if (isNotRunning) {
       _updateCurrentTime(null); // immediatley tick to let user know it worked.
-      _timer = Timer.periodic(_second, _updateCurrentTime); // make const?
+      _timer = Timer.periodic(Duration(seconds: 1), _updateCurrentTime);
     }
   }
 
@@ -110,7 +107,7 @@ class CountDownTimer implements Timeable {
   /// the timeRemaining is zero or negative, the stream is closed and the timer
   /// is stopped (via [dispose]).
   void _updateCurrentTime(Timer _) {
-    Duration timeRemaining = initialDuration - _second * _ticks;
+    Duration timeRemaining = initialDuration - Duration(seconds: 1) * _ticks;
     _controller.add(timeRemaining);
     _ticks++;
     if (timeRemaining == Duration.zero || timeRemaining.isNegative) {

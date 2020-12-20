@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:preptime/models/event.dart';
 import 'package:preptime/models/speech.dart';
 import 'package:preptime/models/speech_status.dart';
 import 'package:preptime/screens/timer/src/timer_buttons/src/button_properties.dart';
@@ -50,7 +51,9 @@ class TimerButton extends StatefulWidget {
     Key key,
   })  : behavior = {
           SpeechStatus.values[0]: ButtonProperties.greenButton(
-              context, isDisabled ? null : speech.start,),
+            context,
+            isDisabled ? null : speech.start,
+          ),
           SpeechStatus.values[1]: ButtonProperties.orangeButton(
               context, isDisabled ? null : speech.stop),
           SpeechStatus.values[2]: ButtonProperties.greenButton(
@@ -77,8 +80,7 @@ class _TimerButtonState extends State<TimerButton> {
 
   @override
   Widget build(BuildContext context) {
-    /// Whether the speech timer is running or not.
-    SpeechStatus status = context.watch<Speech>().status;
+    SpeechStatus status = context.watch<Event>().speech.status;
     bool _isEnabled = widget.behavior[status].callback != null;
     return Container(
       width: _buttonSize.width,

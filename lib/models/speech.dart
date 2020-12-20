@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:preptime/models/speech_status.dart';
 import 'package:preptime/models/timeable.dart';
@@ -20,16 +22,16 @@ import 'package:preptime/models/timeable.dart';
 /// used by the [controller].
 class Speech extends ChangeNotifier implements Timeable {
   /// The name of the speech.
-  String name;
+  final String name;
 
   /// The duration of the speech.
-  Duration length;
+  final Duration length;
 
   /// Whether the timer should count up or down.
-  bool shouldCountUp;
+  final bool shouldCountUp;
 
   /// Whether the speech should use JudgeAssistant mode.
-  bool useJudgeAssistant;
+  final bool useJudgeAssistant;
 
   /// Constructs a new Speech object.
   Speech({
@@ -38,14 +40,6 @@ class Speech extends ChangeNotifier implements Timeable {
     this.shouldCountUp = false,
     this.useJudgeAssistant = false,
   });
-
-  /// Overrides the current speech data with the new speech data.
-  void update(Speech other) {
-    this.name = other.name;
-    this.length = other.length;
-    this.shouldCountUp = other.shouldCountUp;
-    this.useJudgeAssistant = other.useJudgeAssistant;
-  }
 
   /// Initializes the controller.
   ///
@@ -78,7 +72,7 @@ class Speech extends ChangeNotifier implements Timeable {
 
     void _valueListener() {
       onValueChanged();
-      notifyListeners();
+      _addDurationToStream();
     }
 
     _controller ??= AnimationController(duration: length, vsync: ticker)
@@ -109,13 +103,11 @@ class Speech extends ChangeNotifier implements Timeable {
   /// Throws [StateError] if the speechController is null.
   bool get isNotRunning => !isRunning;
 
-  /// The duration of time remaining in the speech.
+  /// Emits the duration of time remaining in the speech.
   ///
   /// Throws [StateError] if the speechController is null.
-  Duration get timeRemaining {
-    _checkControllerNotNull();
-    return _controller.duration * _controller.value;
-  }
+  Stream<Duration> get timeRemaining => _timeRemaining.stream.distinct();
+  StreamController<Duration> _timeRemaining = StreamController.broadcast();
 
   /// Starts the speech animation from the beginning.
   ///
@@ -170,6 +162,8 @@ class Speech extends ChangeNotifier implements Timeable {
   void dispose() {
     _controller?.dispose();
     _controller = null;
+    _timeRemaining?.close();
+    _timeRemaining = null;
     super.dispose();
   }
 
@@ -180,5 +174,10 @@ class Speech extends ChangeNotifier implements Timeable {
     if (_controller == null) {
       throw StateError('Must call initController() before using it.');
     }
+  }
+
+  /// Adds a new duration to the timeRemaining stream.
+  void _addDurationToStream() {
+    _timeRemaining?.add(_controller.duration * _controller.value);
   }
 }
