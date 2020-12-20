@@ -1,6 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:preptime/models/countdown_timer.dart';
 import 'package:preptime/models/speech_status.dart';
 import 'package:preptime/models/timeable.dart';
 
@@ -21,17 +20,10 @@ import 'package:preptime/models/timeable.dart';
 /// the resources used here, you should call [dispose] to free up the space
 /// used by the [controller].
 class Speech extends ChangeNotifier implements Timeable {
-  /// The name of the speech.
-  final String name;
-
-  /// The duration of the speech.
+  final bool shouldCountUp, useJudgeAssistant;
+  final CountDownTimer timer;
   final Duration length;
-
-  /// Whether the timer should count up or down.
-  final bool shouldCountUp;
-
-  /// Whether the speech should use JudgeAssistant mode.
-  final bool useJudgeAssistant;
+  final String name;
 
   /// Constructs a new Speech object.
   Speech({
@@ -39,7 +31,10 @@ class Speech extends ChangeNotifier implements Timeable {
     this.length = const Duration(minutes: 8),
     this.shouldCountUp = false,
     this.useJudgeAssistant = false,
-  });
+  }) : timer = CountDownTimer(
+          length,
+          timeBetweenTicks: Duration(milliseconds: 100),
+        );
 
   /// Initializes the controller.
   ///
@@ -56,58 +51,30 @@ class Speech extends ChangeNotifier implements Timeable {
     void Function() onValueChanged,
   }) {
     void _statusListener(AnimationStatus animationStatus) {
-      switch (animationStatus) {
-        case AnimationStatus.completed:
-          _status = SpeechStatus.completed;
-          onSpeechEnd();
-          break;
-        case AnimationStatus.dismissed:
-          _status = SpeechStatus.stoppedAtBeginning;
-          break;
-        default:
-          _status = SpeechStatus.runningForward;
-          break;
+      if (animationStatus == AnimationStatus.completed) {
+        _status = SpeechStatus.completed;
+        onSpeechEnd();
+      } else if (animationStatus == AnimationStatus.dismissed) {
+        _status = SpeechStatus.stoppedAtBeginning;
+      } else {
+        _status = SpeechStatus.runningForward;
       }
-    }
-
-    void _valueListener() {
-      onValueChanged();
-      _addDurationToStream();
     }
 
     _controller ??= AnimationController(duration: length, vsync: ticker)
       ..value = shouldCountUp ? 0.0 : 1.0
-      ..addListener(_valueListener)
       ..addStatusListener(_statusListener);
     return _controller;
   }
 
-  /// A reference to the animation controller object.
   AnimationController get controller => _controller;
-  AnimationController _controller; // intentionally not set in constructor
+  AnimationController _controller;
 
-  /// Tracks the state of this speech object.
   SpeechStatus get status => _status;
   SpeechStatus _status = SpeechStatus.stoppedAtBeginning;
 
-  /// Whether the [Speech] is running.
-  ///
-  /// Throws [StateError] if the speechController is null.
-  bool get isRunning {
-    _checkControllerNotNull();
-    return _controller.isAnimating;
-  }
-
-  /// Whether the [Speech] is not running.
-  ///
-  /// Throws [StateError] if the speechController is null.
-  bool get isNotRunning => !isRunning;
-
-  /// Emits the duration of time remaining in the speech.
-  ///
-  /// Throws [StateError] if the speechController is null.
-  Stream<Duration> get timeRemaining => _timeRemaining.stream.distinct();
-  StreamController<Duration> _timeRemaining = StreamController.broadcast();
+  bool get isRunning => timer.isRunning;
+  bool get isNotRunning => timer.isNotRunning;
 
   /// Starts the speech animation from the beginning.
   ///
@@ -123,6 +90,8 @@ class Speech extends ChangeNotifier implements Timeable {
     } else {
       _controller.reverse(from: 1.0);
     }
+    timer.reset();
+    timer.resume();
   }
 
   /// Resumes the speech animation.
@@ -136,6 +105,7 @@ class Speech extends ChangeNotifier implements Timeable {
   void resume() {
     _checkControllerNotNull();
     shouldCountUp ? _controller.forward() : _controller.reverse();
+    timer.resume();
     _status = SpeechStatus.runningForward;
   }
 
@@ -146,6 +116,7 @@ class Speech extends ChangeNotifier implements Timeable {
     _checkControllerNotNull();
     _status = SpeechStatus.pausedInMiddle;
     _controller.stop();
+    timer.stop();
   }
 
   /// Resets the speech animation.
@@ -155,6 +126,7 @@ class Speech extends ChangeNotifier implements Timeable {
     _checkControllerNotNull();
     _controller.value = shouldCountUp ? 0.0 : 1.0;
     _status = SpeechStatus.stoppedAtBeginning;
+    timer.stop();
   }
 
   /// Disposes the resources used by the [Speech] object.
@@ -162,8 +134,7 @@ class Speech extends ChangeNotifier implements Timeable {
   void dispose() {
     _controller?.dispose();
     _controller = null;
-    _timeRemaining?.close();
-    _timeRemaining = null;
+    timer.dispose();
     super.dispose();
   }
 
@@ -174,10 +145,5 @@ class Speech extends ChangeNotifier implements Timeable {
     if (_controller == null) {
       throw StateError('Must call initController() before using it.');
     }
-  }
-
-  /// Adds a new duration to the timeRemaining stream.
-  void _addDurationToStream() {
-    _timeRemaining?.add(_controller.duration * _controller.value);
   }
 }

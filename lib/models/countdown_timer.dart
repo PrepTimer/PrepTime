@@ -1,3 +1,5 @@
+// TODO: #29 Implement count-up feature and add onUpdate callback to timer.
+
 import 'dart:async';
 
 import 'package:preptime/models/timeable.dart';
@@ -18,39 +20,23 @@ import 'package:preptime/models/timeable.dart';
 /// you can dispose of the [CountDownTimer]'s resources with the [dispose]
 /// method.
 class CountDownTimer implements Timeable {
-  /// The timer that serves up periodic callbacks to add values to the sink.
   Timer _timer;
-
-  /// The number of times the callback has been invoked.
   int _ticks = 0;
 
-  /// Controlls the [currentTime] stream.
-  StreamController<Duration> _controller;
-
-  /// The current duration of time left on the clock.
-  Stream<Duration> get currentTime => _controller.stream;
-
-  /// The initial duration of the [CountDownTimer].
-  ///
-  /// This will also be the value that the timer will take when [reset] is
-  /// called.
+  final Duration timeBetweenTicks;
   final Duration initialDuration;
 
   /// Constructs a new [CountDownTimer].
   ///
   /// The initialDuration is the value of the timer at the beginning. This is
   /// the same value that the timer will reset to when [reset()] is called.
-  CountDownTimer(this.initialDuration) {
-    void handleListen() {
-      _controller.add(initialDuration);
-    }
+  CountDownTimer(
+    this.initialDuration, {
+    this.timeBetweenTicks = const Duration(seconds: 1),
+  }) : _controller = StreamController.broadcast();
 
-    _controller = StreamController()
-      ..onListen = handleListen
-      ..onCancel = dispose
-      ..onPause = stop
-      ..onResume = resume;
-  }
+  Stream<Duration> get currentTime => _controller.stream;
+  StreamController<Duration> _controller;
 
   /// Whether the [CountDownTimer] is running.
   bool get isRunning => _timer?.isActive ?? false;
@@ -70,7 +56,7 @@ class CountDownTimer implements Timeable {
   void resume() {
     if (isNotRunning) {
       _updateCurrentTime(null); // immediatley tick to let user know it worked.
-      _timer = Timer.periodic(Duration(seconds: 1), _updateCurrentTime);
+      _timer = Timer.periodic(timeBetweenTicks, _updateCurrentTime);
     }
   }
 
@@ -107,7 +93,7 @@ class CountDownTimer implements Timeable {
   /// the timeRemaining is zero or negative, the stream is closed and the timer
   /// is stopped (via [dispose]).
   void _updateCurrentTime(Timer _) {
-    Duration timeRemaining = initialDuration - Duration(seconds: 1) * _ticks;
+    Duration timeRemaining = initialDuration - timeBetweenTicks * _ticks;
     _controller.add(timeRemaining);
     _ticks++;
     if (timeRemaining == Duration.zero || timeRemaining.isNegative) {

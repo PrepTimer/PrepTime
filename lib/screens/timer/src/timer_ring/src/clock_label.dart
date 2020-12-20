@@ -10,25 +10,20 @@ import 'package:preptime/utilities/duration_format/duration_format.dart';
 /// The time remaining duration on the clock.
 class ClockLabel extends StatelessWidget {
   final int index;
-
   ClockLabel.fromIndex(this.index);
-
   @override
   Widget build(BuildContext context) {
     Event event = context.watch<Event>();
-    Speech speech = event.speech;
     bool isDisabled = (event is DebateEvent) && event.isAnyRunning;
-    print(
-        "building clock label at index: $index speech: ${_getSpeechFromEventAtIndex(event, index).name}");
     return Container(
       alignment: FractionalOffset.center,
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: StreamBuilder<Duration>(
+        initialData: _getSpeechFromEventAtIndex(event, index).length,
+        stream: _getSpeechFromEventAtIndex(event, index).timer.currentTime,
         builder: (context, durationSnapshot) {
           return AutoSizeText(
-            index == event.currentSpeechIndex
-                ? durationSnapshot.data?.toStringAsClock() ?? '00:00.0'
-                : _getTimeRemainingFromEventAtIndex(event, index),
+            durationSnapshot.data?.toStringAsClock(),
             maxLines: 1,
             style: isDisabled
                 ? Theme.of(context).textTheme.headline2
@@ -37,10 +32,6 @@ class ClockLabel extends StatelessWidget {
         },
       ),
     );
-  }
-
-  String _getTimeRemainingFromEventAtIndex(Event event, int index) {
-    return _getListOfSpeechesFromEvent(event)[index].length.toStringAsClock();
   }
 
   Speech _getSpeechFromEventAtIndex(Event event, int index) {
