@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:preptime/models/event.dart';
 import 'package:preptime/models/speech_event.dart';
-import 'package:preptime/screens/timer/src/timer_ring/src/clock_label.dart';
+import 'package:preptime/screens/timer/src/timer_ring/src/clock_carousel.dart';
 import 'package:preptime/screens/timer/src/timer_ring/src/ring_painter.dart';
 import 'package:preptime/screens/timer/src/timer_ring/src/speech_indicator.dart';
 import 'package:preptime/screens/timer/src/timer_ring/src/speech_label.dart';
@@ -28,7 +28,7 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
         child: Stack(
           children: <Widget>[
             RingPainter(),
-            ClockLabel(),
+            ClockCarousel(),
             Align(
               alignment: FractionalOffset(0.5, 0.69),
               child: SpeechLabel(),

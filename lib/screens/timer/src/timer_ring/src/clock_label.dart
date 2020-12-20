@@ -7,73 +7,32 @@ import 'package:preptime/models/speech_event.dart';
 import 'package:provider/provider.dart';
 import 'package:preptime/utilities/duration_format/duration_format.dart';
 
-/// The amount of time left on the clock.
-class ClockLabel extends StatefulWidget {
-  ClockLabel({Key key}) : super(key: key);
-  @override
-  _ClockLabelState createState() => _ClockLabelState();
-}
+/// The time remaining duration on the clock.
+class ClockLabel extends StatelessWidget {
+  final int index;
 
-class _ClockLabelState extends State<ClockLabel> {
-  PageController controller;
-  int currentPageIndex = 0;
-
-  @override
-  initState() {
-    super.initState();
-    controller = PageController();
-  }
-
-  @override
-  dispose() {
-    controller.dispose();
-    super.dispose();
-  }
+  ClockLabel.fromIndex(this.index);
 
   @override
   Widget build(BuildContext context) {
+    Speech speech = Provider.of<Speech>(context);
     Event event = context.watch<Event>();
     bool isDisabled = (event is DebateEvent) && event.isAnyRunning;
-    return PageView.builder(
-      scrollDirection: Axis.horizontal,
-      physics: BouncingScrollPhysics(),
-      controller: controller,
-      onPageChanged: _updateNextOrPrevSpeech,
-      itemCount: event.,
-      itemBuilder: (context, index) {
-        return Container(
-          alignment: FractionalOffset.center,
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: AutoSizeText(
-            _getTimeRemaining(index, event.speech),
-            maxLines: 1,
-            style: isDisabled
-                ? Theme.of(context).textTheme.headline2
-                : Theme.of(context).textTheme.headline1,
-          ),
-        );
-      },
+    print("building... index: $index speech: ${speech.name}");
+    return Container(
+      alignment: FractionalOffset.center,
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: AutoSizeText(
+        index == event.currentSpeechIndex
+            ? _getTimeRemainingFromSpeech(speech)
+            : _getTimeRemainingFromSpeech(
+                _getListOfSpeechesFromEvent(event)[index]),
+        maxLines: 1,
+        style: isDisabled
+            ? Theme.of(context).textTheme.headline2
+            : Theme.of(context).textTheme.headline1,
+      ),
     );
-  }
-
-  void _updateNextOrPrevSpeech(int newPageIndex) {
-    DebateEvent event = Provider.of<Event>(context, listen: false);
-    if (newPageIndex > currentPageIndex) {
-      event.nextSpeech();
-    } else if (newPageIndex < currentPageIndex) {
-      event.prevSpeech();
-    }
-    setState(() {
-      currentPageIndex = newPageIndex;
-    });
-  }
-
-  String _getTimeRemaining(int index, Speech speech) {
-    List<Speech> speeches = _getListOfSpeechesFromEvent(context.read<Event>());
-    if (speech != speeches[index]) {
-      speech = speeches[index];
-    }
-    return _getTimeRemainingFromSpeech(speech);
   }
 
   List<Speech> _getListOfSpeechesFromEvent(Event event) {

@@ -21,6 +21,9 @@ abstract class Event extends ChangeNotifier {
   /// The number of speeches in this event.
   int get numSpeeches => 1;
 
+  /// Tracks the current speech index.
+  int get currentSpeechIndex => 1;
+
   /// Constructs a new Event with the given name and description.
   Event({this.name, this.description, this.speech})
       : assert(name != null),

@@ -9,28 +9,30 @@ import 'package:preptime/models/speech.dart';
 /// [prevSpeech] methods will change the value of the speech field and trigger
 /// updates in the UI.
 class DebateEvent extends Event with PrepTimeMixin {
-  /// A list of speeches that defines the structure of the event.
   final List<Speech> speeches;
 
-  /// Constructs a new Debate event with the given list of speeches.
   DebateEvent({
     String name,
     String description,
     this.speeches,
-  }) : super(name: name, description: description, speech: speeches.first);
+  })  : assert(name != null),
+        assert(description != null),
+        assert(speeches.isNotEmpty),
+        super(name: name, description: description, speech: speeches.first);
 
-  /// The number of speeches in this event.
   @override
   int get numSpeeches => this.speeches.length;
+
+  @override
+  int get currentSpeechIndex => speeches.indexOf(super.speech);
 
   /// Sets the current speech to be the next speech.
   ///
   /// Throws RangeError if the current speech is the last speech.
   @override
   void nextSpeech() {
-    int currentIndex = speeches.indexOf(super.speech);
-    if (currentIndex >= 0 && currentIndex < speeches.length - 1) {
-      super.speech = speeches[currentIndex + 1];
+    if (currentSpeechIndex >= 0 && currentSpeechIndex < speeches.length - 1) {
+      super.speech = speeches[currentSpeechIndex + 1];
       notifyListeners();
     } else {
       throw RangeError('NextSpeech: Index out of range.');
@@ -42,11 +44,10 @@ class DebateEvent extends Event with PrepTimeMixin {
   /// Throws RangeError if the current speech is the first speech.
   @override
   void prevSpeech() {
-    int currentIndex = speeches.indexOf(super.speech);
-    if (currentIndex == 0) {
+    if (currentSpeechIndex == 0) {
       throw RangeError('PrevSpeech: Index out of range.');
     } else {
-      super.speech = speeches[currentIndex - 1];
+      super.speech = speeches[currentSpeechIndex - 1];
       notifyListeners();
     }
   }

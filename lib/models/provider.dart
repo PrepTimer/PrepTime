@@ -25,14 +25,16 @@ class PrepTimeProvider extends StatelessWidget {
     return MultiProvider(
       child: child,
       providers: [
-        ChangeNotifierProvider<Speech>.value(
-          value: eventController.event.speech,
-        ),
-        ChangeNotifierProvider<Event>.value(
-          value: eventController.event,
-        ),
         ChangeNotifierProvider<EventController>.value(
           value: eventController,
+        ),
+        ChangeNotifierProxyProvider<Event, Speech>(
+          create: (_) => eventController.event.speech,
+          update: (_, event, speech) => speech..update(event.speech),
+        ),
+        ChangeNotifierProxyProvider<EventController, Event>(
+          create: (_) => eventController.event,
+          update: (_, controller, __) => controller.event,
         ),
       ],
     );

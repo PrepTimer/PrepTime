@@ -20,16 +20,16 @@ import 'package:preptime/models/timeable.dart';
 /// used by the [controller].
 class Speech extends ChangeNotifier implements Timeable {
   /// The name of the speech.
-  final String name;
+  String name;
 
   /// The duration of the speech.
-  final Duration length;
+  Duration length;
 
   /// Whether the timer should count up or down.
-  final bool shouldCountUp;
+  bool shouldCountUp;
 
   /// Whether the speech should use JudgeAssistant mode.
-  final bool useJudgeAssistant;
+  bool useJudgeAssistant;
 
   /// Constructs a new Speech object.
   Speech({
@@ -38,6 +38,14 @@ class Speech extends ChangeNotifier implements Timeable {
     this.shouldCountUp = false,
     this.useJudgeAssistant = false,
   });
+
+  /// Overrides the current speech data with the new speech data.
+  void update(Speech other) {
+    this.name = other.name;
+    this.length = other.length;
+    this.shouldCountUp = other.shouldCountUp;
+    this.useJudgeAssistant = other.useJudgeAssistant;
+  }
 
   /// Initializes the controller.
   ///
