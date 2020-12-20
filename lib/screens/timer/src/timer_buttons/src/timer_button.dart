@@ -6,7 +6,6 @@ import 'package:preptime/models/speech.dart';
 import 'package:preptime/models/speech_status.dart';
 import 'package:preptime/screens/timer/src/timer_buttons/src/button_properties.dart';
 import 'package:provider/provider.dart';
-import 'package:shimmer/shimmer.dart';
 
 /// Defines the state and behavior of a timer button.
 ///
@@ -82,7 +81,6 @@ class _TimerButtonState extends State<TimerButton> {
   @override
   Widget build(BuildContext context) {
     SpeechStatus status = context.watch<Event>().speech.status;
-    bool _isEnabled = widget.behavior[status].callback != null;
     return Container(
       width: _buttonSize.width,
       height: _buttonSize.height,
@@ -100,19 +98,13 @@ class _TimerButtonState extends State<TimerButton> {
         onHighlightChanged: (bool isPressed) => this.setState(() {
           alpha = (isPressed ? _initialAlpha ~/ 2 : _initialAlpha);
         }),
-        child: Shimmer.fromColors(
-          enabled: _isEnabled,
-          period: const Duration(seconds: 2),
-          baseColor: widget.behavior[status].color,
-          highlightColor: widget.behavior[status].color.withOpacity(0.7),
-          child: Text(
-            _buttonText(status),
-            style: TextStyle(
-              fontSize: _fontSize,
-              fontWeight: _fontWeight,
-              color: _buttonTextColor(status),
-              fontFeatures: [FontFeature.tabularFigures()],
-            ),
+        child: Text(
+          _buttonText(status),
+          style: TextStyle(
+            fontSize: _fontSize,
+            fontWeight: _fontWeight,
+            color: _buttonTextColor(status),
+            fontFeatures: [FontFeature.tabularFigures()],
           ),
         ),
       ),

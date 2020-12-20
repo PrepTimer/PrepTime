@@ -29,10 +29,7 @@ class PrepTimeProvider extends StatelessWidget {
         ),
         ChangeNotifierProxyProvider<EventController, Event>(
           create: (_) => eventController.event,
-          update: (_, controller, __) {
-            print('updating Event');
-            return controller.event;
-          },
+          update: (_, controller, __) => controller.event,
         ),
       ],
     );
