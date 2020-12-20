@@ -23,12 +23,15 @@ class TimerButton extends StatefulWidget {
   /// tapped and active.
   TimerButton.cancel(
     BuildContext context,
-    void Function() onTap, {
+    bool isDisabled,
+    void Function() onPressed, {
     Key key,
   })  : behavior = {
           SpeechStatus.values[0]: ButtonProperties.grayButton(context),
-          SpeechStatus.values[1]: ButtonProperties.grayButton(context, onTap),
-          SpeechStatus.values[2]: ButtonProperties.grayButton(context, onTap),
+          SpeechStatus.values[1]: ButtonProperties.grayButton(
+              context, () => isDisabled ? null : onPressed),
+          SpeechStatus.values[2]: ButtonProperties.grayButton(
+              context, () => isDisabled ? null : onPressed),
           SpeechStatus.values[3]: ButtonProperties.grayButton(context),
         },
         super(key: key);
@@ -51,9 +54,7 @@ class TimerButton extends StatefulWidget {
     Key key,
   })  : behavior = {
           SpeechStatus.values[0]: ButtonProperties.greenButton(
-            context,
-            isDisabled ? null : speech.start,
-          ),
+              context, isDisabled ? null : speech.start),
           SpeechStatus.values[1]: ButtonProperties.orangeButton(
               context, isDisabled ? null : speech.stop),
           SpeechStatus.values[2]: ButtonProperties.greenButton(
@@ -97,7 +98,7 @@ class _TimerButtonState extends State<TimerButton> {
         disabledColor: _buttonColor(status),
         shape: _circularRingWithColor(Colors.black),
         onHighlightChanged: (bool isPressed) => this.setState(() {
-          alpha = isPressed ? _initialAlpha ~/ 2 : _initialAlpha;
+          alpha = (isPressed ? _initialAlpha ~/ 2 : _initialAlpha);
         }),
         child: Shimmer.fromColors(
           enabled: _isEnabled,

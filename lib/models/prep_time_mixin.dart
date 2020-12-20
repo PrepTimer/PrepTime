@@ -60,9 +60,8 @@ mixin PrepTimeMixin on Event {
 
   /// Checks if the prep timer for the given team is running.
   bool isRunning(Team team) {
-    CountDownTimer timer = _timers[team];
-    if (timer == null) throw StateError('Must call initPrepTimers');
-    return timer.isRunning;
+    _ensurePrepTimersHaveBeenInitialized(team);
+    return _timers[team].isRunning;
   }
 
   /// Checks if the prep timer for the given team is not running.
@@ -70,20 +69,20 @@ mixin PrepTimeMixin on Event {
 
   /// Checks if the other team's prep timer is running.
   bool isOtherRunning(Team team) => isRunning(team.otherTeam());
-  
+
   /// Returns true if either team's prep timer is running.
   bool get isAnyRunning => isRunning(Team.left) || isRunning(Team.right);
 
   /// Starts the prep timer for the given team.
   void startPrep(Team team) {
-    if (_timers[team] == null) throw StateError('Must call initPrepTimers');
+    _ensurePrepTimersHaveBeenInitialized(team);
     _timers[team].resume();
     notifyListeners();
   }
 
   /// Stops the prep time for the given team.
   void stopPrep(Team team) {
-    if (_timers[team] == null) throw StateError('Must call initPrepTimers');
+    _ensurePrepTimersHaveBeenInitialized(team);
     _timers[team].stop();
     notifyListeners();
   }
@@ -95,7 +94,7 @@ mixin PrepTimeMixin on Event {
 
   /// Resets the prep time for the given team.
   void resetPrep(Team team) {
-    if (_timers[team] == null) throw StateError('Must call initPrepTimers');
+    _ensurePrepTimersHaveBeenInitialized(team);
     _timers[team].reset();
     notifyListeners();
   }
@@ -105,10 +104,17 @@ mixin PrepTimeMixin on Event {
   /// This method assumes that the timer has alredy been initialized. If it is
   /// not initialized, then this method will throw a RangeError.
   Stream<Duration> remainingPrep(Team team) {
-    if (_timers[team] == null) throw StateError('Must call initPrepTimers');
+    _ensurePrepTimersHaveBeenInitialized(team);
     return _timers[team].currentTime;
   }
 
   /// The name of each team as displayed above their prep time.
   String prepName(Team team) => team.toFormattedString(_useAffNeg);
+
+  /// Checks that the timer is not null, if so throws a state error.
+  void _ensurePrepTimersHaveBeenInitialized(Team team) {
+    if (_timers[team] == null) {
+      throw StateError('Must call initPrepTimers');
+    }
+  }
 }
