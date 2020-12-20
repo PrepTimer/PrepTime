@@ -36,6 +36,25 @@ abstract class Event extends ChangeNotifier {
   /// Selects and returns the previous speech.
   void prevSpeech() => throw UnimplementedError();
 
+  void start() {
+    speech.start();
+    notifyListeners();
+  }
+
+  void stop() {
+    speech.stop();
+    notifyListeners();
+  }
+
+  void resume() {
+    speech.resume();
+    notifyListeners();
+  }
+
+  void reset() {
+    speech.reset();
+  }
+
   @override
   void dispose() {
     speech?.dispose();
