@@ -65,16 +65,7 @@ class DebateEvent extends Event with PrepTimeMixin {
     void Function() onSpeechEnd,
   }) {
     for (Speech speech in speeches) {
-      speech.initController(ticker, onStatusChanged: (AnimationStatus status) {
-        if (_isSpeechAnimationCompleted(status)) {
-          onSpeechEnd();
-          speech.status = SpeechStatus.completed;
-          notifyListeners();
-          if (speech.useJudgeAssistant) {
-            Speech.scrollToNextPageWithinBounds(numSpeeches);
-          }
-        }
-      });
+      _initSpeechControllerWithTickerAndCallback(speech, ticker, onSpeechEnd);
     }
   }
 
@@ -88,9 +79,30 @@ class DebateEvent extends Event with PrepTimeMixin {
     super.dispose();
   }
 
+  void _initSpeechControllerWithTickerAndCallback(
+    Speech speech,
+    TickerProvider ticker,
+    void Function() onSpeechEnd,
+  ) {
+    speech.initController(ticker, onStatusChanged: (AnimationStatus status) {
+      if (_isSpeechAnimationCompleted(status)) {
+        onSpeechEnd();
+        speech.status = SpeechStatus.completed;
+        notifyListeners();
+      }
+      _autoScrollIfUsingJudgeAssistant(speech.useJudgeAssistant);
+    });
+  }
+
   bool _isSpeechAnimationCompleted(AnimationStatus status) {
     bool shouldCountUp = speech.shouldCountUp;
     return (shouldCountUp && status == AnimationStatus.completed) ||
         (!shouldCountUp && status == AnimationStatus.dismissed);
+  }
+
+  void _autoScrollIfUsingJudgeAssistant(bool useJudgeAssistant) {
+    if (useJudgeAssistant) {
+      Speech.scrollToNextPageWithinBounds(numSpeeches);
+    }
   }
 }
