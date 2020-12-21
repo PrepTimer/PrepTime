@@ -1,5 +1,7 @@
+import 'package:flutter/widgets.dart';
 import 'package:preptime/models/event.dart';
 import 'package:preptime/models/speech.dart';
+import 'package:preptime/models/speech_status.dart';
 
 /// A SpeechEvent is an Event in which a single speech is given.
 ///
@@ -24,5 +26,32 @@ class SpeechEvent extends Event {
   @override
   void prevSpeech() {
     throw UnimplementedError('Cannot call prevSpeech on SpeechEvent.');
+  }
+
+  /// Initializes the controller.
+  ///
+  /// Binds the TickerProvider to the AnimationController and if the speech
+  /// uses JudgeAssistant, the controller will also add the onStatusChange
+  /// callback to the controller.
+  void initSpeechController(
+    TickerProvider ticker, {
+    void Function() onSpeechEnd,
+  }) {
+    speech.initController(ticker, onStatusChanged: (AnimationStatus status) {
+      if (_isSpeechAnimationCompleted(status)) {
+        onSpeechEnd();
+        speech.status = SpeechStatus.completed;
+        notifyListeners();
+        if (speech.useJudgeAssistant) {
+          Speech.scrollToNextPageWithinBounds(numSpeeches);
+        }
+      }
+    });
+  }
+
+  bool _isSpeechAnimationCompleted(AnimationStatus status) {
+    bool shouldCountUp = speech.shouldCountUp;
+    return (shouldCountUp && status == AnimationStatus.completed) ||
+        (!shouldCountUp && status == AnimationStatus.dismissed);
   }
 }

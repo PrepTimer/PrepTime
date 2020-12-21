@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:preptime/models/speech.dart';
-import 'package:preptime/models/speech_status.dart';
 
 /// An academic forensics event.
 ///
@@ -57,37 +56,13 @@ abstract class Event extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Initializes the controller.
-  ///
-  /// Binds the TickerProvider to the AnimationController and if the speech
-  /// uses JudgeAssistant, the controller will also add the onStatusChange
-  /// callback to the controller.
-  void initSpeechController(
-    TickerProvider ticker, {
-    void Function() onSpeechEnd,
-  }) {
-    speech.initController(ticker, onStatusChanged: (AnimationStatus status) {
-      if (_isSpeechAnimationCompleted(status)) {
-        onSpeechEnd();
-        speech.status = SpeechStatus.completed;
-        notifyListeners();
-        if (speech.useJudgeAssistant) {
-          Speech.scrollToNextPageWithinBounds(numSpeeches);
-        }
-      }
-    });
-  }
+  void initSpeechController(TickerProvider ticker,
+      {void Function() onSpeechEnd});
 
   @override
   void dispose() {
     speech?.dispose();
     speech = null;
     super.dispose();
-  }
-
-  bool _isSpeechAnimationCompleted(AnimationStatus status) {
-    bool shouldCountUp = speech.shouldCountUp;
-    return (shouldCountUp && status == AnimationStatus.completed) ||
-        (!shouldCountUp && status == AnimationStatus.dismissed);
   }
 }

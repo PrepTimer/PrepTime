@@ -54,13 +54,12 @@ class DebateEvent extends Event with PrepTimeMixin {
     }
   }
 
-  @override
-
   /// Initializes the controller.
   ///
   /// Binds the TickerProvider to the AnimationController and if the speech
   /// uses JudgeAssistant, the controller will also add the onStatusChange
   /// callback to the controller.
+  @override
   void initSpeechController(
     TickerProvider ticker, {
     void Function() onSpeechEnd,
