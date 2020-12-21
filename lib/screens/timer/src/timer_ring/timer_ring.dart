@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:preptime/models/event.dart';
-import 'package:preptime/models/speech_event.dart';
 import 'package:preptime/screens/timer/src/timer_ring/src/clock_carousel.dart';
 import 'package:preptime/screens/timer/src/timer_ring/src/ring_painter.dart';
 import 'package:preptime/screens/timer/src/timer_ring/src/speech_indicator.dart';
@@ -8,7 +7,6 @@ import 'package:preptime/screens/timer/src/timer_ring/src/speech_label.dart';
 import 'package:preptime/utilities/modals/modals.dart';
 import 'package:provider/provider.dart';
 import 'package:preptime/models/debate_event.dart';
-import 'package:preptime/models/speech.dart';
 
 /// Manages a timer ring including the ring painter, label, title, and dots.
 class TimerRing extends StatefulWidget {
@@ -45,25 +43,15 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
   }
 
   void _initializeAllSpeechControllersInEvent(Event event) {
-    if (event is SpeechEvent) {
-      _initializeSpeechController(event.speech);
-    } else if (event is DebateEvent) {
-      for (Speech speech in event.speeches) {
-        _initializeSpeechController(speech);
-      }
-    }
-  }
-
-  void _initializeSpeechController(Speech speech) {
-    speech.initController(
+    event.initSpeechController(
       this,
       onSpeechEnd: () => _autoMoveSpeeches(context),
-      onValueChanged: () => _showTimeSignal(),
+      // onValueChanged: () => _showTimeSignal(),
     );
   }
 
   void _autoMoveSpeeches(BuildContext context) {
-    if (context.read<Speech>().useJudgeAssistant) {
+    if (context.read<Event>().speech.useJudgeAssistant) {
       String body = 'body';
       Alerts.showAlertDialogWithTwoOptions(
         context,

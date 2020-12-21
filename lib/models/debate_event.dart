@@ -1,6 +1,8 @@
+import 'package:flutter/widgets.dart';
 import 'package:preptime/models/event.dart';
 import 'package:preptime/models/prep_time_mixin.dart';
 import 'package:preptime/models/speech.dart';
+import 'package:preptime/models/speech_status.dart';
 
 /// A [DebateEvent] is an [Event] in which multiple speechs are given.
 ///
@@ -53,13 +55,43 @@ class DebateEvent extends Event with PrepTimeMixin {
   }
 
   @override
+
+  /// Initializes the controller.
+  ///
+  /// Binds the TickerProvider to the AnimationController and if the speech
+  /// uses JudgeAssistant, the controller will also add the onStatusChange
+  /// callback to the controller.
+  void initSpeechController(
+    TickerProvider ticker, {
+    void Function() onSpeechEnd,
+  }) {
+    for (Speech speech in speeches) {
+      speech.initController(ticker, onStatusChanged: (AnimationStatus status) {
+        if (_isSpeechAnimationCompleted(status)) {
+          onSpeechEnd();
+          speech.status = SpeechStatus.completed;
+          notifyListeners();
+          if (speech.useJudgeAssistant) {
+            Speech.scrollToNextPageWithinBounds(numSpeeches);
+          }
+        }
+      });
+    }
+  }
+
+  @override
   void dispose() {
     for (Speech speech in speeches) {
       speech.dispose();
     }
     speeches.clear();
-    super.speech = null;
     disposePrepTimers();
     super.dispose();
+  }
+
+  bool _isSpeechAnimationCompleted(AnimationStatus status) {
+    bool shouldCountUp = speech.shouldCountUp;
+    return (shouldCountUp && status == AnimationStatus.completed) ||
+        (!shouldCountUp && status == AnimationStatus.dismissed);
   }
 }

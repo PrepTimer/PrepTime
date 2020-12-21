@@ -28,9 +28,9 @@ class TimerButton extends StatefulWidget {
   })  : behavior = {
           SpeechStatus.values[0]: ButtonProperties.grayButton(context),
           SpeechStatus.values[1]: ButtonProperties.grayButton(
-              context, () => isDisabled ? null : onPressed),
+              context, isDisabled ? null : onPressed),
           SpeechStatus.values[2]: ButtonProperties.grayButton(
-              context, () => isDisabled ? null : onPressed),
+              context, isDisabled ? null : onPressed),
           SpeechStatus.values[3]: ButtonProperties.grayButton(context),
         },
         super(key: key);
@@ -81,7 +81,6 @@ class _TimerButtonState extends State<TimerButton> {
   @override
   Widget build(BuildContext context) {
     SpeechStatus status = context.watch<Event>().speech.status;
-    print(status);
     return Container(
       width: _buttonSize.width,
       height: _buttonSize.height,

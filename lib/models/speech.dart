@@ -20,6 +20,8 @@ import 'package:preptime/models/timeable.dart';
 /// the resources used here, you should call [dispose] to free up the space
 /// used by the [controller].
 class Speech extends ChangeNotifier implements Timeable {
+  static final pageController = PageController();
+
   final bool shouldCountUp, useJudgeAssistant;
   final CountDownTimer timer;
   final Duration length;
@@ -30,7 +32,7 @@ class Speech extends ChangeNotifier implements Timeable {
     this.name = 'speech',
     this.length = const Duration(minutes: 8),
     this.shouldCountUp = false,
-    this.useJudgeAssistant = false,
+    this.useJudgeAssistant = true,
   }) : timer = CountDownTimer(
           length,
           timeBetweenTicks: Duration(milliseconds: 100),
@@ -43,37 +45,21 @@ class Speech extends ChangeNotifier implements Timeable {
   /// callback to the controller.
   ///
   /// - [ticker] a reference to the current context's TickerProvider.
-  /// - [onSpeechEnd] a callback for when the speech is completed.
-  /// - [onValueChanged] a callback for when the speech value changes.
+  /// - [onStatusChanged] a callback for when the speech status changes.
   AnimationController initController(
     TickerProvider ticker, {
-    void Function() onSpeechEnd,
-    void Function() onValueChanged,
+    void Function(AnimationStatus) onStatusChanged,
   }) {
-    void _statusListener(AnimationStatus animationStatus) {
-      // if (animationStatus == AnimationStatus.completed) {
-      //   _status = SpeechStatus.completed;
-      //   onSpeechEnd();
-      // } else if (animationStatus == AnimationStatus.dismissed) {
-      //   _status = SpeechStatus.stoppedAtBeginning;
-      // } else if (isRunning) {
-      //   _status = SpeechStatus.runningForward;
-      // } else if (isNotRunning) {
-      //   _status = SpeechStatus.pausedInMiddle;
-      // }
-    }
-
     _controller ??= AnimationController(duration: length, vsync: ticker)
       ..value = shouldCountUp ? 0.0 : 1.0
-      ..addStatusListener(_statusListener);
+      ..addStatusListener(onStatusChanged);
     return _controller;
   }
 
   AnimationController get controller => _controller;
   AnimationController _controller;
 
-  SpeechStatus get status => _status;
-  SpeechStatus _status = SpeechStatus.stoppedAtBeginning;
+  SpeechStatus status = SpeechStatus.stoppedAtBeginning;
 
   bool get isRunning => timer.isRunning;
   bool get isNotRunning => timer.isNotRunning;
@@ -94,7 +80,7 @@ class Speech extends ChangeNotifier implements Timeable {
     }
     timer.reset();
     timer.resume();
-    _status = SpeechStatus.runningForward;
+    status = SpeechStatus.runningForward;
   }
 
   /// Resumes the speech animation.
@@ -113,7 +99,7 @@ class Speech extends ChangeNotifier implements Timeable {
       _controller.reverse();
     }
     timer.resume();
-    _status = SpeechStatus.runningForward;
+    status = SpeechStatus.runningForward;
   }
 
   /// Stops the speech animation.
@@ -123,7 +109,7 @@ class Speech extends ChangeNotifier implements Timeable {
     _ensureControllerIsNotNull();
     _controller.stop();
     timer.stop();
-    _status = SpeechStatus.pausedInMiddle;
+    status = SpeechStatus.pausedInMiddle;
   }
 
   /// Resets the speech animation.
@@ -136,8 +122,8 @@ class Speech extends ChangeNotifier implements Timeable {
       duration: Duration(milliseconds: 500),
       curve: Curves.ease,
     );
-    timer.stop();
-    _status = SpeechStatus.stoppedAtBeginning;
+    timer.reset();
+    status = SpeechStatus.stoppedAtBeginning;
   }
 
   /// Disposes the resources used by the [Speech] object.
@@ -155,6 +141,16 @@ class Speech extends ChangeNotifier implements Timeable {
   void _ensureControllerIsNotNull() {
     if (_controller == null) {
       throw StateError('Must call initController() before using it.');
+    }
+  }
+
+  static void scrollToNextPageWithinBounds(int maxPageIndex) {
+    PageController controller = Speech.pageController;
+    if (controller.hasClients && controller.page < maxPageIndex) {
+      controller.nextPage(
+        duration: Duration(milliseconds: 500),
+        curve: Curves.ease,
+      );
     }
   }
 }

@@ -97,7 +97,7 @@ class CountDownTimer implements Timeable {
     _controller.add(timeRemaining);
     _ticks++;
     if (timeRemaining == Duration.zero || timeRemaining.isNegative) {
-      dispose();
+      stop();
     }
   }
 }
