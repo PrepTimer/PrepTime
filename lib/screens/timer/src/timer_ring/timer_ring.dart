@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:preptime/models/event.dart';
+import 'package:preptime/models/speech.dart';
+import 'package:preptime/models/team.dart';
 import 'package:preptime/screens/timer/src/timer_ring/src/clock_carousel.dart';
 import 'package:preptime/screens/timer/src/timer_ring/src/ring_painter.dart';
 import 'package:preptime/screens/timer/src/timer_ring/src/speech_indicator.dart';
@@ -51,16 +54,42 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
   }
 
   void _autoMoveSpeeches(BuildContext context) {
-    if (context.read<Event>().speech.useJudgeAssistant) {
-      String body = 'body';
-      Alerts.showAlertDialogWithTwoOptions(
+    Event event = context.read<Event>();
+    if (event.speech.useJudgeAssistant && event is DebateEvent) {
+      Alerts.showAlertDialogWithOneDefaultOption(
         context,
         title: 'Time\'s up!',
-        content: body,
-        destructiveActionLabel: 'Foo',
-        cancelActionLabel: 'Cancel',
-        cancelAction: () => null,
-        destructiveAction: () => null,
+        content: 'Would either team like to take prep?',
+        defaultActionLabel: 'Yes',
+        secondaryActionLabel: 'No',
+        secondaryAction: () {
+          HapticFeedback.selectionClick();
+          Navigator.of(context).pop();
+          event.nextSpeech();
+        },
+        defaultAction: () {
+          HapticFeedback.selectionClick();
+          Navigator.of(context).pop();
+          Alerts.showAlertDialogWithTwoBasicOptions(
+            context,
+            title: 'Awesome!',
+            content: 'Which team will be taking prep?',
+            firstActionLabel: event.prepName(Team.left),
+            secondActionLabel: event.prepName(Team.right),
+            firstAction: () {
+              HapticFeedback.selectionClick();
+              event.startPrep(Team.left);
+              Navigator.of(context).pop();
+              event.nextSpeech();
+            },
+            secondAction: () {
+              HapticFeedback.selectionClick();
+              event.startPrep(Team.right);
+              Navigator.of(context).pop();
+              event.nextSpeech();
+            },
+          );
+        },
       );
     }
   }

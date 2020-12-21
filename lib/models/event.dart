@@ -54,6 +54,7 @@ abstract class Event extends ChangeNotifier {
 
   void reset() {
     speech.reset();
+    notifyListeners();
   }
 
   /// Initializes the controller.

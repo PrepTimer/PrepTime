@@ -117,6 +117,7 @@ class Speech extends ChangeNotifier implements Timeable {
   /// Throws [StateError] if the speechController is null.
   void reset() {
     _ensureControllerIsNotNull();
+    stop();
     _controller.animateTo(
       shouldCountUp ? 0.0 : 1.0,
       duration: Duration(milliseconds: 500),

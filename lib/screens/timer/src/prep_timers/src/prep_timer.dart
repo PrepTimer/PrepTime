@@ -116,10 +116,10 @@ class _PrepTimerState extends State<PrepTimer> {
   void _handleReset(BuildContext context) {
     HapticFeedback.selectionClick();
     if (_debateEvent.isRunning(widget.team)) _debateEvent.stopPrep(widget.team);
-    Alerts.showAlertDialogWithTwoOptions(
+    Alerts.showAlertDialogWithOneDestructiveOption(
       context,
-      title: 'Reset Prep',
-      content: 'Are you sure you want to reset the prep timer?',
+      title: 'Reset Prep?',
+      content: 'The current prep time will be lost.',
       destructiveActionLabel: 'Reset',
       cancelActionLabel: 'Cancel',
       destructiveAction: () {
