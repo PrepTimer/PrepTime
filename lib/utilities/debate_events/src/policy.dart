@@ -67,7 +67,7 @@ class Policy extends DebateEvent {
           ],
         ) {
     super.initPrepTimers(
-      duration: Duration(seconds: _hsPrepTime), // TODO(Justin): FIX this!!!!!!
+      duration: Duration(minutes: _hsPrepTime),
       useAffNeg: true,
     );
   }

@@ -27,6 +27,7 @@ class ClockCarousel extends StatelessWidget {
       event.nextSpeech();
     } else if (newPageIndex < event.currentSpeechIndex) {
       event.prevSpeech();
+      event.reset();
     }
   }
 }

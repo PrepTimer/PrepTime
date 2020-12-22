@@ -11,8 +11,8 @@ part 'src/policy.dart';
 Speech _createSpeech(String name, int minutes) {
   return Speech(
     name: name,
-    shouldCountUp: false,
-    useJudgeAssistant: true,
-    length: Duration(seconds: minutes), // TODO(Justin): Change this back!!!!!!
+    shouldCountUp: true,
+    useJudgeAssistant: false,
+    length: Duration(minutes: minutes),
   );
 }
