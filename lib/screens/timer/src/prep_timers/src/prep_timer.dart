@@ -114,19 +114,17 @@ class _PrepTimerState extends State<PrepTimer> {
   /// will dismiss. If the user selects `reset` then the prep time will also be
   /// reset to the initial value.
   void _handleReset(BuildContext context) {
-    HapticFeedback.selectionClick();
-    if (_debateEvent.isRunning(widget.team)) _debateEvent.stopPrep(widget.team);
+    if (_debateEvent.isRunning(widget.team)) {
+      _debateEvent.stopPrep(widget.team);
+    }
     Alerts.showAlertDialogWithOneDestructiveOption(
       context,
       title: 'Reset Prep?',
       content: 'The current prep time will be lost.',
       destructiveActionLabel: 'Reset',
       cancelActionLabel: 'Cancel',
-      destructiveAction: () {
-        _debateEvent.resetPrep(widget.team);
-        Navigator.of(context).pop();
-      },
-      cancelAction: () => Navigator.of(context).pop(),
+      destructiveAction: () => _debateEvent.resetPrep(widget.team),
+      cancelAction: () => null,
     );
   }
 }

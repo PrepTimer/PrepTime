@@ -46,7 +46,10 @@ mixin PrepTimeMixin on Event {
     _initialPrep = duration;
     _useAffNeg = useAffNeg;
     for (Team team in Team.values) {
-      _timers.putIfAbsent(team, () => CountDownTimer(duration));
+      _timers.putIfAbsent(
+        team,
+        () => CountDownTimer(duration, onEnd: notifyListeners),
+      );
     }
   }
 
