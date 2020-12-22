@@ -40,11 +40,7 @@ class SpeechEvent extends Event {
     speech.initController(ticker, onStatusChanged: (AnimationStatus status) {
       if (_isSpeechAnimationCompleted(status)) {
         onSpeechEnd();
-        speech.status = SpeechStatus.completed;
-        notifyListeners();
-        if (speech.useJudgeAssistant) {
-          Speech.scrollToNextPageWithinBounds(numSpeeches);
-        }
+        _autoScrollIfUsingJudgeAssistant(speech.useJudgeAssistant);
       }
     });
   }
@@ -53,5 +49,11 @@ class SpeechEvent extends Event {
     bool shouldCountUp = speech.shouldCountUp;
     return (shouldCountUp && status == AnimationStatus.completed) ||
         (!shouldCountUp && status == AnimationStatus.dismissed);
+  }
+
+  void _autoScrollIfUsingJudgeAssistant(bool useJudgeAssistant) {
+    if (useJudgeAssistant) {
+      scrollToNextPage();
+    }
   }
 }

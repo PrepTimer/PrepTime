@@ -13,6 +13,6 @@ Speech _createSpeech(String name, int minutes) {
     name: name,
     shouldCountUp: false,
     useJudgeAssistant: true,
-    length: Duration(seconds: minutes),
+    length: Duration(seconds: minutes), // TODO(Justin): Change this back!!!!!!
   );
 }

@@ -6,8 +6,6 @@ import 'package:provider/provider.dart';
 
 /// A horizontal scroller of clock labels.
 class ClockCarousel extends StatelessWidget {
-  final PageController _controller = PageController();
-
   ClockCarousel({Key key}) : super(key: key);
 
   @override
@@ -16,7 +14,7 @@ class ClockCarousel extends StatelessWidget {
     return PageView.builder(
       scrollDirection: Axis.horizontal,
       physics: BouncingScrollPhysics(),
-      controller: _controller,
+      controller: event.pageController,
       onPageChanged: (index) => _updateNextOrPrevSpeech(index, context),
       itemCount: event.numSpeeches,
       itemBuilder: (_, index) => ClockLabel.fromIndex(index),

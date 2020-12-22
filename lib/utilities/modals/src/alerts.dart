@@ -21,11 +21,17 @@ class Alerts {
           ),
           actions: [
             CupertinoDialogAction(
-              onPressed: firstAction,
+              onPressed: () {
+                firstAction();
+                Navigator.of(context).pop();
+              },
               child: Text(firstActionLabel),
             ),
             CupertinoDialogAction(
-              onPressed: secondAction,
+              onPressed: () {
+                secondAction();
+                Navigator.of(context).pop();
+              },
               child: Text(secondActionLabel),
             )
           ],
@@ -39,11 +45,17 @@ class Alerts {
           content: Text(content),
           actions: [
             TextButton(
-              onPressed: firstAction,
+              onPressed: () {
+                firstAction();
+                Navigator.of(context).pop();
+              },
               child: Text(firstActionLabel),
             ),
             TextButton(
-              onPressed: secondAction,
+              onPressed: () {
+                secondAction();
+                Navigator.of(context).pop();
+              },
               child: Text(secondActionLabel),
             )
           ],
@@ -74,12 +86,18 @@ class Alerts {
           ),
           actions: [
             CupertinoDialogAction(
-              onPressed: cancelAction,
+              onPressed: () {
+                cancelAction();
+                Navigator.of(context).pop();
+              },
               child: Text(cancelActionLabel),
             ),
             CupertinoDialogAction(
               isDestructiveAction: true,
-              onPressed: destructiveAction,
+              onPressed: () {
+                destructiveAction();
+                Navigator.of(context).pop();
+              },
               child: Text(destructiveActionLabel),
             )
           ],
@@ -93,11 +111,19 @@ class Alerts {
           content: Text(content),
           actions: [
             TextButton(
-              onPressed: cancelAction,
+              onPressed: () {
+                HapticFeedback.selectionClick();
+                cancelAction();
+                Navigator.of(context).pop();
+              },
               child: Text(cancelActionLabel),
             ),
             TextButton(
-              onPressed: destructiveAction,
+              onPressed: () {
+                HapticFeedback.selectionClick();
+                destructiveAction();
+                Navigator.of(context).pop();
+              },
               child: Text(
                 destructiveActionLabel,
                 style: TextStyle(
@@ -133,12 +159,20 @@ class Alerts {
           ),
           actions: [
             CupertinoDialogAction(
-              onPressed: secondaryAction,
+              onPressed: () {
+                HapticFeedback.selectionClick();
+                secondaryAction();
+                Navigator.of(context).pop();
+              },
               child: Text(secondaryActionLabel),
             ),
             CupertinoDialogAction(
               isDefaultAction: true,
-              onPressed: defaultAction,
+              onPressed: () {
+                HapticFeedback.selectionClick();
+                defaultAction();
+                Navigator.of(context).pop();
+              },
               child: Text(defaultActionLabel),
             )
           ],
@@ -152,11 +186,19 @@ class Alerts {
           content: Text(content),
           actions: [
             TextButton(
-              onPressed: secondaryAction,
+              onPressed: () {
+                HapticFeedback.selectionClick();
+                secondaryAction();
+                Navigator.of(context).pop();
+              },
               child: Text(secondaryActionLabel),
             ),
             TextButton(
-              onPressed: defaultAction,
+              onPressed: () {
+                HapticFeedback.selectionClick();
+                defaultAction();
+                Navigator.of(context).pop();
+              },
               child: Text(
                 defaultActionLabel,
                 style: TextStyle(

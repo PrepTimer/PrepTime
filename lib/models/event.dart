@@ -9,6 +9,9 @@ import 'package:preptime/models/speech.dart';
 /// debate events can change the speech that is given, but both implement the
 /// [nextSpeech] and [prevSpeech] methods.
 abstract class Event extends ChangeNotifier {
+  /// Controlls the clock swiping feature.
+  final pageController = PageController();
+
   /// The name of the event.
   final String name;
 
@@ -64,5 +67,14 @@ abstract class Event extends ChangeNotifier {
     speech?.dispose();
     speech = null;
     super.dispose();
+  }
+
+  void scrollToNextPage() {
+    if (pageController.hasClients && pageController.page < numSpeeches) {
+      pageController.nextPage(
+        duration: Duration(seconds: 1),
+        curve: Curves.ease,
+      );
+    }
   }
 }

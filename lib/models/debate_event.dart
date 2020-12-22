@@ -87,10 +87,8 @@ class DebateEvent extends Event with PrepTimeMixin {
     speech.initController(ticker, onStatusChanged: (AnimationStatus status) {
       if (_isSpeechAnimationCompleted(status)) {
         onSpeechEnd();
-        speech.status = SpeechStatus.completed;
-        notifyListeners();
+        _autoScrollIfUsingJudgeAssistant(speech.useJudgeAssistant);
       }
-      _autoScrollIfUsingJudgeAssistant(speech.useJudgeAssistant);
     });
   }
 
@@ -102,7 +100,7 @@ class DebateEvent extends Event with PrepTimeMixin {
 
   void _autoScrollIfUsingJudgeAssistant(bool useJudgeAssistant) {
     if (useJudgeAssistant) {
-      Speech.scrollToNextPageWithinBounds(numSpeeches);
+      scrollToNextPage();
     }
   }
 }

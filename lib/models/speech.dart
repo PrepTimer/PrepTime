@@ -20,8 +20,6 @@ import 'package:preptime/models/timeable.dart';
 /// the resources used here, you should call [dispose] to free up the space
 /// used by the [controller].
 class Speech extends ChangeNotifier implements Timeable {
-  static final pageController = PageController();
-
   final bool shouldCountUp, useJudgeAssistant;
   final CountDownTimer timer;
   final Duration length;
@@ -142,16 +140,6 @@ class Speech extends ChangeNotifier implements Timeable {
   void _ensureControllerIsNotNull() {
     if (_controller == null) {
       throw StateError('Must call initController() before using it.');
-    }
-  }
-
-  static void scrollToNextPageWithinBounds(int maxPageIndex) {
-    PageController controller = Speech.pageController;
-    if (controller.hasClients && controller.page < maxPageIndex) {
-      controller.nextPage(
-        duration: Duration(milliseconds: 500),
-        curve: Curves.ease,
-      );
     }
   }
 }

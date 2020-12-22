@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:preptime/models/event.dart';
@@ -62,33 +64,20 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
         content: 'Would either team like to take prep?',
         defaultActionLabel: 'Yes',
         secondaryActionLabel: 'No',
-        secondaryAction: () {
-          HapticFeedback.selectionClick();
-          Navigator.of(context).pop();
-          event.nextSpeech();
-        },
+        secondaryAction: () => null,
         defaultAction: () {
-          HapticFeedback.selectionClick();
-          Navigator.of(context).pop();
-          Alerts.showAlertDialogWithTwoBasicOptions(
-            context,
-            title: 'Awesome!',
-            content: 'Which team will be taking prep?',
-            firstActionLabel: event.prepName(Team.left),
-            secondActionLabel: event.prepName(Team.right),
-            firstAction: () {
-              HapticFeedback.selectionClick();
-              event.startPrep(Team.left);
-              Navigator.of(context).pop();
-              event.nextSpeech();
-            },
-            secondAction: () {
-              HapticFeedback.selectionClick();
-              event.startPrep(Team.right);
-              Navigator.of(context).pop();
-              event.nextSpeech();
-            },
-          );
+          // Must present new alert asynchronously to avoid navigator pop loop.
+          Timer.run(() {
+            Alerts.showAlertDialogWithTwoBasicOptions(
+              context,
+              title: 'Awesome!',
+              content: 'Which team will be taking prep?',
+              firstActionLabel: event.prepName(Team.left),
+              secondActionLabel: event.prepName(Team.right),
+              firstAction: () => event.startPrep(Team.left),
+              secondAction: () => event.startPrep(Team.right),
+            );
+          });
         },
       );
     }
