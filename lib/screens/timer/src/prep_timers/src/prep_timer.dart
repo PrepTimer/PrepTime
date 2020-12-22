@@ -90,21 +90,21 @@ class _PrepTimerState extends State<PrepTimer> {
 
   /// Decides if the current team's prep timer should be disabled.
   ///
-  /// This [PrepTimer] should be disabled when either of the following are
+  /// This [PrepTimer] should be disabled when any of the following are
   /// considered to be true:
   ///
   /// - The other [PrepTimer] is currently running (`isOtherTimerRunning`)
   /// - The [Speech] is currently running (`Event.speech.isRunning`)
+  /// - This [PrepTimer] is out of prep (can still reset this though)
   ///
   /// The other PrepTimer is running when there is at least one timer that is
   /// running (`Event.isAnyRunning` is `true`) and the current PrepTimer is not
   /// running (`Event.isNotRunning(this.team)`);
   bool _didChangeDisability(Event _) {
-    bool isAnyTimerRunning = _debateEvent.isAnyRunning;
-    bool isThisTimerNotRunning = _debateEvent.isNotRunning(widget.team);
-    bool isOtherTimerRunning = isAnyTimerRunning && isThisTimerNotRunning;
-    bool isOutOfPrep =
-        _debateEvent.isOutOfPrep(widget.team);
+    bool _isAnyTimerRunning = _debateEvent.isAnyRunning;
+    bool _isThisTimerNotRunning = _debateEvent.isNotRunning(widget.team);
+    bool isOtherTimerRunning = _isAnyTimerRunning && _isThisTimerNotRunning;
+    bool isOutOfPrep = _debateEvent.isOutOfPrep(widget.team);
     return isOtherTimerRunning || _speech.isRunning || isOutOfPrep;
   }
 

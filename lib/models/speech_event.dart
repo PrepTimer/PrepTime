@@ -40,7 +40,7 @@ class SpeechEvent extends Event {
     speech.initController(ticker, onStatusChanged: (AnimationStatus status) {
       if (_isSpeechAnimationCompleted(status)) {
         onSpeechEnd();
-        _autoScrollIfUsingJudgeAssistant(speech.useJudgeAssistant);
+        _autoScroll(speech);
       }
     });
   }
@@ -51,9 +51,9 @@ class SpeechEvent extends Event {
         (!shouldCountUp && status == AnimationStatus.dismissed);
   }
 
-  void _autoScrollIfUsingJudgeAssistant(bool useJudgeAssistant) {
-    if (useJudgeAssistant) {
-      scrollToNextPage();
+  void _autoScroll(Speech speech) {
+    if (speech.useJudgeAssistant) {
+      scrollToNextPageIfSafe();
     }
   }
 }

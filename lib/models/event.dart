@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:preptime/models/speech.dart';
+import 'package:preptime/utilities/modals/modals.dart';
 
 /// An academic forensics event.
 ///
@@ -69,12 +70,14 @@ abstract class Event extends ChangeNotifier {
     super.dispose();
   }
 
-  void scrollToNextPage() {
-    if (pageController.hasClients && pageController.page < numSpeeches) {
+  void scrollToNextPageIfSafe() {
+    if (pageController.hasClients && pageController.page < numSpeeches - 1) {
       pageController.nextPage(
         duration: Duration(seconds: 1),
         curve: Curves.ease,
       );
+    } else if (pageController.page == numSpeeches - 1) {
+      reset();
     }
   }
 }
