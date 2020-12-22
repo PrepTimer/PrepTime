@@ -103,7 +103,9 @@ class _PrepTimerState extends State<PrepTimer> {
     bool isAnyTimerRunning = _debateEvent.isAnyRunning;
     bool isThisTimerNotRunning = _debateEvent.isNotRunning(widget.team);
     bool isOtherTimerRunning = isAnyTimerRunning && isThisTimerNotRunning;
-    return isOtherTimerRunning || _speech.isRunning;
+    bool isOutOfPrep =
+        _debateEvent.isOutOfPrep(widget.team);
+    return isOtherTimerRunning || _speech.isRunning || isOutOfPrep;
   }
 
   /// Handles the [reset] callback.
@@ -117,7 +119,7 @@ class _PrepTimerState extends State<PrepTimer> {
     if (_debateEvent.isRunning(widget.team)) {
       _debateEvent.stopPrep(widget.team);
     }
-    Alerts.showAlertDialogWithOneDestructiveOption(
+    ShowAlertDialog.withDestructiveAndBasicActions(
       context,
       title: 'Reset Prep?',
       content: 'The current prep time will be lost.',

@@ -1,9 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:preptime/models/event.dart';
-import 'package:preptime/models/speech.dart';
 import 'package:preptime/models/team.dart';
 import 'package:preptime/screens/timer/src/timer_ring/src/clock_carousel.dart';
 import 'package:preptime/screens/timer/src/timer_ring/src/ring_painter.dart';
@@ -58,7 +56,7 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
   void _autoMoveSpeeches(BuildContext context) {
     Event event = context.read<Event>();
     if (event.speech.useJudgeAssistant && event is DebateEvent) {
-      Alerts.showAlertDialogWithOneDefaultOption(
+      ShowAlertDialog.withDefaultAndBasicActions(
         context,
         title: 'Time\'s up!',
         content: 'Would either team like to take prep?',
@@ -68,7 +66,7 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
         defaultAction: () {
           // Must present new alert asynchronously to avoid navigator pop loop.
           Timer.run(() {
-            Alerts.showAlertDialogWithTwoBasicOptions(
+            ShowAlertDialog.withTwoBasicActions(
               context,
               title: 'Awesome!',
               content: 'Which team will be taking prep?',

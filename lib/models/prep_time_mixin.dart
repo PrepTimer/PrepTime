@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:preptime/models/countdown_timer.dart';
 import 'package:preptime/models/event.dart';
 import 'package:preptime/models/team.dart';
+import 'package:preptime/utilities/modals/modals.dart';
 
 /// Manages the prep time for two teams in a forensic event.
 ///
@@ -48,7 +49,7 @@ mixin PrepTimeMixin on Event {
     for (Team team in Team.values) {
       _timers.putIfAbsent(
         team,
-        () => CountDownTimer(duration, onEnd: notifyListeners),
+        () => CountDownTimer(duration, onEnd: () => notifyListeners()),
       );
     }
   }
@@ -109,6 +110,11 @@ mixin PrepTimeMixin on Event {
   Stream<Duration> remainingPrep(Team team) {
     _ensurePrepTimersHaveBeenInitialized(team);
     return _timers[team].currentTime;
+  }
+
+  bool isOutOfPrep(Team team) {
+    _ensurePrepTimersHaveBeenInitialized(team);
+    return _timers[team].timeRemaining <= Duration.zero;
   }
 
   /// The name of each team as displayed above their prep time.

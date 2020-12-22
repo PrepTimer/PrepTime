@@ -2,7 +2,6 @@ import 'package:flutter/widgets.dart';
 import 'package:preptime/models/event.dart';
 import 'package:preptime/models/prep_time_mixin.dart';
 import 'package:preptime/models/speech.dart';
-import 'package:preptime/models/speech_status.dart';
 
 /// A [DebateEvent] is an [Event] in which multiple speechs are given.
 ///

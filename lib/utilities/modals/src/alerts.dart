@@ -1,7 +1,41 @@
 part of modals;
 
-class Alerts {
-  static void showAlertDialogWithTwoBasicOptions(
+class ShowAlertDialog {
+  static void withOneAction(
+    BuildContext context, {
+    String title,
+    String content,
+    String actionLabel,
+    void Function() action,
+  }) {
+    _showPlatformAwareModalAlert(
+      context: context,
+      title: title,
+      content: content,
+      iOSActions: [
+        CupertinoDialogAction(
+          onPressed: () {
+            HapticFeedback.selectionClick();
+            action();
+            Navigator.of(context).pop();
+          },
+          child: Text(actionLabel),
+        )
+      ],
+      androidActions: [
+        TextButton(
+          onPressed: () {
+            HapticFeedback.selectionClick();
+            action();
+            Navigator.of(context).pop();
+          },
+          child: Text(actionLabel),
+        )
+      ],
+    );
+  }
+
+  static void withTwoBasicActions(
     BuildContext context, {
     String title,
     String content,
@@ -10,63 +44,50 @@ class Alerts {
     void Function() firstAction,
     void Function() secondAction,
   }) {
-    if (Platform.isIOS) {
-      showCupertinoDialog(
-        context: context,
-        builder: (context) => CupertinoAlertDialog(
-          title: Text(title),
-          content: Text(
-            content,
-            style: TextStyle(height: 2),
-          ),
-          actions: [
-            CupertinoDialogAction(
-              onPressed: () {
-                firstAction();
-                Navigator.of(context).pop();
-              },
-              child: Text(firstActionLabel),
-            ),
-            CupertinoDialogAction(
-              onPressed: () {
-                secondAction();
-                Navigator.of(context).pop();
-              },
-              child: Text(secondActionLabel),
-            )
-          ],
+    _showPlatformAwareModalAlert(
+      context: context,
+      title: title,
+      content: content,
+      iOSActions: [
+        CupertinoDialogAction(
+          onPressed: () {
+            HapticFeedback.selectionClick();
+            firstAction();
+            Navigator.of(context).pop();
+          },
+          child: Text(firstActionLabel),
         ),
-      );
-    } else if (Platform.isAndroid) {
-      showGeneralDialog(
-        context: context,
-        pageBuilder: (context, animation, secondaryAnimation) => AlertDialog(
-          title: Text(title),
-          content: Text(content),
-          actions: [
-            TextButton(
-              onPressed: () {
-                firstAction();
-                Navigator.of(context).pop();
-              },
-              child: Text(firstActionLabel),
-            ),
-            TextButton(
-              onPressed: () {
-                secondAction();
-                Navigator.of(context).pop();
-              },
-              child: Text(secondActionLabel),
-            )
-          ],
+        CupertinoDialogAction(
+          onPressed: () {
+            HapticFeedback.selectionClick();
+            secondAction();
+            Navigator.of(context).pop();
+          },
+          child: Text(secondActionLabel),
+        )
+      ],
+      androidActions: [
+        TextButton(
+          onPressed: () {
+            HapticFeedback.selectionClick();
+            firstAction();
+            Navigator.of(context).pop();
+          },
+          child: Text(firstActionLabel),
         ),
-      );
-    } else {
-      throw PlatformException(code: 'showDialog not defined for all platforms');
-    }
+        TextButton(
+          onPressed: () {
+            HapticFeedback.selectionClick();
+            secondAction();
+            Navigator.of(context).pop();
+          },
+          child: Text(secondActionLabel),
+        )
+      ],
+    );
   }
 
-  static void showAlertDialogWithOneDestructiveOption(
+  static void withDestructiveAndBasicActions(
     BuildContext context, {
     String title,
     String content,
@@ -75,71 +96,56 @@ class Alerts {
     void Function() destructiveAction,
     void Function() cancelAction,
   }) {
-    if (Platform.isIOS) {
-      showCupertinoDialog(
-        context: context,
-        builder: (context) => CupertinoAlertDialog(
-          title: Text(title),
-          content: Text(
-            content,
-            style: TextStyle(height: 2),
+    _showPlatformAwareModalAlert(
+      context: context,
+      title: title,
+      content: content,
+      iOSActions: [
+        CupertinoDialogAction(
+          onPressed: () {
+            HapticFeedback.selectionClick();
+            cancelAction();
+            Navigator.of(context).pop();
+          },
+          child: Text(cancelActionLabel),
+        ),
+        CupertinoDialogAction(
+          isDestructiveAction: true,
+          onPressed: () {
+            HapticFeedback.selectionClick();
+            destructiveAction();
+            Navigator.of(context).pop();
+          },
+          child: Text(destructiveActionLabel),
+        )
+      ],
+      androidActions: [
+        TextButton(
+          onPressed: () {
+            HapticFeedback.selectionClick();
+            cancelAction();
+            Navigator.of(context).pop();
+          },
+          child: Text(cancelActionLabel),
+        ),
+        TextButton(
+          onPressed: () {
+            HapticFeedback.selectionClick();
+            destructiveAction();
+            Navigator.of(context).pop();
+          },
+          child: Text(
+            destructiveActionLabel,
+            style: TextStyle(
+              color: Colors.red,
+            ),
           ),
-          actions: [
-            CupertinoDialogAction(
-              onPressed: () {
-                cancelAction();
-                Navigator.of(context).pop();
-              },
-              child: Text(cancelActionLabel),
-            ),
-            CupertinoDialogAction(
-              isDestructiveAction: true,
-              onPressed: () {
-                destructiveAction();
-                Navigator.of(context).pop();
-              },
-              child: Text(destructiveActionLabel),
-            )
-          ],
-        ),
-      );
-    } else if (Platform.isAndroid) {
-      showGeneralDialog(
-        context: context,
-        pageBuilder: (context, animation, secondaryAnimation) => AlertDialog(
-          title: Text(title),
-          content: Text(content),
-          actions: [
-            TextButton(
-              onPressed: () {
-                HapticFeedback.selectionClick();
-                cancelAction();
-                Navigator.of(context).pop();
-              },
-              child: Text(cancelActionLabel),
-            ),
-            TextButton(
-              onPressed: () {
-                HapticFeedback.selectionClick();
-                destructiveAction();
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                destructiveActionLabel,
-                style: TextStyle(
-                  color: Colors.red,
-                ),
-              ),
-            )
-          ],
-        ),
-      );
-    } else {
-      throw PlatformException(code: 'showDialog not defined for all platforms');
-    }
+        )
+      ],
+    );
   }
 
-  static void showAlertDialogWithOneDefaultOption(
+  static void withDefaultAndBasicActions(
     BuildContext context, {
     String title,
     String content,
@@ -147,6 +153,62 @@ class Alerts {
     String secondaryActionLabel,
     void Function() defaultAction,
     void Function() secondaryAction,
+  }) {
+    _showPlatformAwareModalAlert(
+      context: context,
+      title: title,
+      content: content,
+      iOSActions: [
+        CupertinoDialogAction(
+          onPressed: () {
+            HapticFeedback.selectionClick();
+            secondaryAction();
+            Navigator.of(context).pop();
+          },
+          child: Text(secondaryActionLabel),
+        ),
+        CupertinoDialogAction(
+          isDefaultAction: true,
+          onPressed: () {
+            HapticFeedback.selectionClick();
+            defaultAction();
+            Navigator.of(context).pop();
+          },
+          child: Text(defaultActionLabel),
+        )
+      ],
+      androidActions: [
+        TextButton(
+          onPressed: () {
+            HapticFeedback.selectionClick();
+            secondaryAction();
+            Navigator.of(context).pop();
+          },
+          child: Text(secondaryActionLabel),
+        ),
+        TextButton(
+          onPressed: () {
+            HapticFeedback.selectionClick();
+            defaultAction();
+            Navigator.of(context).pop();
+          },
+          child: Text(
+            defaultActionLabel,
+            style: TextStyle(
+              color: Colors.blue,
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  static void _showPlatformAwareModalAlert({
+    BuildContext context,
+    String title,
+    String content,
+    List<Widget> iOSActions,
+    List<Widget> androidActions,
   }) {
     if (Platform.isIOS) {
       showCupertinoDialog(
@@ -157,25 +219,7 @@ class Alerts {
             content,
             style: TextStyle(height: 2),
           ),
-          actions: [
-            CupertinoDialogAction(
-              onPressed: () {
-                HapticFeedback.selectionClick();
-                secondaryAction();
-                Navigator.of(context).pop();
-              },
-              child: Text(secondaryActionLabel),
-            ),
-            CupertinoDialogAction(
-              isDefaultAction: true,
-              onPressed: () {
-                HapticFeedback.selectionClick();
-                defaultAction();
-                Navigator.of(context).pop();
-              },
-              child: Text(defaultActionLabel),
-            )
-          ],
+          actions: iOSActions,
         ),
       );
     } else if (Platform.isAndroid) {
@@ -184,29 +228,7 @@ class Alerts {
         pageBuilder: (context, animation, secondaryAnimation) => AlertDialog(
           title: Text(title),
           content: Text(content),
-          actions: [
-            TextButton(
-              onPressed: () {
-                HapticFeedback.selectionClick();
-                secondaryAction();
-                Navigator.of(context).pop();
-              },
-              child: Text(secondaryActionLabel),
-            ),
-            TextButton(
-              onPressed: () {
-                HapticFeedback.selectionClick();
-                defaultAction();
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                defaultActionLabel,
-                style: TextStyle(
-                  color: Colors.blue,
-                ),
-              ),
-            )
-          ],
+          actions: androidActions,
         ),
       );
     } else {

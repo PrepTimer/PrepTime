@@ -40,6 +40,8 @@ class CountDownTimer implements Timeable {
   Stream<Duration> get currentTime => _controller.stream;
   StreamController<Duration> _controller;
 
+  Duration get timeRemaining => _calculateTimeRemaining();
+
   /// Whether the [CountDownTimer] is running.
   bool get isRunning => _timer?.isActive ?? false;
 
@@ -56,7 +58,7 @@ class CountDownTimer implements Timeable {
   /// problem is that we construct a new timer on each valid [start] call,
   /// and therefore we lose the ticks of the cancelled timer.
   void resume() {
-    if (isNotRunning && _calculateTimeRemaining() > Duration.zero) {
+    if (isNotRunning && _calculateTimeRemaining() >= Duration.zero) {
       _updateCurrentTime(null); // immediatley tick to let user know it worked.
       _timer = Timer.periodic(timeBetweenTicks, _updateCurrentTime);
     }
@@ -96,12 +98,12 @@ class CountDownTimer implements Timeable {
   /// is stopped (via [dispose]).
   void _updateCurrentTime(Timer _) {
     Duration timeRemaining = _calculateTimeRemaining();
-    _controller.add(timeRemaining);
-    _ticks++;
-    print(timeRemaining);
-    if (timeRemaining <= Duration.zero) {
+    if (timeRemaining < Duration.zero) {
       stop();
       onEnd?.call(); // only calls the callback if the function is not null
+    } else {
+      _controller.add(timeRemaining);
+      _ticks++;
     }
   }
 
