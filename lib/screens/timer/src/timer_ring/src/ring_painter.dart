@@ -77,6 +77,7 @@ class _CustomRingPainter extends CustomPainter {
   }
 
   /// Draws the foreground arc to the canvas with the given paint object.
+  /// TODO: #32 TimerRing should change color as it spins.
   void _drawForeground(Canvas canvas, Size size, Paint paint) {
     paint.color = Theme.of(context).primaryColor;
     Rect rect = Offset.zero & size;

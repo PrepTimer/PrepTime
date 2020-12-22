@@ -34,6 +34,7 @@ class Speech extends ChangeNotifier implements Timeable {
   }) : timer = CountDownTimer(
           length,
           timeBetweenTicks: Duration(milliseconds: 100),
+          shouldCountUp: shouldCountUp,
         );
 
   /// Initializes the controller.

@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:preptime/models/event.dart';
 import 'package:preptime/models/speech.dart';
-import 'package:preptime/models/speech_status.dart';
 
 /// A SpeechEvent is an Event in which a single speech is given.
 ///

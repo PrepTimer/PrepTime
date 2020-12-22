@@ -19,7 +19,7 @@ class ClockLabel extends StatelessWidget {
       alignment: FractionalOffset.center,
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: StreamBuilder<Duration>(
-        initialData: _getSpeechFromEventAtIndex(event, index).length,
+        initialData: _getInitialDataFromEventAtIndex(event, index),
         stream: _getSpeechFromEventAtIndex(event, index).timer.currentTime,
         builder: (context, durationSnapshot) {
           return AutoSizeText(
@@ -32,6 +32,14 @@ class ClockLabel extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Duration _getInitialDataFromEventAtIndex(Event event, int index) {
+    if (event.speech.shouldCountUp) {
+      return Duration.zero;
+    } else {
+      return _getSpeechFromEventAtIndex(event, index).length;
+    }
   }
 
   Speech _getSpeechFromEventAtIndex(Event event, int index) {
