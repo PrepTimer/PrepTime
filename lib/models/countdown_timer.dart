@@ -23,9 +23,8 @@ class CountDownTimer implements Timeable {
   Timer _timer;
   int _ticks = 0;
 
-  final Duration timeBetweenTicks;
-  final Duration initialDuration;
-  final void Function() onEnd;
+  final Duration timeBetweenTicks, initialDuration;
+  final void Function() onEnd, onUpdate;
   final bool shouldCountUp;
 
   /// Constructs a new [CountDownTimer].
@@ -35,8 +34,9 @@ class CountDownTimer implements Timeable {
   CountDownTimer(
     this.initialDuration, {
     this.onEnd,
-    this.timeBetweenTicks = const Duration(seconds: 1),
+    this.onUpdate,
     this.shouldCountUp = false,
+    this.timeBetweenTicks = const Duration(seconds: 1),
   }) : _controller = StreamController.broadcast();
 
   Stream<Duration> get currentTime => _controller.stream;
@@ -106,6 +106,7 @@ class CountDownTimer implements Timeable {
     } else {
       _controller.add(timeRemaining);
       _ticks++;
+      onUpdate?.call();
     }
   }
 
