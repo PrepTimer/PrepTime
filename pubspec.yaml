@@ -68,6 +68,14 @@ flutter:
 
   assets:
     - assets/icon/icon.png
+    - assets/signals/five.png
+    - assets/signals/four.png
+    - assets/signals/three.png
+    - assets/signals/two.png
+    - assets/signals/one.png
+    - assets/signals/fist.png
+    - assets/signals/thirty.png
+    - assets/signals/fifteen.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
