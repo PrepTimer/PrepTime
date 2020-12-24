@@ -21,7 +21,7 @@ class TimerRing extends StatefulWidget {
 class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    _initializeAllSpeechControllersInEvent(context.watch<Event>());
+    _initializeAllSpeechControllersInEvent(context.watch<Event>(), context);
     return Align(
       alignment: FractionalOffset.center,
       child: AspectRatio(
@@ -45,9 +45,11 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
     );
   }
 
-  void _initializeAllSpeechControllersInEvent(Event event) {
+  void _initializeAllSpeechControllersInEvent(
+      Event event, BuildContext context) {
     event.initSpeechController(
       this,
+      context: context,
       onSpeechEnd: () => _autoMoveSpeeches(context),
     );
   }
@@ -80,7 +82,5 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
     }
   }
 
-  void _showTimeSignal() {
-
-  }
+  void _showTimeSignal() {}
 }
