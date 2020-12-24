@@ -60,8 +60,11 @@ abstract class Event extends ChangeNotifier {
     notifyListeners();
   }
 
-  void initSpeechController(TickerProvider ticker,
-      {void Function() onSpeechEnd});
+  void initSpeechController(
+    TickerProvider ticker, {
+    BuildContext context,
+    void Function() onSpeechEnd,
+  });
 
   @override
   void dispose() {

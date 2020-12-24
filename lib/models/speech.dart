@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:preptime/models/countdown_timer.dart';
 import 'package:preptime/models/speech_status.dart';
 import 'package:preptime/models/timeable.dart';
+import 'package:preptime/utilities/modals/modals.dart';
 
 /// A speech given in an [Event].
 ///
@@ -25,6 +26,16 @@ class Speech extends ChangeNotifier implements Timeable {
   final Duration length;
   final String name;
 
+  BuildContext _context;
+
+  AnimationController get controller => _controller;
+  AnimationController _controller;
+
+  SpeechStatus status = SpeechStatus.stoppedAtBeginning;
+
+  bool get isRunning => timer.isRunning;
+  bool get isNotRunning => timer.isNotRunning;
+
   /// Constructs a new Speech object.
   Speech({
     this.name = 'speech',
@@ -35,7 +46,11 @@ class Speech extends ChangeNotifier implements Timeable {
           length,
           timeBetweenTicks: Duration(milliseconds: 100),
           shouldCountUp: shouldCountUp,
-        );
+        ) {
+    if (useJudgeAssistant) {
+      _attachListenerForTimeSignals();
+    }
+  }
 
   /// Initializes the controller.
   ///
@@ -46,22 +61,16 @@ class Speech extends ChangeNotifier implements Timeable {
   /// - [ticker] a reference to the current context's TickerProvider.
   /// - [onStatusChanged] a callback for when the speech status changes.
   AnimationController initController(
-    TickerProvider ticker, {
+    TickerProvider ticker,
+    BuildContext context, {
     void Function(AnimationStatus) onStatusChanged,
   }) {
+    _context = context;
     _controller ??= AnimationController(duration: length, vsync: ticker)
       ..value = shouldCountUp ? 0.0 : 1.0
       ..addStatusListener(onStatusChanged);
     return _controller;
   }
-
-  AnimationController get controller => _controller;
-  AnimationController _controller;
-
-  SpeechStatus status = SpeechStatus.stoppedAtBeginning;
-
-  bool get isRunning => timer.isRunning;
-  bool get isNotRunning => timer.isNotRunning;
 
   /// Starts the speech animation from the beginning.
   ///
@@ -141,6 +150,19 @@ class Speech extends ChangeNotifier implements Timeable {
   void _ensureControllerIsNotNull() {
     if (_controller == null) {
       throw StateError('Must call initController() before using it.');
+    }
+  }
+
+  /// Listens to each update from the Duration stream and shows time signals
+  /// at the right time.
+  void _attachListenerForTimeSignals() {
+    timer.currentTime.listen(_shouldShowTimeSignals);
+  }
+
+  /// Takes a duration and decides which time signal to show if any.
+  void _shouldShowTimeSignals(Duration timeRemaining) {
+    if (timeRemaining == Duration(minutes: 5)) {
+      ShowTimeSignal.five(_context);
     }
   }
 }

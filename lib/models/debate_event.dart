@@ -61,10 +61,17 @@ class DebateEvent extends Event with PrepTimeMixin {
   @override
   void initSpeechController(
     TickerProvider ticker, {
+    BuildContext context,
     void Function() onSpeechEnd,
   }) {
     for (Speech speech in speeches) {
-      _initSpeechControllerWithTickerAndCallback(speech, ticker, onSpeechEnd);
+      speech.initController(ticker, context,
+          onStatusChanged: (AnimationStatus status) {
+        if (_isSpeechAnimationCompleted(status)) {
+          onSpeechEnd();
+          _autoScroll(speech);
+        }
+      });
     }
   }
 
@@ -76,19 +83,6 @@ class DebateEvent extends Event with PrepTimeMixin {
     speeches.clear();
     disposePrepTimers();
     super.dispose();
-  }
-
-  void _initSpeechControllerWithTickerAndCallback(
-    Speech speech,
-    TickerProvider ticker,
-    void Function() onSpeechEnd,
-  ) {
-    speech.initController(ticker, onStatusChanged: (AnimationStatus status) {
-      if (_isSpeechAnimationCompleted(status)) {
-        onSpeechEnd();
-        _autoScroll(speech);
-      }
-    });
   }
 
   bool _isSpeechAnimationCompleted(AnimationStatus status) {

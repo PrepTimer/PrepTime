@@ -49,7 +49,6 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
     event.initSpeechController(
       this,
       onSpeechEnd: () => _autoMoveSpeeches(context),
-      // onValueChanged: () => _showTimeSignal(),
     );
   }
 
@@ -81,6 +80,7 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
     }
   }
 
-  /// TODO: DO THIS.
-  void _showTimeSignal() {}
+  void _showTimeSignal() {
+
+  }
 }

@@ -34,9 +34,12 @@ class SpeechEvent extends Event {
   /// callback to the controller.
   void initSpeechController(
     TickerProvider ticker, {
+    BuildContext context,
     void Function() onSpeechEnd,
   }) {
-    speech.initController(ticker, onStatusChanged: (AnimationStatus status) {
+    speech.initController(ticker, context, onStatusChanged: (
+      AnimationStatus status,
+    ) {
       if (_isSpeechAnimationCompleted(status)) {
         onSpeechEnd();
         _autoScroll(speech);
