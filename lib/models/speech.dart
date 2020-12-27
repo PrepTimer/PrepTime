@@ -161,8 +161,8 @@ class Speech extends ChangeNotifier implements Timeable {
 
   /// Takes a duration and decides which time signal to show if any.
   void _shouldShowTimeSignals(Duration timeRemaining) {
-    if (timeRemaining == Duration(minutes: 5)) {
-      ShowTimeSignal.five(_context);
+    if (isRunning) {
+      ShowTimeSignal.fromDuration(timeRemaining, _context);
     }
   }
 }

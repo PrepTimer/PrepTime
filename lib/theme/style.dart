@@ -51,6 +51,13 @@ abstract class PrepTimeThemeData {
         fontSize: 190.0,
       ),
 
+      /// The modal popup text style of the time signals.
+      headline3: const TextStyle(
+        fontWeight: FontWeight.w400,
+        color: Colors.white38,
+        fontSize: 24.0,
+      ),
+
       /// The [Enabled] text style for a [SpeechLabel].
       subtitle1: const TextStyle(
         fontSize: 18.0,

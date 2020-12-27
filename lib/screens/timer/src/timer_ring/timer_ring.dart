@@ -81,6 +81,4 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
       );
     }
   }
-
-  void _showTimeSignal() {}
 }
