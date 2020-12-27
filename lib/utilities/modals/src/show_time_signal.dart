@@ -31,9 +31,11 @@ class ShowTimeSignal {
       signal = TimeSignal.fist;
       message = "Time's up!";
     }
-    _signalDuration = duration <= Duration(seconds: 5)
-        ? Duration(milliseconds: 900)
-        : Duration(seconds: 2);
+    if (duration <= Duration(seconds: 5)) {
+      _signalDuration = Duration(milliseconds: 750);
+    } else {
+      _signalDuration = Duration(seconds: 2);
+    }
     if (signal != null) {
       String assetName = 'assets/signals/${signal.toShortString()}.png';
       _showSignal(context, AssetImage(assetName), message);
