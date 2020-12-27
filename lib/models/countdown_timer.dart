@@ -1,5 +1,3 @@
-// TODO: #29 Implement count-up feature and add onUpdate callback to timer.
-
 import 'dart:async';
 
 import 'package:preptime/models/timeable.dart';
@@ -8,11 +6,11 @@ import 'package:preptime/models/timeable.dart';
 ///
 /// The [CountDownTimer] implements the [Timeable] interface and therefore
 /// exposes the following methods:
-/// - isRunning
-/// - isNotRunning
-/// - start
-/// - stop
-/// - reset
+/// - [isRunning]
+/// - [isNotRunning]
+/// - [start]
+/// - [stop]
+/// - [reset]
 ///
 /// Additionally, the [CountDownTimer] exposes a [currentTime] stream, which
 /// periodically yeilds a new duration representing the time remaining. You can
@@ -20,17 +18,32 @@ import 'package:preptime/models/timeable.dart';
 /// you can dispose of the [CountDownTimer]'s resources with the [dispose]
 /// method.
 class CountDownTimer implements Timeable {
+  /// The timer used internally to schedule tick callbacks.
   Timer _timer;
+
+  /// The number of ticks that have elapsed since starting the timer.
   int _ticks = 0;
 
-  final Duration timeBetweenTicks, initialDuration;
+  /// The duration of time that should elapse between ticks.
+  final Duration timeBetweenTicks;
+  
+  /// The duration of time that the timer initially takes on.
+  final Duration initialDuration;
+
+  /// The callback function that occurs when the timer ends.
   final void Function() onEnd;
+
+  /// Whether the timer counts up or down.
   final bool shouldCountUp;
 
   /// Constructs a new [CountDownTimer].
   ///
-  /// The initialDuration is the value of the timer at the beginning. This is
-  /// the same value that the timer will reset to when [reset()] is called.
+  /// The [initialDuration] is the value of the timer at the beginning. This is
+  /// the same value that the timer will reset to when [reset()] is called. You
+  /// can use shouldCountUp to force the timer to increase toward the initial
+  /// duration. The callback [onEnd] is called when the timer is finished. To
+  /// change the amount of time that elapses between ticks, you can update the
+  /// value of [timeBetweenTicks] (defaults to one second).
   CountDownTimer(
     this.initialDuration, {
     this.onEnd,
@@ -38,9 +51,12 @@ class CountDownTimer implements Timeable {
     this.timeBetweenTicks = const Duration(seconds: 1),
   }) : _controller = StreamController.broadcast();
 
+  /// A broadcast stream that emits a new [Duration] every [timeBetweenTicks]
+  /// that represents the current time on the timer.
   Stream<Duration> get currentTime => _controller.stream;
   StreamController<Duration> _controller;
 
+  /// A synchronous getter method to determine the amount of time remaining.
   Duration get timeRemaining => _calculateTimeRemaining();
 
   /// Whether the [CountDownTimer] is running.
