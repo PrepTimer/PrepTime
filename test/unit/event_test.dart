@@ -3,9 +3,13 @@
 
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/scheduler/ticker.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:preptime/models/event.dart';
 import 'package:preptime/models/speech.dart';
+
+class MockBuildContext extends Mock implements BuildContext {}
 
 class MockEvent extends Event {
   MockEvent(String name, String description, Speech speech)
@@ -16,7 +20,15 @@ class MockEvent extends Event {
     TickerProvider ticker, {
     BuildContext context,
     void Function() onSpeechEnd,
-  }) {} // must override but we test this elsewhere.
+  }) {
+    void handleStatusChange(AnimationStatus status) {
+      if (speech.isAnimationCompleted(status)) {
+        onSpeechEnd?.call();
+      }
+    }
+
+    speech.initController(ticker, context, onStatusChanged: handleStatusChange);
+  }
 }
 
 void main() {
@@ -25,9 +37,21 @@ void main() {
     setUp(() {
       event = MockEvent('name', 'description', Speech());
     });
-    test('constructor throws if name is null', () {
+    test('constructor throws assertion error if name is null', () {
       expect(
         () => MockEvent(null, 'description', Speech()),
+        throwsAssertionError,
+      );
+    });
+    test('constructor throws assertion error if description is null', () {
+      expect(
+        () => MockEvent('name', null, Speech()),
+        throwsAssertionError,
+      );
+    });
+    test('constructor throws assertion error if speech is null', () {
+      expect(
+        () => MockEvent('name', 'description', null),
         throwsAssertionError,
       );
     });
@@ -39,6 +63,35 @@ void main() {
     });
     test('speech field equals the value given in the constructor', () {
       expect(event.speech, isA<Speech>());
+    });
+    group('initController', () {
+      setUp(() {
+        TestWidgetsFlutterBinding.ensureInitialized();
+        MockBuildContext mockBuildContext = MockBuildContext();
+        event.initSpeechController(TestVSync(), context: mockBuildContext);
+      });
+      test('start makes isRunning true', () {
+        expect(event.isNotRunning, isTrue);
+        event.start();
+        expect(event.isRunning, isTrue);
+      });
+      test('calling stop makes isNotRunning true', () {
+        event.start();
+        event.stop();
+        expect(event.isNotRunning, isTrue);
+      });
+      test('calling resume makes isRunning true', () {
+        event.start();
+        event.stop();
+        event.resume();
+        expect(event.isRunning, isTrue);
+      });
+      test('calling reset makes isNotRunning true', () {
+        event.start();
+        event.stop();
+        event.reset();
+        expect(event.isNotRunning, isTrue);
+      });
     });
     tearDown(() {
       event?.dispose();
