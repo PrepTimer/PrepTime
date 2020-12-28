@@ -89,7 +89,7 @@ void main() {
       expect(testMixin.remainingPrep(Team.left), isNotNull);
       expect(testMixin.remainingPrep(Team.right), isNotNull);
     });
-    test('resetPrep throws state error', () {
+    test('resetPrep sets the amount of prep to initial value', () {
       fakeAsync((async) async {
         // Start a prep timer and then fast-forward a couple of minutes
         Duration _fastForwardDuration = Duration(minutes: 2);
@@ -106,6 +106,21 @@ void main() {
           testMixin.remainingPrep(Team.left),
           equals(testMixin.initialPrep),
         );
+      });
+    });
+    test('isOutOfPrep is true when the prep timer is zero', () {
+      fakeAsync((async) async {
+        // Start a prep timer and then fast-forward to the end
+        Duration _fastForwardDuration = testMixin.initialPrep;
+        testMixin.startPrep(Team.left);
+        async.elapse(_fastForwardDuration);
+        // Verify that the prep timer was actually fast-forwarded
+        expect(
+          await testMixin.remainingPrep(Team.left).last,
+          equals(testMixin.initialPrep - _fastForwardDuration),
+        );
+        // Verify isOutOfPrep returns true
+        expect(testMixin.isOutOfPrep(Team.left), isTrue);
       });
     });
     test('togglePrep starts a timer that is paused', () {
