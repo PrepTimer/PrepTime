@@ -1,3 +1,6 @@
+// Copyright (c) 2020, Justin Shaw. Use of this source code is restricted,
+// please read the LICENSE file for details. All rights reserved.
+
 part of '../debate_events.dart';
 
 /// Defines a list of basic policy debate speeches.

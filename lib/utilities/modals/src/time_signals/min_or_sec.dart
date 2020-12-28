@@ -1,3 +1,6 @@
+// Copyright (c) 2020, Justin Shaw. Use of this source code is restricted,
+// please read the LICENSE file for details. All rights reserved.
+
 /// Extends the Duration class to include a simple check if this duration is
 /// equal to either the given number of minutes or the given number of seconds.
 extension MinutesOrSeconds on Duration {
