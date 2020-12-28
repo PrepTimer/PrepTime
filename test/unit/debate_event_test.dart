@@ -1,3 +1,6 @@
+// Copyright (c) 2020, Justin Shaw. Use of this source code is restricted,
+// please read the LICENSE file for details. All rights reserved.
+
 import 'package:preptime/models/debate_event.dart';
 import 'package:preptime/models/speech.dart';
 import 'package:preptime/utilities/debate_events/debate_events.dart';
@@ -9,7 +12,7 @@ void main() {
     setUp(() {
       debateEvent = Policy.highSchool();
     });
-    test('get speeches returns a non-null list of speeches.', () {
+    test('getter speeches returns a non-null list of speeches.', () {
       expect(debateEvent.speeches, isNotNull);
       expect(debateEvent.speeches is List<Speech>, isTrue);
     });

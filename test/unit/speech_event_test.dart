@@ -1,3 +1,6 @@
+// Copyright (c) 2020, Justin Shaw. Use of this source code is restricted,
+// please read the LICENSE file for details. All rights reserved.
+
 import 'package:preptime/models/speech.dart';
 import 'package:preptime/models/speech_event.dart';
 import 'package:test/test.dart';
@@ -22,12 +25,6 @@ void main() {
     });
     test('speech field equals the value given in the constructor', () {
       expect(speechEvent.speech, isA<Speech>());
-    });
-    test('nextSpeech throws UnimplementedError', () {
-      expect(() => speechEvent.nextSpeech(), throwsUnimplementedError);
-    });
-    test('prevSpeech throws UnimplementedError', () {
-      expect(() => speechEvent.prevSpeech(), throwsUnimplementedError);
     });
     test('dispose() makes the speech null', () {
       expect(speechEvent.speech, isNotNull);

@@ -72,8 +72,6 @@ abstract class Event extends ChangeNotifier implements Timeable {
   /// Disposes the resources used by this event.
   @override
   void dispose() {
-    speech?.dispose();
-    speech = null;
     super.dispose();
   }
 }

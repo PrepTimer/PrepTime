@@ -9,6 +9,7 @@ import 'package:preptime/models/timeable.dart';
 ///
 /// The [SimpleTimer] implements the [Timeable] interface and therefore
 /// exposes the following methods:
+///
 /// - [isRunning]
 /// - [isNotRunning]
 /// - [start]
@@ -27,14 +28,14 @@ class SimpleTimer implements Timeable {
   /// The number of ticks that have elapsed since starting the timer.
   int _ticks = 0;
 
+  /// The callback function that occurs when the timer ends.
+  void Function() onEnd;
+
   /// The duration of time that should elapse between ticks.
   final Duration timeBetweenTicks;
 
   /// The duration of time that the timer initially takes on.
   final Duration initialDuration;
-
-  /// The callback function that occurs when the timer ends.
-  final void Function() onEnd;
 
   /// Whether the timer counts up or down.
   final bool shouldCountUp;
@@ -52,7 +53,9 @@ class SimpleTimer implements Timeable {
     this.onEnd,
     this.shouldCountUp = false,
     this.timeBetweenTicks = const Duration(seconds: 1),
-  }) : _controller = StreamController.broadcast();
+  }) : _controller = StreamController.broadcast() {
+    _controller.onListen = () => _controller.add(initialDuration);
+  }
 
   /// A broadcast stream that emits a new [Duration] every [timeBetweenTicks]
   /// that represents the current time on the timer.

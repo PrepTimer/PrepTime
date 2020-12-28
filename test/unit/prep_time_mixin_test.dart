@@ -1,23 +1,30 @@
+// Copyright (c) 2020, Justin Shaw. Use of this source code is restricted,
+// please read the LICENSE file for details. All rights reserved.
+
 import 'package:fake_async/fake_async.dart';
+import 'package:preptime/models/speech.dart';
 import 'package:preptime/models/team.dart';
 import 'package:preptime/models/prep_time_mixin.dart';
 import 'package:preptime/models/speech_event.dart';
 import 'package:test/test.dart';
 
-/// This is probably an anti-pattern.
+/// Note: This might be an anti-pattern.
 ///
 /// The [PrepTimeMixin] should really only be defined for [DebateEvents], but
 /// technically it can be mixed in on any [Event]. Therefore, to prevent
 /// isolate the [PrepTimeMixin] for testing, we will create this
 /// [TestPrepTimeMixin] class and then go ahead and not use any of the
 /// [SpeechEvent] parts of the parent.
-class TestPrepTimeMixin extends SpeechEvent with PrepTimeMixin {}
+class TestPrepTimeMixin extends SpeechEvent with PrepTimeMixin {
+  TestPrepTimeMixin()
+      : super(name: 'Test', description: 'Foo', speech: Speech());
+}
 
 void main() {
   TestPrepTimeMixin prepTimeMixin;
   group('PrepTimeMixin before initPrepTimers is called', () {
     setUp(() {
-      prepTimeMixin = TestPrepTimeMixin();
+      prepTimeMixin = TestPrepTimeMixin(); // before initPrepTimers is called
     });
     test('initialPrep throws state error', () {
       expect(() => prepTimeMixin.initialPrep, throwsStateError);
@@ -44,8 +51,10 @@ void main() {
       expect(() => prepTimeMixin.startPrep(Team.right), throwsStateError);
     });
     test('isOtherRunning throws state error', () {
-      expect(() => prepTimeMixin.isOtherPrepRunning(Team.left), throwsStateError);
-      expect(() => prepTimeMixin.isOtherPrepRunning(Team.right), throwsStateError);
+      expect(
+          () => prepTimeMixin.isOtherPrepRunning(Team.left), throwsStateError);
+      expect(
+          () => prepTimeMixin.isOtherPrepRunning(Team.right), throwsStateError);
     });
     test('isRunning throws state error', () {
       expect(() => prepTimeMixin.isPrepRunning(Team.left), throwsStateError);
@@ -53,7 +62,8 @@ void main() {
     });
     test('isNotRunning throws state error', () {
       expect(() => prepTimeMixin.isPrepNotRunning(Team.left), throwsStateError);
-      expect(() => prepTimeMixin.isPrepNotRunning(Team.right), throwsStateError);
+      expect(
+          () => prepTimeMixin.isPrepNotRunning(Team.right), throwsStateError);
     });
     test('isAnyRunning throws state error', () {
       expect(() => prepTimeMixin.isAnyPrepRunning, throwsStateError);

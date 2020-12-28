@@ -55,13 +55,17 @@ class Speech extends ChangeNotifier implements Timeable {
           timeBetweenTicks: Duration(milliseconds: 100),
           shouldCountUp: shouldCountUp,
         ) {
+    _timer.onEnd = () => status = SpeechStatus.completed;
     if (useJudgeAssistant) {
       _attachListenerForTimeSignals();
     }
   }
 
   /// The stream of time remaining durations.
-  Stream<Duration> get currentTime => _timer.currentTime;
+  Stream<Duration> get currentTime {
+    _ensureControllerIsNotNull();
+    return _timer.currentTime;
+  }
 
   /// An animation controller for the spinning ring animation.
   AnimationController get controller => _controller;
@@ -71,10 +75,16 @@ class Speech extends ChangeNotifier implements Timeable {
   SpeechStatus status = SpeechStatus.stoppedAtBeginning;
 
   /// Whether the speech clock is running.
-  bool get isRunning => _timer.isRunning;
+  bool get isRunning {
+    _ensureControllerIsNotNull();
+    return _timer.isRunning;
+  }
 
   /// Whether the speech clock is not running.
-  bool get isNotRunning => _timer.isNotRunning;
+  bool get isNotRunning {
+    _ensureControllerIsNotNull();
+    return _timer.isNotRunning;
+  }
 
   /// Initializes the controller.
   ///
@@ -89,10 +99,16 @@ class Speech extends ChangeNotifier implements Timeable {
     BuildContext context, {
     void Function(AnimationStatus) onStatusChanged,
   }) {
+    void handleStatusChange(AnimationStatus status) {
+      if (onStatusChanged != null) {
+        onStatusChanged(status);
+      }
+    }
+
     _context = context;
     _controller ??= AnimationController(duration: length, vsync: ticker)
       ..value = shouldCountUp ? 0.0 : 1.0
-      ..addStatusListener(onStatusChanged);
+      ..addStatusListener(handleStatusChange);
     return _controller;
   }
 
@@ -200,7 +216,10 @@ class Speech extends ChangeNotifier implements Timeable {
 
   /// Takes a duration and decides which time signal to show if any.
   void _shouldShowTimeSignals(Duration timeRemaining) {
-    if (isRunning) {
+    // We cannot use the client-facing isRunning method here because we want to
+    // force the user to initialize the speech controller before using it but
+    // we need access on construction.
+    if (_timer.isRunning) {
       ShowTimeSignal.fromDuration(timeRemaining, _context);
     }
   }

@@ -101,6 +101,7 @@ class DebateEvent extends Event with PrepTimeMixin {
     }
     speeches.clear();
     disposePrepTimers();
+    speech = null;
     super.dispose();
   }
 

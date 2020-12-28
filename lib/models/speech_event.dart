@@ -45,4 +45,11 @@ class SpeechEvent extends Event {
       }
     });
   }
+
+  @override
+  void dispose() {
+    speech?.dispose();
+    speech = null;
+    super.dispose();
+  }
 }
