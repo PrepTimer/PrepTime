@@ -75,13 +75,18 @@ class DebateEvent extends Event with PrepTimeMixin {
   /// Binds the [TickerProvider] to the [AnimationController] and if the speech
   /// uses [JudgeAssistant], the controller will also add the [onStatusChange]
   /// callback to the controller. Additionally, the [onSpeechEnd] callback is
-  /// added
+  /// added.
+  /// 
+  /// The [context] and [ticker] parameters are required, but the [onSpeechEnd]
+  /// parameter is optonal.
   @override
   void initSpeechController(
     TickerProvider ticker, {
     BuildContext context,
     void Function() onSpeechEnd,
   }) {
+    assert(ticker != null);
+    assert(context != null);
     for (Speech speech in speeches) {
       speech.initController(ticker, context,
           onStatusChanged: (AnimationStatus status) {

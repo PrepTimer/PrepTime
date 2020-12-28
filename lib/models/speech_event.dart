@@ -28,20 +28,20 @@ class SpeechEvent extends Event {
   /// uses JudgeAssistant, the controller will also add the onStatusChange
   /// callback to the controller.
   ///
-  /// The [context] parameter is required, but the [onSpeechEnd] parameter is
-  /// optonal.
+  /// The [context] and [ticker] parameters are required, but the [onSpeechEnd]
+  /// parameter is optonal.
   @override
   void initSpeechController(
     TickerProvider ticker, {
     BuildContext context,
     void Function() onSpeechEnd,
   }) {
+    assert(ticker != null);
     assert(context != null);
-    speech.initController(ticker, context, onStatusChanged: (
-      AnimationStatus status,
-    ) {
+    speech.initController(ticker, context,
+        onStatusChanged: (AnimationStatus status) {
       if (speech.isAnimationCompleted(status)) {
-        onSpeechEnd();
+        onSpeechEnd?.call();
       }
     });
   }

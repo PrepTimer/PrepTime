@@ -70,34 +70,38 @@ void main() {
         expect(speech.status, equals(SpeechStatus.pausedInMiddle));
       });
       test('status is completed after finishing at the end', () {
-        fakeAsync((async) {
-          expect(speech.status, equals(SpeechStatus.stoppedAtBeginning));
+        fakeAsync((async) async {
           speech.start();
-          async.elapse(Duration(minutes: 8));
+          async.elapse(speech.length);
+          expect(await speech.currentTime.last, Duration.zero);
+          expect(speech.status, equals(SpeechStatus.completed));
         });
-        expect(speech.status, equals(SpeechStatus.completed));
-      }, skip: 'Failing for some reason.');
+      });
       test('reset sets the timer back to the initial value', () {
-        fakeAsync((async) {
+        fakeAsync((async) async {
           speech.start();
-          async.elapse(Duration(minutes: 4));
+          async.elapse(speech.length);
+          expect(await speech.currentTime.last, equals(Duration.zero));
           speech.reset();
-          expect(speech.currentTime, equals(Duration.zero));
+          expect(await speech.currentTime.last, equals(speech.length));
         });
-      }, skip: 'Failing for some reason.');
+      });
       test('stop pauses the timer', () {
         speech.stop();
         expect(speech.status, equals(SpeechStatus.pausedInMiddle));
         expect(speech.isNotRunning, isTrue);
       });
       test('resume starts the timer from a stop', () {
-        speech.start();
-        speech.controller.value = 0.5;
-        speech.stop();
-        speech.resume();
-        expect(speech.currentTime.last, equals(const Duration(minutes: 4)));
-        expect(speech.isRunning, isTrue);
-      }, skip: 'Failing for some reason.');
+        fakeAsync((async) async {
+          speech.start();
+          async.elapse(speech.length ~/ 2);
+          speech.stop();
+          expect(speech.isRunning, isFalse);
+          speech.resume();
+          expect(speech.currentTime.last, equals(speech.length ~/ 2));
+          expect(speech.isRunning, isTrue);
+        });
+      });
       test('resume makes the timer tick forward', () {
         speech.resume();
         expect(speech.status, equals(SpeechStatus.runningForward));
