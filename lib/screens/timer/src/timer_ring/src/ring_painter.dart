@@ -1,3 +1,6 @@
+// Copyright (c) 2020, Justin Shaw. Use of this source code is restricted,
+// please read the LICENSE file for details. All rights reserved.
+
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:preptime/models/debate_event.dart';

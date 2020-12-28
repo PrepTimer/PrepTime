@@ -1,3 +1,6 @@
+// Copyright (c) 2020, Justin Shaw. Use of this source code is restricted,
+// please read the LICENSE file for details. All rights reserved.
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:preptime/models/event.dart';
