@@ -1,6 +1,7 @@
 // Copyright (c) 2020, Justin Shaw. Use of this source code is restricted,
 // please read the LICENSE file for details. All rights reserved.
 
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -8,10 +9,18 @@ import 'package:preptime/models/debate_event.dart';
 import 'package:preptime/models/speech.dart';
 import 'package:preptime/utilities/debate_events/debate_events.dart';
 
+/// A fake placeholder for BuildContext.
 class MockBuildContext extends Mock implements BuildContext {}
+
+/// A class that has a method called onSpeechEnd that we can verify when and
+/// how many times it is called.
+class FakeCallback extends Fake {
+  static void onSpeechEnd() {}
+}
 
 void main() {
   group('DebateEvent', () {
+    MockBuildContext mockBuildContext = MockBuildContext();
     DebateEvent debateEvent;
     setUp(() {
       debateEvent = Policy.highSchool();
@@ -42,6 +51,24 @@ void main() {
           name: 'name',
           description: 'description',
           speeches: null,
+        ),
+        throwsAssertionError,
+      );
+    });
+    test('initController fails assertion if ticker is null', () {
+      expect(
+        () => debateEvent.initSpeechController(
+          null,
+          context: mockBuildContext,
+        ),
+        throwsAssertionError,
+      );
+    });
+    test('initController fails assertion if context is null', () {
+      expect(
+        () => debateEvent.initSpeechController(
+          TestVSync(),
+          context: null,
         ),
         throwsAssertionError,
       );
@@ -83,10 +110,10 @@ void main() {
     group('initController', () {
       setUp(() {
         TestWidgetsFlutterBinding.ensureInitialized();
-        MockBuildContext mockBuildContext = MockBuildContext();
         debateEvent.initSpeechController(
           TestVSync(),
           context: mockBuildContext,
+          onSpeechEnd: FakeCallback.onSpeechEnd,
         );
       });
       test('start makes isRunning true', () {
