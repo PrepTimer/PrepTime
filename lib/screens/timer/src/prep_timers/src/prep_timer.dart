@@ -41,7 +41,7 @@ class _PrepTimerState extends State<PrepTimer> {
 
   /// Whether the prep timer is disabled.
   ///
-  /// A [PrepTimer] is defined as disabled if [isAnyRunning] and [isNotRunning]
+  /// A [PrepTimer] is defined as disabled if [isAnyPrepRunning] and [isPrepNotRunning]
   /// are both true, meaning one of the prepTimers is running, but it is not
   /// this one. Therefore, this one should be disabled.
   bool _isDisabled;
@@ -101,8 +101,8 @@ class _PrepTimerState extends State<PrepTimer> {
   /// running (`Event.isAnyRunning` is `true`) and the current PrepTimer is not
   /// running (`Event.isNotRunning(this.team)`);
   bool _didChangeDisability(Event _) {
-    bool _isAnyTimerRunning = _debateEvent.isAnyRunning;
-    bool _isThisTimerNotRunning = _debateEvent.isNotRunning(widget.team);
+    bool _isAnyTimerRunning = _debateEvent.isAnyPrepRunning;
+    bool _isThisTimerNotRunning = _debateEvent.isPrepNotRunning(widget.team);
     bool isOtherTimerRunning = _isAnyTimerRunning && _isThisTimerNotRunning;
     bool isOutOfPrep = _debateEvent.isOutOfPrep(widget.team);
     return isOtherTimerRunning || _speech.isRunning || isOutOfPrep;
@@ -116,7 +116,7 @@ class _PrepTimerState extends State<PrepTimer> {
   /// will dismiss. If the user selects `reset` then the prep time will also be
   /// reset to the initial value.
   void _handleReset(BuildContext context) {
-    if (_debateEvent.isRunning(widget.team)) {
+    if (_debateEvent.isPrepRunning(widget.team)) {
       _debateEvent.stopPrep(widget.team);
     }
     ShowAlertDialog.withDestructiveAndBasicActions(

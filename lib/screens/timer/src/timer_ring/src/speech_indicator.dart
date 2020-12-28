@@ -27,7 +27,7 @@ class SpeechIndicator extends StatelessWidget {
         for (int i = 0; i < speeches.length; i++)
           _newIndicator(
             context: context,
-            isActive: speeches[i] == event.speech && !debateEvent.isAnyRunning,
+            isActive: speeches[i] == event.speech && !debateEvent.isAnyPrepRunning,
           ),
       ],
     );

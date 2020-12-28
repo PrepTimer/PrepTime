@@ -44,20 +44,20 @@ void main() {
       expect(() => prepTimeMixin.startPrep(Team.right), throwsStateError);
     });
     test('isOtherRunning throws state error', () {
-      expect(() => prepTimeMixin.isOtherRunning(Team.left), throwsStateError);
-      expect(() => prepTimeMixin.isOtherRunning(Team.right), throwsStateError);
+      expect(() => prepTimeMixin.isOtherPrepRunning(Team.left), throwsStateError);
+      expect(() => prepTimeMixin.isOtherPrepRunning(Team.right), throwsStateError);
     });
     test('isRunning throws state error', () {
-      expect(() => prepTimeMixin.isRunning(Team.left), throwsStateError);
-      expect(() => prepTimeMixin.isRunning(Team.right), throwsStateError);
+      expect(() => prepTimeMixin.isPrepRunning(Team.left), throwsStateError);
+      expect(() => prepTimeMixin.isPrepRunning(Team.right), throwsStateError);
     });
     test('isNotRunning throws state error', () {
-      expect(() => prepTimeMixin.isNotRunning(Team.left), throwsStateError);
-      expect(() => prepTimeMixin.isNotRunning(Team.right), throwsStateError);
+      expect(() => prepTimeMixin.isPrepNotRunning(Team.left), throwsStateError);
+      expect(() => prepTimeMixin.isPrepNotRunning(Team.right), throwsStateError);
     });
     test('isAnyRunning throws state error', () {
-      expect(() => prepTimeMixin.isAnyRunning, throwsStateError);
-      expect(() => prepTimeMixin.isAnyRunning, throwsStateError);
+      expect(() => prepTimeMixin.isAnyPrepRunning, throwsStateError);
+      expect(() => prepTimeMixin.isAnyPrepRunning, throwsStateError);
     });
     test('prepName returns AFF/NEG (useAffNeg = true)', () {
       expect(prepTimeMixin.prepName(Team.left), equals('AFF'));
@@ -102,51 +102,51 @@ void main() {
       });
     });
     test('togglePrep starts a timer that is paused', () {
-      expect(prepTimeMixin.isAnyRunning, isFalse);
+      expect(prepTimeMixin.isAnyPrepRunning, isFalse);
       prepTimeMixin.togglePrep(Team.left); // starts the prep timer
-      expect(prepTimeMixin.isAnyRunning, isTrue);
+      expect(prepTimeMixin.isAnyPrepRunning, isTrue);
     });
     test('togglePrep stops a timer that is running', () {
       prepTimeMixin.startPrep(Team.left); // start with the prep timer running
-      expect(prepTimeMixin.isAnyRunning, isTrue);
+      expect(prepTimeMixin.isAnyPrepRunning, isTrue);
       prepTimeMixin.togglePrep(Team.left); // stops the prep timer
-      expect(prepTimeMixin.isAnyRunning, isFalse);
+      expect(prepTimeMixin.isAnyPrepRunning, isFalse);
     });
     test('stopPrep stops a running timer', () {
       prepTimeMixin.startPrep(Team.left); // start with the prep timer running
-      expect(prepTimeMixin.isAnyRunning, isTrue);
+      expect(prepTimeMixin.isAnyPrepRunning, isTrue);
       prepTimeMixin.stopPrep(Team.left); // stops the prep timer
-      expect(prepTimeMixin.isAnyRunning, isFalse);
+      expect(prepTimeMixin.isAnyPrepRunning, isFalse);
     });
     test('startPrep starts a running timer', () {
-      expect(prepTimeMixin.isAnyRunning, isFalse);
+      expect(prepTimeMixin.isAnyPrepRunning, isFalse);
       prepTimeMixin.startPrep(Team.left); // start with the prep timer running
-      expect(prepTimeMixin.isAnyRunning, isTrue);
+      expect(prepTimeMixin.isAnyPrepRunning, isTrue);
     });
     test('isOtherRunning returns the run status of the other timer', () {
-      expect(prepTimeMixin.isAnyRunning, isFalse);
+      expect(prepTimeMixin.isAnyPrepRunning, isFalse);
       prepTimeMixin.startPrep(Team.left);
-      expect(prepTimeMixin.isOtherRunning(Team.right), isTrue);
-      expect(prepTimeMixin.isOtherRunning(Team.left), isFalse);
+      expect(prepTimeMixin.isOtherPrepRunning(Team.right), isTrue);
+      expect(prepTimeMixin.isOtherPrepRunning(Team.left), isFalse);
     });
     test('isRunning returns the run state of the given timer', () {
-      expect(prepTimeMixin.isRunning(Team.left), isFalse);
-      expect(prepTimeMixin.isRunning(Team.right), isFalse);
+      expect(prepTimeMixin.isPrepRunning(Team.left), isFalse);
+      expect(prepTimeMixin.isPrepRunning(Team.right), isFalse);
       prepTimeMixin.startPrep(Team.left); // only turn on one timer and check
-      expect(prepTimeMixin.isRunning(Team.left), isTrue);
-      expect(prepTimeMixin.isRunning(Team.right), isFalse);
+      expect(prepTimeMixin.isPrepRunning(Team.left), isTrue);
+      expect(prepTimeMixin.isPrepRunning(Team.right), isFalse);
     });
     test('isNotRunning returns the negated run state of the given timer', () {
-      expect(prepTimeMixin.isNotRunning(Team.left), isTrue);
-      expect(prepTimeMixin.isNotRunning(Team.right), isTrue);
+      expect(prepTimeMixin.isPrepNotRunning(Team.left), isTrue);
+      expect(prepTimeMixin.isPrepNotRunning(Team.right), isTrue);
       prepTimeMixin.startPrep(Team.left); // only turn on one timer and check
-      expect(prepTimeMixin.isNotRunning(Team.left), isFalse);
-      expect(prepTimeMixin.isNotRunning(Team.right), isTrue);
+      expect(prepTimeMixin.isPrepNotRunning(Team.left), isFalse);
+      expect(prepTimeMixin.isPrepNotRunning(Team.right), isTrue);
     });
     test('isAnyRunning returns true if the prep for any team is running', () {
-      expect(prepTimeMixin.isAnyRunning, isFalse);
+      expect(prepTimeMixin.isAnyPrepRunning, isFalse);
       prepTimeMixin.startPrep(Team.left); // only turn on one timer and check
-      expect(prepTimeMixin.isAnyRunning, isTrue);
+      expect(prepTimeMixin.isAnyPrepRunning, isTrue);
     });
     test('prepName returns PRO/CON (useAffNeg = false)', () {
       expect(prepTimeMixin.prepName(Team.left), equals('PRO'));

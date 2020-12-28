@@ -1,10 +1,13 @@
+// Copyright (c) 2020, Justin Shaw. Use of this source code is restricted,
+// please read the LICENSE file for details. All rights reserved.
+
 import 'dart:async';
 
 import 'package:preptime/models/timeable.dart';
 
 /// Manages a timer that counts down from an initial value.
 ///
-/// The [CountDownTimer] implements the [Timeable] interface and therefore
+/// The [SimpleTimer] implements the [Timeable] interface and therefore
 /// exposes the following methods:
 /// - [isRunning]
 /// - [isNotRunning]
@@ -12,12 +15,12 @@ import 'package:preptime/models/timeable.dart';
 /// - [stop]
 /// - [reset]
 ///
-/// Additionally, the [CountDownTimer] exposes a [currentTime] stream, which
+/// Additionally, the [SimpleTimer] exposes a [currentTime] stream, which
 /// periodically yeilds a new duration representing the time remaining. You can
 /// access the [initialDuration] via the [initialDuration] getter method, and
-/// you can dispose of the [CountDownTimer]'s resources with the [dispose]
+/// you can dispose of the [SimpleTimer]'s resources with the [dispose]
 /// method.
-class CountDownTimer implements Timeable {
+class SimpleTimer implements Timeable {
   /// The timer used internally to schedule tick callbacks.
   Timer _timer;
 
@@ -26,7 +29,7 @@ class CountDownTimer implements Timeable {
 
   /// The duration of time that should elapse between ticks.
   final Duration timeBetweenTicks;
-  
+
   /// The duration of time that the timer initially takes on.
   final Duration initialDuration;
 
@@ -36,7 +39,7 @@ class CountDownTimer implements Timeable {
   /// Whether the timer counts up or down.
   final bool shouldCountUp;
 
-  /// Constructs a new [CountDownTimer].
+  /// Constructs a new [SimpleTimer].
   ///
   /// The [initialDuration] is the value of the timer at the beginning. This is
   /// the same value that the timer will reset to when [reset()] is called. You
@@ -44,7 +47,7 @@ class CountDownTimer implements Timeable {
   /// duration. The callback [onEnd] is called when the timer is finished. To
   /// change the amount of time that elapses between ticks, you can update the
   /// value of [timeBetweenTicks] (defaults to one second).
-  CountDownTimer(
+  SimpleTimer(
     this.initialDuration, {
     this.onEnd,
     this.shouldCountUp = false,
@@ -59,16 +62,16 @@ class CountDownTimer implements Timeable {
   /// A synchronous getter method to determine the amount of time remaining.
   Duration get timeRemaining => _calculateTimeRemaining();
 
-  /// Whether the [CountDownTimer] is running.
+  /// Whether the [SimpleTimer] is running.
   bool get isRunning => _timer?.isActive ?? false;
 
-  /// Whether the [CountDownTimer] is not running.
+  /// Whether the [SimpleTimer] is not running.
   bool get isNotRunning => !isRunning;
 
-  /// Starts the [CountDownTimer].
+  /// Starts the [SimpleTimer].
   ///
   /// Starts a periodic timer that adds a new [Duration] value to the sink. The
-  /// [CountDownTimer] must not already be started.
+  /// [SimpleTimer] must not already be started.
   ///
   /// TODO: #5 Fix countdown timer ticks.
   /// Ticks should represent elapsed durations, not callback invocations. The
@@ -81,17 +84,21 @@ class CountDownTimer implements Timeable {
     }
   }
 
-  /// Stops the [CountDownTimer].
+  /// Stops the [SimpleTimer].
   ///
   /// Cancels a periodic timer that would add new [Duration] values to the sink.
-  /// The [CountDownTimer] must not already have been stopped.
+  /// The [SimpleTimer] should be running when this method is called.
   void stop() {
     if (isRunning) {
       _timer.cancel();
     }
   }
 
-  /// Resets the [CountDownTimer] to the [initialDuration].
+  /// Resets the [SimpleTimer].
+  ///
+  /// If this timer [shouldCountDown] then the value resets to the
+  /// [initialDuration]. Otherwise, the value resets to zero. If the timer is
+  /// running when this method is called, the timer is canceled.
   void reset() {
     _timer?.cancel();
     _ticks = 0;
@@ -108,11 +115,11 @@ class CountDownTimer implements Timeable {
     _controller.close();
   }
 
-  /// Updates the [currentTime] by decrementing the duration.
+  /// Updates the [currentTime].
   ///
-  /// Calculates and adds a new duration value to the [currentTime] stream. If
-  /// the timeRemaining is zero or negative, the stream is closed and the timer
-  /// is stopped (via [dispose]).
+  /// If the timer has no time remaining, the timer will be stopped and [onEnd]
+  /// will be called. Otherwise, it will add a new duration to the [currentTime]
+  /// stream and increment [_ticks].
   void _updateCurrentTime(Timer _) {
     Duration timeRemaining = _calculateTimeRemaining();
     if (timeRemaining < Duration.zero) {
@@ -124,6 +131,10 @@ class CountDownTimer implements Timeable {
     }
   }
 
+  /// Calculates the amount of time remaining.
+  ///
+  /// This is based on [_ticks], the [timeBetweenTicks], and whether the timer
+  /// [shouldCountUp] or not.
   Duration _calculateTimeRemaining() {
     Duration timeElapsed = timeBetweenTicks * _ticks;
     if (shouldCountUp) {

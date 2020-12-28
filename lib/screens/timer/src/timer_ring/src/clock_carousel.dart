@@ -5,12 +5,14 @@ import 'package:preptime/screens/timer/src/timer_ring/src/clock_label.dart';
 import 'package:provider/provider.dart';
 
 /// A horizontal scroller of clock labels.
+///
+/// This widget must only be built in a DebateEvent context.
 class ClockCarousel extends StatelessWidget {
   ClockCarousel({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Event event = context.watch<Event>();
+    DebateEvent event = context.watch<Event>() as DebateEvent;
     return PageView.builder(
       scrollDirection: Axis.horizontal,
       physics: BouncingScrollPhysics(),

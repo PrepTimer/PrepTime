@@ -1,3 +1,6 @@
+// Copyright (c) 2020, Justin Shaw. Use of this source code is restricted,
+// please read the LICENSE file for details. All rights reserved.
+
 /// A Debate Team.
 ///
 /// There are two kinds of team. A left team and a right team.

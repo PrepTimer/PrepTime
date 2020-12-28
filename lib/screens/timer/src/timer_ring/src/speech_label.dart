@@ -9,7 +9,7 @@ class SpeechLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Event event = context.watch<Event>();
-    bool isDisabled = (event is DebateEvent) && event.isAnyRunning;
+    bool isDisabled = (event is DebateEvent) && event.isAnyPrepRunning;
     return Text(
       event.speech.name.toUpperCase(),
       style: isDisabled

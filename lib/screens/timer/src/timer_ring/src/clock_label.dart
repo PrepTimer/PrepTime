@@ -14,13 +14,13 @@ class ClockLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Event event = context.watch<Event>();
-    bool isDisabled = (event is DebateEvent) && event.isAnyRunning;
+    bool isDisabled = (event is DebateEvent) && event.isAnyPrepRunning;
     return Container(
       alignment: FractionalOffset.center,
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: StreamBuilder<Duration>(
         initialData: _getInitialDataFromEventAtIndex(event, index),
-        stream: _getSpeechFromEventAtIndex(event, index).timer.currentTime,
+        stream: _getSpeechFromEventAtIndex(event, index).currentTime,
         builder: (context, durationSnapshot) {
           return AutoSizeText(
             durationSnapshot.data?.toStringAsClock(),

@@ -1,15 +1,15 @@
 import 'package:fake_async/fake_async.dart';
 import 'package:test/test.dart';
-import 'package:preptime/models/countdown_timer.dart';
+import 'package:preptime/models/simple_timer.dart';
 
 void main() {
   group('CountDownTimer', () {
-    CountDownTimer countDownTimer;
+    SimpleTimer countDownTimer;
     final Duration _initialDuration = const Duration(minutes: 8);
 
     /// The [setUp] method is called once before each [test].
     setUp(() {
-      countDownTimer = CountDownTimer(_initialDuration);
+      countDownTimer = SimpleTimer(_initialDuration);
     });
     test('Start with currentTime equal to initialDuration', () async {
       expect(await countDownTimer.currentTime.first, equals(_initialDuration));

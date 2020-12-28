@@ -14,7 +14,7 @@ class RingPainter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Event event = context.watch<Event>();
-    bool isPrepRunning = (event is DebateEvent) && event.isAnyRunning;
+    bool isPrepRunning = (event is DebateEvent) && event.isAnyPrepRunning;
     return Positioned.fill(
       child: CustomPaint(
         painter: _CustomRingPainter(
