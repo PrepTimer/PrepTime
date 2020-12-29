@@ -9,7 +9,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:preptime/models/debate_event.dart';
 import 'package:preptime/models/speech.dart';
-import 'package:preptime/models/speech_status.dart';
 // import 'package:preptime/models/speech_status.dart';
 import 'package:preptime/utilities/debate_events/debate_events.dart';
 
@@ -29,6 +28,9 @@ void main() {
     setUp(() {
       mockContext = MockBuildContext();
       debateEvent = Policy.highSchool();
+    });
+    test('the debateEvent == operator works as expected', () {
+      expect(debateEvent == Policy.highSchool(), isTrue);
     });
     test('constructor fails assertion if name is null', () {
       expect(
