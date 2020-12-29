@@ -1,14 +1,14 @@
 // Copyright (c) 2020, Justin Shaw. Use of this source code is restricted,
 // please read the LICENSE file for details. All rights reserved.
 
-import 'package:fake_async/fake_async.dart';
+// import 'package:fake_async/fake_async.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:preptime/models/debate_event.dart';
 import 'package:preptime/models/speech.dart';
-import 'package:preptime/models/speech_status.dart';
+// import 'package:preptime/models/speech_status.dart';
 import 'package:preptime/utilities/debate_events/debate_events.dart';
 
 /// A fake placeholder for BuildContext.
