@@ -1,6 +1,8 @@
 // Copyright (c) 2020, Justin Shaw. Use of this source code is restricted,
 // please read the LICENSE file for details. All rights reserved.
 
+// coverage:ignore-file
+
 /// Enumerates the various time signals given in a speech or debate round.
 enum TimeSignal {
   /// Five fingers.
