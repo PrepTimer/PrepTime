@@ -3,26 +3,20 @@
 
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:preptime/models/speech.dart';
+import 'package:mockito/mockito.dart';
+import 'package:preptime/models/event.dart';
 import 'package:preptime/models/team.dart';
 import 'package:preptime/models/prep_time_mixin.dart';
-import 'package:preptime/models/speech_event.dart';
 
-/// Note: This might be an anti-pattern.
-///
-/// The [PrepTimeMixin] should really only be defined for [DebateEvents], but
-/// technically it can be mixed in on any [Event]. Therefore, to prevent
-/// isolate the [PrepTimeMixin] for testing, we will create this
-/// [TestPrepTimeMixin] class and then go ahead and not use any of the
-/// [SpeechEvent] parts of the parent.
-class TestPrepTimeMixin extends SpeechEvent with PrepTimeMixin {
-  TestPrepTimeMixin()
-      : super(name: 'Test', description: 'Foo', speech: Speech());
+class FakeEvent extends Fake implements Event {
+  void notifyListeners() {}
 }
+
+class TestPrepTimeMixin extends FakeEvent with PrepTimeMixin {}
 
 void main() {
   TestPrepTimeMixin testMixin;
-  group('PrepTimeMixin before initPrepTimers is called', () {
+  group('PrepTimeMixin', () {
     setUp(() {
       testMixin = TestPrepTimeMixin(); // before initPrepTimers is called
     });
@@ -70,7 +64,7 @@ void main() {
       expect(testMixin.prepName(Team.left), equals('AFF'));
       expect(testMixin.prepName(Team.right), equals('NEG'));
     });
-    group('PrepTimeMixin after initPrepTimers is called', () {
+    group('after initPrepTimers is called', () {
       setUp(() {
         testMixin = TestPrepTimeMixin();
         testMixin.initPrepTimers(
