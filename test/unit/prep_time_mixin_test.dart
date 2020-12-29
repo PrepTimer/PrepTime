@@ -2,11 +2,11 @@
 // please read the LICENSE file for details. All rights reserved.
 
 import 'package:fake_async/fake_async.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:preptime/models/speech.dart';
 import 'package:preptime/models/team.dart';
 import 'package:preptime/models/prep_time_mixin.dart';
 import 'package:preptime/models/speech_event.dart';
-import 'package:test/test.dart';
 
 /// Note: This might be an anti-pattern.
 ///
@@ -70,109 +70,112 @@ void main() {
       expect(testMixin.prepName(Team.left), equals('AFF'));
       expect(testMixin.prepName(Team.right), equals('NEG'));
     });
-    tearDown(() {
-      testMixin.disposePrepTimers();
-    });
-  });
-  group('PrepTimeMixin after initPrepTimers is called', () {
-    setUp(() {
-      testMixin = TestPrepTimeMixin();
-      testMixin.initPrepTimers(
-        duration: const Duration(minutes: 3),
-        useAffNeg: false,
-      );
-    });
-    test('initialPrep equals value of constructed duration', () {
-      expect(testMixin.initialPrep, equals(const Duration(minutes: 3)));
-    });
-    test('initTimers constructs timers for each team', () {
-      expect(testMixin.remainingPrep(Team.left), isNotNull);
-      expect(testMixin.remainingPrep(Team.right), isNotNull);
-    });
-    test('resetPrep sets the amount of prep to initial value', () {
-      fakeAsync((async) async {
-        // Start a prep timer and then fast-forward a couple of minutes
-        Duration _fastForwardDuration = Duration(minutes: 2);
-        testMixin.startPrep(Team.left);
-        async.elapse(_fastForwardDuration);
-        // Verify that the prep timer was actually fast-forwarded
-        expect(
-          await testMixin.remainingPrep(Team.left).last,
-          equals(testMixin.initialPrep - _fastForwardDuration),
-        );
-        // Reset the prep timer and verify the timer has reset
-        testMixin.resetPrep(Team.left);
-        expect(
-          testMixin.remainingPrep(Team.left),
-          equals(testMixin.initialPrep),
+    group('PrepTimeMixin after initPrepTimers is called', () {
+      setUp(() {
+        testMixin = TestPrepTimeMixin();
+        testMixin.initPrepTimers(
+          duration: const Duration(minutes: 3),
+          useAffNeg: false,
         );
       });
-    });
-    test('isOutOfPrep is true when the prep timer is zero', () {
-      fakeAsync((async) async {
-        // Start a prep timer and then fast-forward to the end
-        Duration _fastForwardDuration = testMixin.initialPrep;
-        testMixin.startPrep(Team.left);
-        async.elapse(_fastForwardDuration);
-        // Verify that the prep timer was actually fast-forwarded
+      test('initPrepTimers fails assertion if duration is null', () {
         expect(
-          await testMixin.remainingPrep(Team.left).last,
-          equals(testMixin.initialPrep - _fastForwardDuration),
+          () => testMixin.initPrepTimers(duration: null),
+          throwsAssertionError,
         );
-        // Verify isOutOfPrep returns true
-        expect(testMixin.isOutOfPrep(Team.left), isTrue);
       });
-    });
-    test('togglePrep starts a timer that is paused', () {
-      expect(testMixin.isAnyPrepRunning, isFalse);
-      testMixin.togglePrep(Team.left); // starts the prep timer
-      expect(testMixin.isAnyPrepRunning, isTrue);
-    });
-    test('togglePrep stops a timer that is running', () {
-      testMixin.startPrep(Team.left); // start with the prep timer running
-      expect(testMixin.isAnyPrepRunning, isTrue);
-      testMixin.togglePrep(Team.left); // stops the prep timer
-      expect(testMixin.isAnyPrepRunning, isFalse);
-    });
-    test('stopPrep stops a running timer', () {
-      testMixin.startPrep(Team.left); // start with the prep timer running
-      expect(testMixin.isAnyPrepRunning, isTrue);
-      testMixin.stopPrep(Team.left); // stops the prep timer
-      expect(testMixin.isAnyPrepRunning, isFalse);
-    });
-    test('startPrep starts a running timer', () {
-      expect(testMixin.isAnyPrepRunning, isFalse);
-      testMixin.startPrep(Team.left); // start with the prep timer running
-      expect(testMixin.isAnyPrepRunning, isTrue);
-    });
-    test('isOtherRunning returns the run status of the other timer', () {
-      expect(testMixin.isAnyPrepRunning, isFalse);
-      testMixin.startPrep(Team.left);
-      expect(testMixin.isOtherPrepRunning(Team.right), isTrue);
-      expect(testMixin.isOtherPrepRunning(Team.left), isFalse);
-    });
-    test('isRunning returns the run state of the given timer', () {
-      expect(testMixin.isPrepRunning(Team.left), isFalse);
-      expect(testMixin.isPrepRunning(Team.right), isFalse);
-      testMixin.startPrep(Team.left); // only turn on one timer and check
-      expect(testMixin.isPrepRunning(Team.left), isTrue);
-      expect(testMixin.isPrepRunning(Team.right), isFalse);
-    });
-    test('isNotRunning returns the negated run state of the given timer', () {
-      expect(testMixin.isPrepNotRunning(Team.left), isTrue);
-      expect(testMixin.isPrepNotRunning(Team.right), isTrue);
-      testMixin.startPrep(Team.left); // only turn on one timer and check
-      expect(testMixin.isPrepNotRunning(Team.left), isFalse);
-      expect(testMixin.isPrepNotRunning(Team.right), isTrue);
-    });
-    test('isAnyRunning returns true if the prep for any team is running', () {
-      expect(testMixin.isAnyPrepRunning, isFalse);
-      testMixin.startPrep(Team.left); // only turn on one timer and check
-      expect(testMixin.isAnyPrepRunning, isTrue);
-    });
-    test('prepName returns PRO/CON (useAffNeg = false)', () {
-      expect(testMixin.prepName(Team.left), equals('PRO'));
-      expect(testMixin.prepName(Team.right), equals('CON'));
+      test('initialPrep equals value of constructed duration', () {
+        expect(testMixin.initialPrep, equals(const Duration(minutes: 3)));
+      });
+      test('initTimers constructs timers for each team', () {
+        expect(testMixin.remainingPrep(Team.left), isNotNull);
+        expect(testMixin.remainingPrep(Team.right), isNotNull);
+      });
+      test('resetPrep sets the amount of prep to initial value', () {
+        fakeAsync((async) async {
+          // Start a prep timer and then fast-forward a couple of minutes
+          Duration _fastForwardDuration = Duration(minutes: 2);
+          testMixin.startPrep(Team.left);
+          async.elapse(_fastForwardDuration);
+          // Verify that the prep timer was actually fast-forwarded
+          expect(
+            await testMixin.remainingPrep(Team.left).last,
+            equals(testMixin.initialPrep - _fastForwardDuration),
+          );
+          // Reset the prep timer and verify the timer has reset
+          testMixin.resetPrep(Team.left);
+          expect(
+            testMixin.remainingPrep(Team.left),
+            equals(testMixin.initialPrep),
+          );
+        });
+      });
+      test('isOutOfPrep is true when the prep timer is zero', () {
+        fakeAsync((async) async {
+          // Start a prep timer and then fast-forward to the end
+          Duration _fastForwardDuration = testMixin.initialPrep;
+          testMixin.startPrep(Team.left);
+          async.elapse(_fastForwardDuration);
+          // Verify that the prep timer was actually fast-forwarded
+          expect(
+            await testMixin.remainingPrep(Team.left).last,
+            equals(testMixin.initialPrep - _fastForwardDuration),
+          );
+          // Verify isOutOfPrep returns true
+          expect(testMixin.isOutOfPrep(Team.left), isTrue);
+        });
+      });
+      test('togglePrep starts a timer that is paused', () {
+        expect(testMixin.isAnyPrepRunning, isFalse);
+        testMixin.togglePrep(Team.left); // starts the prep timer
+        expect(testMixin.isAnyPrepRunning, isTrue);
+      });
+      test('togglePrep stops a timer that is running', () {
+        testMixin.startPrep(Team.left); // start with the prep timer running
+        expect(testMixin.isAnyPrepRunning, isTrue);
+        testMixin.togglePrep(Team.left); // stops the prep timer
+        expect(testMixin.isAnyPrepRunning, isFalse);
+      });
+      test('stopPrep stops a running timer', () {
+        testMixin.startPrep(Team.left); // start with the prep timer running
+        expect(testMixin.isAnyPrepRunning, isTrue);
+        testMixin.stopPrep(Team.left); // stops the prep timer
+        expect(testMixin.isAnyPrepRunning, isFalse);
+      });
+      test('startPrep starts a running timer', () {
+        expect(testMixin.isAnyPrepRunning, isFalse);
+        testMixin.startPrep(Team.left); // start with the prep timer running
+        expect(testMixin.isAnyPrepRunning, isTrue);
+      });
+      test('isOtherRunning returns the run status of the other timer', () {
+        expect(testMixin.isAnyPrepRunning, isFalse);
+        testMixin.startPrep(Team.left);
+        expect(testMixin.isOtherPrepRunning(Team.right), isTrue);
+        expect(testMixin.isOtherPrepRunning(Team.left), isFalse);
+      });
+      test('isRunning returns the run state of the given timer', () {
+        expect(testMixin.isPrepRunning(Team.left), isFalse);
+        expect(testMixin.isPrepRunning(Team.right), isFalse);
+        testMixin.startPrep(Team.left); // only turn on one timer and check
+        expect(testMixin.isPrepRunning(Team.left), isTrue);
+        expect(testMixin.isPrepRunning(Team.right), isFalse);
+      });
+      test('isNotRunning returns the negated run state of the given timer', () {
+        expect(testMixin.isPrepNotRunning(Team.left), isTrue);
+        expect(testMixin.isPrepNotRunning(Team.right), isTrue);
+        testMixin.startPrep(Team.left); // only turn on one timer and check
+        expect(testMixin.isPrepNotRunning(Team.left), isFalse);
+        expect(testMixin.isPrepNotRunning(Team.right), isTrue);
+      });
+      test('isAnyRunning returns true if the prep for any team is running', () {
+        expect(testMixin.isAnyPrepRunning, isFalse);
+        testMixin.startPrep(Team.left); // only turn on one timer and check
+        expect(testMixin.isAnyPrepRunning, isTrue);
+      });
+      test('prepName returns PRO/CON (useAffNeg = false)', () {
+        expect(testMixin.prepName(Team.left), equals('PRO'));
+        expect(testMixin.prepName(Team.right), equals('CON'));
+      });
     });
     tearDown(() {
       testMixin.disposePrepTimers();
