@@ -105,6 +105,7 @@ void main() {
         });
       });
       test('isOutOfPrep is true when the prep timer is zero', () {
+        expect(testMixin.isOutOfPrep(Team.left), isFalse);
         fakeAsync((async) async {
           // Start a prep timer and then fast-forward to the end
           Duration _fastForwardDuration = testMixin.initialPrep;
