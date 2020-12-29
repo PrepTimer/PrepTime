@@ -76,7 +76,7 @@ class DebateEvent extends Event with PrepTimeMixin {
   /// uses [JudgeAssistant], the controller will also add the [onStatusChange]
   /// callback to the controller. Additionally, the [onSpeechEnd] callback is
   /// added.
-  /// 
+  ///
   /// The [context] and [ticker] parameters are required, but the [onSpeechEnd]
   /// parameter is optonal.
   @override
@@ -88,13 +88,14 @@ class DebateEvent extends Event with PrepTimeMixin {
     assert(ticker != null);
     assert(context != null);
     for (Speech speech in speeches) {
-      speech.initController(ticker, context,
-          onStatusChanged: (AnimationStatus status) {
-        if (speech.isAnimationCompleted(status)) {
+      speech.initController(
+        ticker,
+        context,
+        onSpeechEnd: () {
           onSpeechEnd?.call();
           _autoScroll(speech);
-        }
-      });
+        },
+      );
     }
   }
 
@@ -123,13 +124,15 @@ class DebateEvent extends Event with PrepTimeMixin {
 
   /// Scrolls to the next page if it is safe to do so.
   void _scrollToNextPageIfSafe() {
-    if (pageController.hasClients && pageController.page < numSpeeches - 1) {
-      pageController.nextPage(
-        duration: Duration(seconds: 1),
-        curve: Curves.ease,
-      );
-    } else if (pageController.page == numSpeeches - 1) {
-      reset();
+    if (pageController.hasClients) {
+      if (pageController.page < numSpeeches - 1) {
+        pageController.nextPage(
+          duration: Duration(seconds: 1),
+          curve: Curves.ease,
+        );
+      } else if (pageController.page == numSpeeches - 1) {
+        reset();
+      }
     }
   }
 }

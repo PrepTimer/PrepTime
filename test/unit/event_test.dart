@@ -21,13 +21,7 @@ class MockEvent extends Event {
     BuildContext context,
     void Function() onSpeechEnd,
   }) {
-    void handleStatusChange(AnimationStatus status) {
-      if (speech.isAnimationCompleted(status)) {
-        onSpeechEnd?.call();
-      }
-    }
-
-    speech.initController(ticker, context, onStatusChanged: handleStatusChange);
+    speech.initController(ticker, context);
   }
 }
 

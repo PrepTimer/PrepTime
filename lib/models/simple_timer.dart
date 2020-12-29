@@ -126,12 +126,13 @@ class SimpleTimer implements Timeable {
   /// stream and increment [_ticks].
   void _updateCurrentTime(Timer _) {
     Duration timeRemaining = _calculateTimeRemaining();
-    if (timeRemaining < Duration.zero) {
-      stop();
-      onEnd?.call(); // only calls the callback if the function is not null
-    } else {
+    if (timeRemaining >= Duration.zero) {
       _controller.add(timeRemaining);
       _ticks++;
+      if (timeRemaining == Duration.zero) {
+        stop();
+        onEnd?.call(); // only calls the callback if the function is not null
+      }
     }
   }
 

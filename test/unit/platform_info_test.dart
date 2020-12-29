@@ -1,3 +1,6 @@
+// Copyright (c) 2020, Justin Shaw. Use of this source code is restricted,
+// please read the LICENSE file for details. All rights reserved.
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:preptime/models/platform_info.dart';
 

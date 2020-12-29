@@ -124,7 +124,6 @@ void main() {
           Speech speech = speechEvent.speech;
           async.elapse(speech.length);
           expect(await speech.currentTime.last, Duration.zero);
-          expect(speech.isAnimationCompleted(speech.controller.status), isTrue);
           verify(FakeCallback.onSpeechEnd()).called(1);
         });
       });

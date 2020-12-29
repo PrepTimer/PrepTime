@@ -23,7 +23,7 @@ class TeamLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     final prepName = (context.watch<Event>() as DebateEvent).prepName(team);
     return AutoSizeText(
-      prepName + ' PREP',
+      prepName.toUpperCase() + ' PREP',
       maxLines: 1,
       style: isDisabled
           ? Theme.of(context).textTheme.caption

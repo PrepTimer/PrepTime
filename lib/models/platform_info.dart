@@ -10,7 +10,13 @@ class PlatformInfo {
   final bool isAndroid;
 
   /// Creates a new PlatformInfo using both the iOS and Android parameters.
-  PlatformInfo({this.isAndroid, this.isIOS})
+  const PlatformInfo({this.isAndroid, this.isIOS})
       : assert(isAndroid != null),
         assert(isIOS != null);
+
+  /// Constructs an iOS platform info.
+  const PlatformInfo.iOS({this.isIOS = true, this.isAndroid = false});
+
+  /// Constructs an Android platform info.
+  const PlatformInfo.android({this.isAndroid = true, this.isIOS = false});
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:preptime/models/team.dart';
 import 'package:preptime/screens/timer/src/prep_timers/src/prep_timer.dart';
 
+/// A pair of [PrepTimer] widgets that are used to track each team's prep.
 class PrepTimers extends StatelessWidget {
   PrepTimers({Key key}) : super(key: key);
   @override

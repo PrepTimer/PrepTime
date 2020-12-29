@@ -38,12 +38,11 @@ class SpeechEvent extends Event {
   }) {
     assert(ticker != null);
     assert(context != null);
-    speech.initController(ticker, context,
-        onStatusChanged: (AnimationStatus status) {
-      if (speech.isAnimationCompleted(status)) {
-        onSpeechEnd?.call();
-      }
-    });
+    speech.initController(
+      ticker,
+      context,
+      onSpeechEnd: () => onSpeechEnd?.call(),
+    );
   }
 
   @override

@@ -26,6 +26,9 @@ import 'package:preptime/utilities/modals/modals.dart';
 /// the resources used here, you should call [dispose] to free up the space
 /// used by the [controller].
 class Speech extends ChangeNotifier implements Timeable {
+  /// Controlls the circular ring animation.
+  AnimationController _controller;
+
   /// The context of the speech (used internally for modals).
   BuildContext _context;
 
@@ -59,7 +62,6 @@ class Speech extends ChangeNotifier implements Timeable {
           timeBetweenTicks: Duration(milliseconds: 100),
           shouldCountUp: shouldCountUp,
         ) {
-    _timer.onEnd = () => status = SpeechStatus.completed;
     if (showTimeSignals) {
       _attachListenerForTimeSignals();
     }
@@ -73,7 +75,6 @@ class Speech extends ChangeNotifier implements Timeable {
 
   /// An animation controller for the spinning ring animation.
   AnimationController get controller => _controller;
-  AnimationController _controller;
 
   /// The current status of the speech.
   SpeechStatus status = SpeechStatus.stoppedAtBeginning;
@@ -102,12 +103,18 @@ class Speech extends ChangeNotifier implements Timeable {
   AnimationController initController(
     TickerProvider ticker,
     BuildContext context, {
-    void Function(AnimationStatus) onStatusChanged,
+    void Function() onSpeechEnd,
   }) {
     _context ??= context;
-    _controller ??= AnimationController(duration: length, vsync: ticker)
-      ..value = shouldCountUp ? 0.0 : 1.0
-      ..addStatusListener((status) => onStatusChanged?.call(status));
+    _controller ??= AnimationController(
+      duration: length,
+      vsync: ticker,
+      value: shouldCountUp ? 0.0 : 1.0,
+    );
+    _timer.onEnd ??= () {
+      status = SpeechStatus.completed;
+      onSpeechEnd?.call();
+    };
     return _controller;
   }
 
@@ -176,17 +183,6 @@ class Speech extends ChangeNotifier implements Timeable {
     );
     _timer.reset();
     status = SpeechStatus.stoppedAtBeginning;
-  }
-
-  /// Returns whether or not the animation is complete.
-  ///
-  /// The given [AnimationStatus] is termed `completed` if either:
-  ///
-  /// - The [AnimationStatus] is completed and [shouldCountUp] is true
-  /// - The [AnimationStatus] is dismissed and [shouldCountUp] is false
-  bool isAnimationCompleted(AnimationStatus status) {
-    return (shouldCountUp && status == AnimationStatus.completed) ||
-        (!shouldCountUp && status == AnimationStatus.dismissed);
   }
 
   /// Disposes the resources used by the [Speech] object.

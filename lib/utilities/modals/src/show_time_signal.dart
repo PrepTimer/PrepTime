@@ -47,7 +47,7 @@ class ShowTimeSignal {
 
   static void _showSignal(BuildContext context, AssetImage image, String msg) {
     Timer(_signalDuration, () => _popModal(context));
-    PlatformInfo platform = Provider.of<PlatformInfo>(context);
+    PlatformInfo platform = Provider.of<PlatformInfo>(context, listen: false);
     if (platform.isIOS || platform.isAndroid) {
       showCupertinoModalPopup(
         context: context,

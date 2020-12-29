@@ -19,7 +19,7 @@ class ShowAlertDialog {
         CupertinoDialogAction(
           onPressed: () {
             HapticFeedback.selectionClick();
-            action();
+            action?.call();
             Navigator.of(context).pop();
           },
           child: Text(actionLabel),
@@ -29,7 +29,7 @@ class ShowAlertDialog {
         TextButton(
           onPressed: () {
             HapticFeedback.selectionClick();
-            action();
+            action?.call();
             Navigator.of(context).pop();
           },
           child: Text(actionLabel),
@@ -55,7 +55,7 @@ class ShowAlertDialog {
         CupertinoDialogAction(
           onPressed: () {
             HapticFeedback.selectionClick();
-            firstAction();
+            firstAction?.call();
             Navigator.of(context).pop();
           },
           child: Text(firstActionLabel),
@@ -63,7 +63,7 @@ class ShowAlertDialog {
         CupertinoDialogAction(
           onPressed: () {
             HapticFeedback.selectionClick();
-            secondAction();
+            secondAction?.call();
             Navigator.of(context).pop();
           },
           child: Text(secondActionLabel),
@@ -73,7 +73,7 @@ class ShowAlertDialog {
         TextButton(
           onPressed: () {
             HapticFeedback.selectionClick();
-            firstAction();
+            firstAction?.call();
             Navigator.of(context).pop();
           },
           child: Text(firstActionLabel),
@@ -81,7 +81,7 @@ class ShowAlertDialog {
         TextButton(
           onPressed: () {
             HapticFeedback.selectionClick();
-            secondAction();
+            secondAction?.call();
             Navigator.of(context).pop();
           },
           child: Text(secondActionLabel),
@@ -107,7 +107,7 @@ class ShowAlertDialog {
         CupertinoDialogAction(
           onPressed: () {
             HapticFeedback.selectionClick();
-            cancelAction();
+            cancelAction?.call();
             Navigator.of(context).pop();
           },
           child: Text(cancelActionLabel),
@@ -116,7 +116,7 @@ class ShowAlertDialog {
           isDestructiveAction: true,
           onPressed: () {
             HapticFeedback.selectionClick();
-            destructiveAction();
+            destructiveAction?.call();
             Navigator.of(context).pop();
           },
           child: Text(destructiveActionLabel),
@@ -126,7 +126,7 @@ class ShowAlertDialog {
         TextButton(
           onPressed: () {
             HapticFeedback.selectionClick();
-            cancelAction();
+            cancelAction?.call();
             Navigator.of(context).pop();
           },
           child: Text(cancelActionLabel),
@@ -134,7 +134,7 @@ class ShowAlertDialog {
         TextButton(
           onPressed: () {
             HapticFeedback.selectionClick();
-            destructiveAction();
+            destructiveAction?.call();
             Navigator.of(context).pop();
           },
           child: Text(
@@ -165,7 +165,7 @@ class ShowAlertDialog {
         CupertinoDialogAction(
           onPressed: () {
             HapticFeedback.selectionClick();
-            secondaryAction();
+            secondaryAction?.call();
             Navigator.of(context).pop();
           },
           child: Text(secondaryActionLabel),
@@ -174,7 +174,7 @@ class ShowAlertDialog {
           isDefaultAction: true,
           onPressed: () {
             HapticFeedback.selectionClick();
-            defaultAction();
+            defaultAction?.call();
             Navigator.of(context).pop();
           },
           child: Text(defaultActionLabel),
@@ -184,7 +184,7 @@ class ShowAlertDialog {
         TextButton(
           onPressed: () {
             HapticFeedback.selectionClick();
-            secondaryAction();
+            secondaryAction?.call();
             Navigator.of(context).pop();
           },
           child: Text(secondaryActionLabel),
@@ -192,7 +192,7 @@ class ShowAlertDialog {
         TextButton(
           onPressed: () {
             HapticFeedback.selectionClick();
-            defaultAction();
+            defaultAction?.call();
             Navigator.of(context).pop();
           },
           child: Text(
@@ -213,7 +213,7 @@ class ShowAlertDialog {
     List<Widget> iOSActions,
     List<Widget> androidActions,
   }) {
-    PlatformInfo platform = Provider.of<PlatformInfo>(context);
+    PlatformInfo platform = Provider.of<PlatformInfo>(context, listen: false);
     if (platform.isIOS) {
       showCupertinoDialog(
         context: context,
