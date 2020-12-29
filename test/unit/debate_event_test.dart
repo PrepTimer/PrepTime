@@ -148,9 +148,10 @@ void main() {
       test('the callback is called when the speech ends', () {
         fakeAsync((async) async {
           debateEvent.start();
-          async.elapse(debateEvent.speech.length);
-          expect(await debateEvent.speech.currentTime.last, Duration.zero);
-          expect(debateEvent.speech.status, SpeechStatus.completed);
+          Speech speech = debateEvent.speech;
+          async.elapse(speech.length);
+          expect(await speech.currentTime.last, Duration.zero);
+          expect(speech.isAnimationCompleted(speech.controller.status), isTrue);
           verify(FakeCallback.onSpeechEnd()).called(1);
         });
       });
