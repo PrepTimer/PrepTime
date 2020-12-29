@@ -38,6 +38,9 @@ class Speech extends ChangeNotifier implements Timeable {
   /// Whether the speech should useJudgeAssistant or not.
   final bool useJudgeAssistant;
 
+  /// Whether to show time signals or not.
+  final bool showTimeSignals;
+
   /// The initial length of the speech.
   final Duration length;
 
@@ -50,13 +53,14 @@ class Speech extends ChangeNotifier implements Timeable {
     this.length = const Duration(minutes: 8),
     this.shouldCountUp = false,
     this.useJudgeAssistant = true,
+    this.showTimeSignals = false,
   }) : _timer = SimpleTimer(
           length,
           timeBetweenTicks: Duration(milliseconds: 100),
           shouldCountUp: shouldCountUp,
         ) {
     _timer.onEnd = () => status = SpeechStatus.completed;
-    if (useJudgeAssistant) {
+    if (showTimeSignals) {
       _attachListenerForTimeSignals();
     }
   }

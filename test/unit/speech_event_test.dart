@@ -1,11 +1,13 @@
 // Copyright (c) 2020, Justin Shaw. Use of this source code is restricted,
 // please read the LICENSE file for details. All rights reserved.
 
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:preptime/models/speech.dart';
 import 'package:preptime/models/speech_event.dart';
+import 'package:preptime/models/speech_status.dart';
 
 /// A fake placeholder for BuildContext.
 class MockBuildContext extends Mock implements BuildContext {}
@@ -26,7 +28,7 @@ void main() {
       speechEvent = SpeechEvent(
         name: _name,
         description: _description,
-        speech: Speech(),
+        speech: Speech(useJudgeAssistant: false),
       );
     });
     test('constructor fails assertion if name is null', () {
@@ -118,10 +120,13 @@ void main() {
         expect(speechEvent.isRunning, isTrue);
       });
       test('calling reset makes isNotRunning true', () {
-        speechEvent.start();
-        speechEvent.stop();
-        speechEvent.reset();
-        expect(speechEvent.isNotRunning, isTrue);
+        fakeAsync((async) async {
+          speechEvent.start();
+          async.elapse(speechEvent.speech.length);
+          expect(await speechEvent.speech.currentTime.last, Duration.zero);
+          expect(speechEvent.speech.status, equals(SpeechStatus.completed));
+          verify(FakeCallback.onSpeechEnd()).called(1);
+        });
       });
     });
     tearDown(() {

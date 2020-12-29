@@ -2,12 +2,14 @@
 // please read the LICENSE file for details. All rights reserved.
 
 // import 'package:fake_async/fake_async.dart';
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:preptime/models/debate_event.dart';
 import 'package:preptime/models/speech.dart';
+import 'package:preptime/models/speech_status.dart';
 // import 'package:preptime/models/speech_status.dart';
 import 'package:preptime/utilities/debate_events/debate_events.dart';
 
@@ -143,14 +145,15 @@ void main() {
         debateEvent.reset();
         expect(debateEvent.isNotRunning, isTrue);
       });
-      // test('the callback is called when the speech ends', () {
-      //   fakeAsync((async) async {
-      //     debateEvent.start();
-      //     async.elapse(debateEvent.speech.length);
-      //     expect(await debateEvent.speech.currentTime.last, Duration.zero);
-      //     expect(debateEvent.speech.status, SpeechStatus.completed);
-      //   });
-      // });
+      test('the callback is called when the speech ends', () {
+        fakeAsync((async) async {
+          debateEvent.start();
+          async.elapse(debateEvent.speech.length);
+          expect(await debateEvent.speech.currentTime.last, Duration.zero);
+          expect(debateEvent.speech.status, SpeechStatus.completed);
+          verify(FakeCallback.onSpeechEnd()).called(1);
+        });
+      });
     });
     tearDown(() {
       debateEvent?.dispose();
