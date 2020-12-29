@@ -22,10 +22,13 @@ import 'package:preptime/models/timeable.dart';
 /// you can dispose of the [SimpleTimer]'s resources with the [dispose]
 /// method.
 class SimpleTimer implements Timeable {
-  /// The timer used internally to schedule tick callbacks.
+  /// Controlls the duration stream for [currentTime].
+  StreamController<Duration> _controller;
+
+  /// The timer used internally to schedule [tick] callbacks.
   Timer _timer;
 
-  /// The number of ticks that have elapsed since starting the timer.
+  /// The number of [ticks] that have elapsed since starting the timer.
   int _ticks = 0;
 
   /// The callback function that occurs when the timer ends.
@@ -54,13 +57,12 @@ class SimpleTimer implements Timeable {
     this.shouldCountUp = false,
     this.timeBetweenTicks = const Duration(seconds: 1),
   }) : _controller = StreamController.broadcast() {
-    _controller.onListen = () => _controller.add(initialDuration);
+    _controller.onListen = () => _controller.add(_calculateTimeRemaining());
   }
 
   /// A broadcast stream that emits a new [Duration] every [timeBetweenTicks]
   /// that represents the current time on the timer.
   Stream<Duration> get currentTime => _controller.stream;
-  StreamController<Duration> _controller;
 
   /// A synchronous getter method to determine the amount of time remaining.
   Duration get timeRemaining => _calculateTimeRemaining();
@@ -82,7 +84,6 @@ class SimpleTimer implements Timeable {
   /// and therefore we lose the ticks of the cancelled timer.
   void resume() {
     if (isNotRunning && _calculateTimeRemaining() >= Duration.zero) {
-      _updateCurrentTime(null); // immediatley tick to let user know it worked.
       _timer = Timer.periodic(timeBetweenTicks, _updateCurrentTime);
     }
   }
@@ -93,7 +94,7 @@ class SimpleTimer implements Timeable {
   /// The [SimpleTimer] should be running when this method is called.
   void stop() {
     if (isRunning) {
-      _timer.cancel();
+      _timer?.cancel();
     }
   }
 

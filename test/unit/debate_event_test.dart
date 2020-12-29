@@ -3,7 +3,6 @@
 
 // import 'package:fake_async/fake_async.dart';
 import 'package:fake_async/fake_async.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -15,15 +14,17 @@ import 'package:preptime/utilities/debate_events/debate_events.dart';
 /// A fake placeholder for BuildContext.
 class MockBuildContext extends Mock implements BuildContext {}
 
-/// A class that has a method called onSpeechEnd that we can verify when and
-/// how many times it is called.
-class FakeCallback extends Fake {
-  static void onSpeechEnd() {}
+class SpeechEndCallback {
+  void onSpeechEnd() {}
 }
+
+/// Verifies how many times onSpeechEnd has been called.
+class MockCallback extends Mock implements SpeechEndCallback {}
 
 void main() {
   group('DebateEvent', () {
     MockBuildContext mockContext;
+    MockCallback mockCallback;
     DebateEvent debateEvent;
     setUp(() {
       mockContext = MockBuildContext();
@@ -117,12 +118,12 @@ void main() {
     group('initController', () {
       setUp(() {
         TestWidgetsFlutterBinding.ensureInitialized();
-        debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+        mockCallback = MockCallback();
         debateEvent = Policy.highSchool()
           ..initSpeechController(
             TestVSync(),
             context: mockContext,
-            onSpeechEnd: FakeCallback.onSpeechEnd,
+            onSpeechEnd: mockCallback.onSpeechEnd,
           );
       });
       test('start makes isRunning true', () {
@@ -148,19 +149,26 @@ void main() {
         expect(debateEvent.isNotRunning, isTrue);
       });
       test('the callback is called when the speech ends', () {
-        fakeAsync((async) async {
-          debateEvent.start();
+        fakeAsync((async) {
           Speech speech = debateEvent.speech;
+          Duration currentTime;
+          speech.currentTime.listen((duration) {
+            currentTime = duration;
+          });
+          debateEvent.start();
           async.elapse(speech.length);
-          expect(await speech.currentTime.last, Duration.zero);
+          expect(currentTime, Duration.zero);
           expect(speech.isAnimationCompleted(speech.controller.status), isTrue);
-          verify(FakeCallback.onSpeechEnd()).called(1);
+          verify(mockCallback.onSpeechEnd()).called(1);
         });
+      });
+      tearDown(() {
+        debateEvent?.dispose();
+        debateEvent = null;
       });
     });
     tearDown(() {
       debateEvent?.dispose();
-      debugDefaultTargetPlatformOverride = null;
     });
   });
 }

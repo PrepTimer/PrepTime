@@ -93,7 +93,8 @@ class Speech extends ChangeNotifier implements Timeable {
   /// Initializes the controller.
   ///
   /// Binds the TickerProvider to the AnimationController and adds the
-  /// [onStatusChange] callback to the controller.
+  /// [onStatusChange] callback to the controller. This method is `idempotent`,
+  /// meaning that calling it once is the same as calling in many times.
   ///
   /// - [ticker] a reference to the current context's TickerProvider.
   /// - [context] the build context of this speech.
@@ -103,16 +104,10 @@ class Speech extends ChangeNotifier implements Timeable {
     BuildContext context, {
     void Function(AnimationStatus) onStatusChanged,
   }) {
-    void handleStatusChange(AnimationStatus status) {
-      if (onStatusChanged != null) {
-        onStatusChanged(status);
-      }
-    }
-
-    _context = context;
+    _context ??= context;
     _controller ??= AnimationController(duration: length, vsync: ticker)
       ..value = shouldCountUp ? 0.0 : 1.0
-      ..addStatusListener(handleStatusChange);
+      ..addStatusListener((status) => onStatusChanged?.call(status));
     return _controller;
   }
 

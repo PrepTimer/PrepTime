@@ -60,9 +60,8 @@ void main() {
       expect(simpleTimer.isNotRunning, isTrue);
     });
     test('Dispose() closes the sink.', () {
-      simpleTimer.resume();
       simpleTimer.dispose();
-      expect(() => simpleTimer.resume(), throwsStateError);
+      expect(() => simpleTimer.reset(), throwsStateError);
       simpleTimer = null; // make safe value for teardown
     });
     tearDown(() {
