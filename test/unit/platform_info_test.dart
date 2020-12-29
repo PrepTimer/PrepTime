@@ -5,13 +5,13 @@ void main() {
   group('PlatformInfo', () {
     test('constructor throws assertion error if isIOS is null', () {
       expect(
-        () => PlatformInfo(isIOS: null),
+        () => PlatformInfo(isIOS: null, isAndroid: true),
         throwsAssertionError,
       );
     });
     test('constructor throws assertion error if isAndroid is null', () {
       expect(
-        () => PlatformInfo(isAndroid: null),
+        () => PlatformInfo(isAndroid: null, isIOS: true),
         throwsAssertionError,
       );
     });
