@@ -64,6 +64,9 @@ void main() {
         speech = Speech(shouldCountUp: true, useJudgeAssistant: false);
         speech.initController(const TestVSync(), mockContext);
       });
+      test('speech attaches listener to stream if showTimeSignals', () {
+        speech = Speech(showTimeSignals: true, useJudgeAssistant: false);
+      });
       test('status is pausedInMiddle after pressing start then stop', () {
         speech.start();
         speech.stop();

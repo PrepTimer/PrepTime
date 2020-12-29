@@ -86,6 +86,7 @@ void main() {
         expect(testMixin.remainingPrep(Team.right), isNotNull);
       });
       test('resetPrep sets the amount of prep to initial value', () {
+        testMixin.resetPrep(Team.left);
         fakeAsync((async) async {
           // Start a prep timer and then fast-forward a couple of minutes
           Duration _fastForwardDuration = Duration(minutes: 2);

@@ -122,9 +122,10 @@ void main() {
       test('calling reset makes isNotRunning true', () {
         fakeAsync((async) async {
           speechEvent.start();
-          async.elapse(speechEvent.speech.length);
-          expect(await speechEvent.speech.currentTime.last, Duration.zero);
-          expect(speechEvent.speech.status, equals(SpeechStatus.completed));
+          Speech speech = speechEvent.speech;
+          async.elapse(speech.length);
+          expect(await speech.currentTime.last, Duration.zero);
+          expect(speech.isAnimationCompleted(speech.controller.status), isTrue);
           verify(FakeCallback.onSpeechEnd()).called(1);
         });
       });
