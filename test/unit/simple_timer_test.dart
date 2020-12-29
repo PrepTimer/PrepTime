@@ -41,7 +41,7 @@ void main() {
       expect(simpleTimer.isNotRunning, isTrue);
     });
     test('Reset() causes the currentTime to equal initialDuration.', () {
-      fakeAsync<void>((async) async {
+      fakeAsync((async) async {
         /// Start the timer, fast-forward 4 minutes and expect new currentTime.
         simpleTimer.resume();
         async.elapse(Duration(minutes: 4));

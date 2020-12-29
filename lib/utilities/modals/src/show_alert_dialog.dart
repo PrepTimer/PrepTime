@@ -213,7 +213,8 @@ class ShowAlertDialog {
     List<Widget> iOSActions,
     List<Widget> androidActions,
   }) {
-    if (Platform.isIOS) {
+    PlatformInfo platform = Provider.of<PlatformInfo>(context);
+    if (platform.isIOS) {
       showCupertinoDialog(
         context: context,
         builder: (context) => CupertinoAlertDialog(
@@ -225,7 +226,7 @@ class ShowAlertDialog {
           actions: iOSActions,
         ),
       );
-    } else if (Platform.isAndroid) {
+    } else if (platform.isAndroid) {
       showGeneralDialog(
         context: context,
         pageBuilder: (context, animation, secondaryAnimation) => AlertDialog(
