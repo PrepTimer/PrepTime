@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:preptime/screens/timer/src/prep_timers/prep_timers.dart';
 import 'package:preptime/screens/timer/src/prep_timers/src/prep_timer.dart';
-import 'package:preptime/screens/timer/src/prep_timers/src/time_label.dart';
 
 import '../material_wrapper.dart';
 
