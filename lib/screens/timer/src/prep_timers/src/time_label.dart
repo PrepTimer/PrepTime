@@ -44,7 +44,6 @@ class TimeLabel extends StatelessWidget {
   String _formatDuration(Duration time) {
     String seconds = (time.inSeconds % Duration.secondsPerMinute).toString();
     int minutes = (time.inMinutes % Duration.minutesPerHour);
-    if (minutes < 10) return '$minutes:${seconds.padLeft(2, '0')}';
-    return '${minutes.toString().padLeft(2, '0')}:${seconds.padLeft(2, '0')}';
+    return '$minutes:${seconds.padLeft(2, '0')}';
   }
 }

@@ -12,7 +12,7 @@ Widget materialWrapper(
   PlatformInfo platformInfo = const PlatformInfo.iOS(),
 }) {
   return MockProvider(
-    platformInfo: platformInfo,
+    platform: platformInfo,
     child: MaterialApp(
       theme: PrepTimeThemeData.darkTheme,
       title: 'Prep Time',

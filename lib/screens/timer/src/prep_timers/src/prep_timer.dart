@@ -128,7 +128,6 @@ class _PrepTimerState extends State<PrepTimer> {
       destructiveActionLabel: 'Reset',
       cancelActionLabel: 'Cancel',
       destructiveAction: () => _debateEvent.resetPrep(widget.team),
-      cancelAction: () => null,
     );
   }
 }

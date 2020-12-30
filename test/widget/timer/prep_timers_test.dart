@@ -34,6 +34,7 @@ void main() {
       await tester.pump(Duration(minutes: 8));
 
       // Verify the aff TimeLabel has changed
+      /// TODO: #35 Fix 0:01 bug
       expect(find.widgetWithText(PrepTimer, '0:01'), findsOneWidget);
 
       await tester.longPress(affPrepButton);

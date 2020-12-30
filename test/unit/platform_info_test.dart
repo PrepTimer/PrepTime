@@ -23,5 +23,15 @@ void main() {
       expect(platformInfo.isAndroid, isTrue);
       expect(platformInfo.isIOS, isFalse);
     });
+    test('iOS named constructor sets platform to iOS', () {
+      PlatformInfo platformInfo = PlatformInfo.iOS();
+      expect(platformInfo.isIOS, isTrue);
+      expect(platformInfo.isAndroid, isFalse);
+    });
+    test('android named constructor sets platform to Android', () {
+      PlatformInfo platformInfo = PlatformInfo.android();
+      expect(platformInfo.isAndroid, isTrue);
+      expect(platformInfo.isIOS, isFalse);
+    });
   });
 }

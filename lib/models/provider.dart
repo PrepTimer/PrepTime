@@ -19,16 +19,28 @@ class PrepTimeProvider extends StatelessWidget {
   final EventController eventController = EventController();
 
   /// The current platform.
-  final PlatformInfo platformInfo = PlatformInfo(
-    isAndroid: Platform.isAndroid,
-    isIOS: Platform.isIOS,
-  );
+  final PlatformInfo platformInfo;
 
   /// Provides access to models throughout the widget tree.
-  PrepTimeProvider({this.child}) {
-    eventController.add(Policy.highSchool());
-    eventController.add(LincolnDouglas.highSchool());
-    eventController.add(PublicForum.highSchool());
+  PrepTimeProvider({
+    @required this.child,
+    List<Event> events,
+    PlatformInfo platformInfo,
+  }) : this.platformInfo = platformInfo ??
+            PlatformInfo(
+              isAndroid: Platform.isAndroid,
+              isIOS: Platform.isIOS,
+            ) {
+    if (events == null || events.isEmpty) {
+      events = [
+        Policy.highSchool(),
+        LincolnDouglas.highSchool(),
+        PublicForum.highSchool(),
+      ];
+    }
+    for (Event event in events) {
+      eventController.add(event);
+    }
   }
 
   @override
@@ -43,10 +55,23 @@ class PrepTimeProvider extends StatelessWidget {
           value: eventController,
         ),
         ChangeNotifierProxyProvider<EventController, Event>(
-          create: (_) => eventController.event,
-          update: (_, controller, __) => controller.event,
+          create: (_) => getEventFromController(eventController, context),
+          update: (_, controller, __) => getEventFromController(
+            controller,
+            context,
+          ),
         ),
       ],
     );
+  }
+
+  /// Returns the event from the given event controller.
+  ///
+  /// The [context] parameter is for testing purposes, see [mock_provider].
+  Event getEventFromController(
+    EventController controller,
+    BuildContext context,
+  ) {
+    return controller.event;
   }
 }
