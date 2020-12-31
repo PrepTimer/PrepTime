@@ -19,4 +19,10 @@ class PlatformInfo {
 
   /// Constructs an Android platform info.
   const PlatformInfo.android({this.isAndroid = true, this.isIOS = false});
+
+  @override
+  int get hashCode => isIOS.hashCode + isAndroid.hashCode;
+
+  @override
+  bool operator ==(Object other) => this.hashCode == other.hashCode;
 }

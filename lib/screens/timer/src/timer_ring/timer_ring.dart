@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:preptime/models/event.dart';
 import 'package:preptime/models/team.dart';
 import 'package:preptime/screens/timer/src/timer_ring/src/clock_carousel.dart';
+import 'package:preptime/screens/timer/src/timer_ring/src/clock_label.dart';
 import 'package:preptime/screens/timer/src/timer_ring/src/ring_painter.dart';
 import 'package:preptime/screens/timer/src/timer_ring/src/speech_indicator.dart';
 import 'package:preptime/screens/timer/src/timer_ring/src/speech_label.dart';
@@ -25,6 +26,7 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     _initializeAllSpeechControllersInEvent(context.watch<Event>(), context);
+    bool isDebateEvent = context.watch<Event>() is DebateEvent;
     return Align(
       alignment: FractionalOffset.center,
       child: AspectRatio(
@@ -32,12 +34,12 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
         child: Stack(
           children: <Widget>[
             RingPainter(),
-            ClockCarousel(),
+            if (isDebateEvent) ClockCarousel() else ClockLabel(),
             Align(
               alignment: FractionalOffset(0.5, 0.69),
               child: SpeechLabel(),
             ),
-            if (context.watch<Event>() is DebateEvent)
+            if (isDebateEvent)
               Align(
                 alignment: FractionalOffset(0.5, 0.8),
                 child: SpeechIndicator(),
@@ -53,11 +55,11 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
     event.initSpeechController(
       this,
       context: context,
-      onSpeechEnd: () => _autoMoveSpeeches(context),
+      onSpeechEnd: () => _askIfEitherTeamWantsToUsePrep(context),
     );
   }
 
-  void _autoMoveSpeeches(BuildContext context) {
+  void _askIfEitherTeamWantsToUsePrep(BuildContext context) {
     Event event = context.read<Event>();
     if (event.speech.useJudgeAssistant && event is DebateEvent) {
       ShowAlertDialog.withDefaultAndBasicActions(
@@ -66,7 +68,6 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
         content: 'Would either team like to take prep?',
         defaultActionLabel: 'Yes',
         secondaryActionLabel: 'No',
-        secondaryAction: () => null,
         defaultAction: () {
           // Must present new alert asynchronously to avoid navigator pop loop.
           Timer.run(() {

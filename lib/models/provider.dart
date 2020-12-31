@@ -31,7 +31,7 @@ class PrepTimeProvider extends StatelessWidget {
               isAndroid: Platform.isAndroid,
               isIOS: Platform.isIOS,
             ) {
-    if (events == null || events.isEmpty) {
+    if (events == null) {
       events = [
         Policy.highSchool(),
         LincolnDouglas.highSchool(),

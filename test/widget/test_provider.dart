@@ -8,18 +8,18 @@ import 'package:preptime/models/event_controller.dart';
 import 'package:preptime/models/platform_info.dart';
 import 'package:preptime/models/provider.dart';
 
-class MockProvider extends PrepTimeProvider {
+class TestProvider extends PrepTimeProvider {
   /// Constructs a new mock provider.
   ///
   /// The [child] parameter is required and is build as the child of this
   /// provider. The platform info defaults to isIOS, and the events defaults
   /// to a set of three high-school level debate events: Policy, LincolnDouglas,
   /// and PublicForum.
-  MockProvider({
+  TestProvider({
     @required Widget child,
     PlatformInfo platform = const PlatformInfo.iOS(),
     List<Event> events,
-  }) : super(child: child, platformInfo: platform);
+  }) : super(child: child, platformInfo: platform, events: events);
 
   /// Returns the event from the given event controller.
   ///

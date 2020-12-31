@@ -13,7 +13,13 @@ import 'package:preptime/utilities/duration_format/duration_format.dart';
 /// The time remaining duration on the clock.
 class ClockLabel extends StatelessWidget {
   final int index;
+
+  /// Construct a clock label from the given idex.
   ClockLabel.fromIndex(this.index);
+
+  /// Constructs a new clock label.
+  ClockLabel() : index = 0;
+
   @override
   Widget build(BuildContext context) {
     Event event = context.watch<Event>();
