@@ -83,7 +83,7 @@ class DebateEvent extends Event with PrepTimeMixin {
   void initSpeechController(
     TickerProvider ticker, {
     BuildContext context,
-    void Function() onSpeechEnd,
+    void Function(BuildContext) onSpeechEnd,
   }) {
     assert(ticker != null);
     assert(context != null);
@@ -92,7 +92,7 @@ class DebateEvent extends Event with PrepTimeMixin {
         ticker,
         context,
         onSpeechEnd: () {
-          onSpeechEnd?.call();
+          onSpeechEnd?.call(context);
           if (speech.useJudgeAssistant) {
             _scrollToNextPageIfSafe();
           }

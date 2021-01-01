@@ -34,14 +34,14 @@ class SpeechEvent extends Event {
   void initSpeechController(
     TickerProvider ticker, {
     BuildContext context,
-    void Function() onSpeechEnd,
+    void Function(BuildContext) onSpeechEnd,
   }) {
     assert(ticker != null);
     assert(context != null);
     speech.initController(
       ticker,
       context,
-      onSpeechEnd: () => onSpeechEnd?.call(),
+      onSpeechEnd: () => onSpeechEnd?.call(context),
     );
   }
 

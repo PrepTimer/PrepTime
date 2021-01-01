@@ -8,18 +8,17 @@ import 'package:mockito/mockito.dart';
 import 'package:preptime/models/speech.dart';
 import 'package:preptime/models/speech_event.dart';
 
-/// A fake placeholder for BuildContext.
-class MockBuildContext extends Mock implements BuildContext {}
+import '../material_wrapper.dart';
 
 /// A class that has a method called onSpeechEnd that we can verify when and
 /// how many times it is called.
 class FakeCallback extends Fake {
-  static void onSpeechEnd() {}
+  static void onSpeechEnd(BuildContext context) {}
 }
 
 void main() {
   group('SpeechEvent', () {
-    MockBuildContext mockBuildContext = MockBuildContext();
+    MockBuildContext mockBuildContext = TestMaterial.mockBuildContext;
     SpeechEvent speechEvent;
     String _name = 'nameOfSpeechEvent';
     String _description = 'descriptionOfSpeechEvent';
@@ -124,7 +123,7 @@ void main() {
           Speech speech = speechEvent.speech;
           async.elapse(speech.length);
           expect(await speech.currentTime.last, Duration.zero);
-          verify(FakeCallback.onSpeechEnd()).called(1);
+          verify(FakeCallback.onSpeechEnd).called(1);
         });
       });
     });

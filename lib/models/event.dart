@@ -66,7 +66,7 @@ abstract class Event extends ChangeNotifier implements Timeable {
   void initSpeechController(
     TickerProvider ticker, {
     BuildContext context,
-    void Function() onSpeechEnd,
+    void Function(BuildContext) onSpeechEnd,
   });
 
   /// Disposes the resources used by this event.

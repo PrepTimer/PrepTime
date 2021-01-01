@@ -59,7 +59,7 @@ class Speech extends ChangeNotifier implements Timeable {
     this.showTimeSignals = false,
   }) : _timer = SimpleTimer(
           length,
-          timeBetweenTicks: Duration(milliseconds: 100),
+          timeBetweenTicks: const Duration(milliseconds: 100),
           shouldCountUp: shouldCountUp,
         ) {
     if (showTimeSignals) {
@@ -111,7 +111,7 @@ class Speech extends ChangeNotifier implements Timeable {
       vsync: ticker,
       value: shouldCountUp ? 0.0 : 1.0,
     );
-    _timer.onEnd ??= () {
+    _timer.onEnd = () {
       status = SpeechStatus.completed;
       onSpeechEnd?.call();
     };

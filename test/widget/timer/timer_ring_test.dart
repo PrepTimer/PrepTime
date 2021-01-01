@@ -52,15 +52,21 @@ main() {
         final pageView = verifyVisibleWidgetOfType(PageView);
 
         /// Verify the first speech is visible.
-        final firstSpeech = find.widgetWithText(SpeechLabel, '1AC');
-        expect(firstSpeech, findsOneWidget);
+        verifyVisibleWidgetWithText(SpeechLabel, '1AC');
 
+        // Swipe left
         await tester.fling(pageView, Offset(-200, 0), 1000.0);
         await tester.pumpAndSettle();
 
         /// Verify the second speech is visible.
-        final secondSpeech = find.widgetWithText(SpeechLabel, 'CX');
-        expect(secondSpeech, findsOneWidget);
+        verifyVisibleWidgetWithText(SpeechLabel, 'CX');
+
+        // Swipe right
+        await tester.fling(pageView, Offset(200, 0), 1000.0);
+        await tester.pumpAndSettle();
+
+        // Verify the first speech is visible
+        verifyVisibleWidgetWithText(SpeechLabel, '1AC');
       },
     );
     testWidgets(
@@ -69,16 +75,21 @@ main() {
         await tester.pumpWidget(TestMaterial.wrapper(TimerRing()));
         final pageView = verifyVisibleWidgetOfType(PageView);
 
-        /// Verify the first speech is visible.
-        final firstSpeech = find.widgetWithText(SpeechLabel, '1AC');
-        expect(firstSpeech, findsOneWidget);
+        /// Verify first speech visible and swipe until the last speech visible
+        verifyVisibleWidgetWithText(SpeechLabel, '1AC');
 
+        for (int i = 0; i < 12; i++) {
+          await tester.fling(pageView, Offset(-200, 0), 1000.0);
+          await tester.pumpAndSettle();
+        }
+
+        /// Verify the last speech is visible
+        verifyVisibleWidgetWithText(SpeechLabel, '2AR');
+
+        /// fling again and verify the last speech is still visible
         await tester.fling(pageView, Offset(-200, 0), 1000.0);
         await tester.pumpAndSettle();
-
-        /// Verify the second speech is visible.
-        final secondSpeech = find.widgetWithText(SpeechLabel, 'CX');
-        expect(secondSpeech, findsOneWidget);
+        verifyVisibleWidgetWithText(SpeechLabel, '2AR');
       },
     );
   });

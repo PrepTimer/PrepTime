@@ -9,11 +9,10 @@ import 'package:preptime/models/debate_event.dart';
 import 'package:preptime/models/speech.dart';
 import 'package:preptime/utilities/debate_events/debate_events.dart';
 
-/// A fake placeholder for BuildContext.
-class MockBuildContext extends Mock implements BuildContext {}
+import '../material_wrapper.dart';
 
 class SpeechEndCallback {
-  void onSpeechEnd() {}
+  void onSpeechEnd(BuildContext context) {}
 }
 
 /// Verifies how many times onSpeechEnd has been called.
@@ -21,11 +20,11 @@ class MockCallback extends Mock implements SpeechEndCallback {}
 
 void main() {
   group('DebateEvent', () {
-    MockBuildContext mockContext;
+    BuildContext mockContext;
     MockCallback mockCallback;
     DebateEvent debateEvent;
     setUp(() {
-      mockContext = MockBuildContext();
+      mockContext = TestMaterial.mockBuildContext;
       debateEvent = Policy.highSchool();
     });
     test('the debateEvent == operator works as expected', () {
@@ -158,7 +157,7 @@ void main() {
           async.elapse(speech.length);
           expect(currentTime, Duration.zero);
           expect(debateEvent.isRunning, isFalse);
-          verify(mockCallback.onSpeechEnd()).called(1);
+          verify(mockCallback.onSpeechEnd(mockContext)).called(1);
         });
       });
     });

@@ -2,13 +2,11 @@
 // please read the LICENSE file for details. All rights reserved.
 
 import 'package:fake_async/fake_async.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 import 'package:preptime/models/speech.dart';
 import 'package:preptime/models/speech_status.dart';
 
-class MockBuildContext extends Mock implements BuildContext {}
+import '../material_wrapper.dart';
 
 void main() {
   group('Speech', () {
@@ -60,9 +58,11 @@ void main() {
     });
     group('(initialized)', () {
       setUp(() {
-        MockBuildContext mockContext = MockBuildContext();
         speech = Speech(shouldCountUp: true, useJudgeAssistant: false);
-        speech.initController(const TestVSync(), mockContext);
+        speech.initController(
+          const TestVSync(),
+          TestMaterial.mockBuildContext,
+        );
       });
       test('speech attaches listener to stream if showTimeSignals', () {
         speech = Speech(showTimeSignals: true, useJudgeAssistant: false);

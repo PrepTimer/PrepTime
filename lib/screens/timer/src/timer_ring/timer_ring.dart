@@ -51,11 +51,13 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
   }
 
   void _initializeAllSpeechControllersInEvent(
-      Event event, BuildContext context) {
+    Event event,
+    BuildContext context,
+  ) {
     event.initSpeechController(
       this,
       context: context,
-      onSpeechEnd: () => _askIfEitherTeamWantsToUsePrep(context),
+      onSpeechEnd: _askIfEitherTeamWantsToUsePrep,
     );
   }
 
@@ -66,8 +68,9 @@ class _TimerRingState extends State<TimerRing> with TickerProviderStateMixin {
         context,
         title: 'Time\'s up!',
         content: 'Would either team like to take prep?',
-        defaultActionLabel: 'Yes',
         secondaryActionLabel: 'No',
+        defaultActionLabel: 'Yes',
+        secondaryAction: () => null,
         defaultAction: () {
           // Must present new alert asynchronously to avoid navigator pop loop.
           Timer.run(() {

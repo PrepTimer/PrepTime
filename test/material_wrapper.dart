@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:preptime/models/event.dart';
 import 'package:preptime/models/platform_info.dart';
 import 'package:preptime/models/speech.dart';
@@ -11,8 +12,11 @@ import 'package:preptime/theme/style.dart';
 import 'package:preptime/utilities/debate_events/debate_events.dart';
 import 'widget/test_provider.dart';
 
+class MockBuildContext extends Mock implements BuildContext {}
+
 /// Testing utilties for testing MaterialApp widgets.
 class TestMaterial {
+  static BuildContext get mockBuildContext => MockBuildContext();
   static Duration get speechDuration => Duration(minutes: 8);
   static Duration get prepDuration => Duration(minutes: 8);
 

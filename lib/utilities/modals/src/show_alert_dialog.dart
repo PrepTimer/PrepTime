@@ -4,39 +4,39 @@
 part of modals;
 
 class ShowAlertDialog {
-  static void withOneAction(
-    BuildContext context, {
-    String title,
-    String content,
-    String actionLabel,
-    void Function() action,
-  }) {
-    _showPlatformAwareModalAlert(
-      context: context,
-      title: title,
-      content: content,
-      iOSActions: [
-        CupertinoDialogAction(
-          onPressed: () {
-            HapticFeedback.selectionClick();
-            action?.call();
-            Navigator.of(context).pop();
-          },
-          child: Text(actionLabel),
-        )
-      ],
-      androidActions: [
-        TextButton(
-          onPressed: () {
-            HapticFeedback.selectionClick();
-            action?.call();
-            Navigator.of(context).pop();
-          },
-          child: Text(actionLabel),
-        )
-      ],
-    );
-  }
+  // static void withOneAction(
+  //   BuildContext context, {
+  //   String title,
+  //   String content,
+  //   String actionLabel,
+  //   void Function() action,
+  // }) {
+  //   _showPlatformAwareModalAlert(
+  //     context: context,
+  //     title: title,
+  //     content: content,
+  //     iOSActions: [
+  //       CupertinoDialogAction(
+  //         onPressed: () {
+  //           HapticFeedback.selectionClick();
+  //           action?.call();
+  //           Navigator.of(context).pop();
+  //         },
+  //         child: Text(actionLabel),
+  //       )
+  //     ],
+  //     androidActions: [
+  //       TextButton(
+  //         onPressed: () {
+  //           HapticFeedback.selectionClick();
+  //           action?.call();
+  //           Navigator.of(context).pop();
+  //         },
+  //         child: Text(actionLabel),
+  //       )
+  //     ],
+  //   );
+  // }
 
   static void withTwoBasicActions(
     BuildContext context, {
@@ -235,8 +235,6 @@ class ShowAlertDialog {
           actions: androidActions,
         ),
       );
-    } else {
-      throw PlatformException(code: 'showDialog not defined for all platforms');
     }
   }
 }

@@ -23,8 +23,7 @@ void main() {
     (WidgetTester tester) async {
       // Build a PrepTimers widget and find the aff PrepTimer button.
       await tester.pumpWidget(TestMaterial.wrapper(PrepTimers()));
-      final affPrepButton = find.widgetWithText(PrepTimer, 'AFF PREP');
-      expect(affPrepButton, findsOneWidget);
+      final affPrepButton = verifyVisibleWidgetWithText(PrepTimer, 'AFF PREP');
 
       // Verify that both TimeLabels start with 8:00 of prep
       expect(find.widgetWithText(PrepTimer, '8:00'), findsNWidgets(2));
@@ -34,31 +33,30 @@ void main() {
 
       // Verify the aff TimeLabel has changed
       /// TODO: #35 Fix 0:01 bug
-      expect(find.widgetWithText(PrepTimer, '0:01'), findsOneWidget);
+      verifyVisibleWidgetWithText(PrepTimer, '0:01');
 
       await longPressAndSettleButtonWithTester(affPrepButton, tester);
 
       // Verify that the long press caused an alert dialog to show
-      expect(find.byType(CupertinoAlertDialog), findsOneWidget);
-      final cancel = find.widgetWithText(CupertinoDialogAction, 'Cancel');
-      expect(cancel, findsOneWidget);
+      verifyVisibleWidgetOfType(CupertinoAlertDialog);
+      final cancel =
+          verifyVisibleWidgetWithText(CupertinoDialogAction, 'Cancel');
 
       await tapAndSettleButtonWithTester(cancel, tester);
 
       // Verify the prep time was not reset
-      expect(find.widgetWithText(PrepTimer, '0:01'), findsOneWidget);
+      verifyVisibleWidgetWithText(PrepTimer, '0:01');
 
       await longPressAndSettleButtonWithTester(affPrepButton, tester);
 
       // Verify that the long press caused an alert dialog to show
-      expect(find.byType(CupertinoAlertDialog), findsOneWidget);
-      final reset = find.widgetWithText(CupertinoDialogAction, 'Reset');
-      expect(reset, findsOneWidget);
+      verifyVisibleWidgetOfType(CupertinoAlertDialog);
+      final reset = verifyVisibleWidgetWithText(CupertinoDialogAction, 'Reset');
 
       await tapAndSettleButtonWithTester(reset, tester);
 
       // Verify that a longPress resets the clock.
-      expect(find.widgetWithText(PrepTimer, '8:00'), findsNWidgets(2));
+      verifyVisibleWidgetWithText(PrepTimer, '8:00', finds: 2);
     },
   );
   testWidgets(

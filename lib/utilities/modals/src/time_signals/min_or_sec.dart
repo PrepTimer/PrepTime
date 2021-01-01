@@ -26,9 +26,10 @@ extension MinutesOrSeconds on Duration {
   ///
   /// Returns "Minute", "Second", or "Neither".
   String isMinutesOrSeconds() {
-    if (this >= Duration(minutes: 1) && this < Duration(hours: 1)) {
+    if (this >= const Duration(minutes: 1) && this < const Duration(hours: 1)) {
       return 'Minute';
-    } else if (this >= Duration(seconds: 1) && this < Duration(minutes: 1)) {
+    } else if (this >= const Duration(seconds: 1) &&
+        this < const Duration(minutes: 1)) {
       return 'Second';
     } else {
       return 'Neither';

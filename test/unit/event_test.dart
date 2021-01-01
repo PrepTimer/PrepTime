@@ -5,11 +5,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/scheduler/ticker.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 import 'package:preptime/models/event.dart';
 import 'package:preptime/models/speech.dart';
 
-class MockBuildContext extends Mock implements BuildContext {}
+import '../material_wrapper.dart';
 
 class MockEvent extends Event {
   MockEvent(String name, String description, Speech speech)
@@ -19,7 +18,7 @@ class MockEvent extends Event {
   void initSpeechController(
     TickerProvider ticker, {
     BuildContext context,
-    void Function() onSpeechEnd,
+    void Function(BuildContext) onSpeechEnd,
   }) {
     speech.initController(ticker, context);
   }
@@ -61,8 +60,10 @@ void main() {
     group('initController', () {
       setUp(() {
         TestWidgetsFlutterBinding.ensureInitialized();
-        MockBuildContext mockBuildContext = MockBuildContext();
-        event.initSpeechController(TestVSync(), context: mockBuildContext);
+        event.initSpeechController(
+          TestVSync(),
+          context: TestMaterial.mockBuildContext,
+        );
       });
       test('start makes isRunning true', () {
         expect(event.isNotRunning, isTrue);

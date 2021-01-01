@@ -17,23 +17,22 @@ main() {
       },
     );
     testWidgets(
-      'cancel button says cancel for every speech status',
+      'cancel button says cancel for every speech status and start button ' +
+          'says Pause for status.pausedInMiddle and Start otherwise',
       (WidgetTester tester) async {
         await tester.pumpWidget(TestMaterial.wrapper(TimerButtons()));
 
         // There should be a cancel button when the timer stopped at beginning.
-        final cancelButton = find.widgetWithText(TimerButton, 'Cancel');
-        expect(cancelButton, findsOneWidget); // stopped at beginning
+        final cancelButton = verifyVisibleWidgetWithText(TimerButton, 'Cancel');
 
         // There should be a cancel button when the timer is running.
-        final startButton = find.widgetWithText(TimerButton, 'Start');
-        expect(startButton, findsOneWidget);
+        final startButton = verifyVisibleWidgetWithText(TimerButton, 'Start');
         await tester.tap(startButton);
         await tester.pumpAndSettle();
         expect(cancelButton, findsOneWidget); // running forward
 
         // There should be a cancel button when the timer is paused.
-        final pauseButton = find.widgetWithText(TimerButton, 'Pause');
+        final pauseButton = verifyVisibleWidgetWithText(TimerButton, 'Pause');
         expect(pauseButton, findsOneWidget);
         await tester.tap(pauseButton);
         await tester.pumpAndSettle();
@@ -45,14 +44,7 @@ main() {
       },
     );
     testWidgets(
-      'start button says Pause for status.pausedInMiddle and Start otherwise',
-      (WidgetTester tester) async {
-        await tester.pumpWidget(TestMaterial.wrapper(TimerButtons()));
-      },
-      skip: true,
-    );
-    testWidgets(
-      'both buttons get darked when you press them',
+      'both buttons darken when you press them',
       (WidgetTester tester) async {
         await tester.pumpWidget(TestMaterial.wrapper(TimerButtons()));
       },

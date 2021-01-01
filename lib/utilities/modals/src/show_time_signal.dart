@@ -24,20 +24,20 @@ class ShowTimeSignal {
     } else if (duration.equalsMinutesOrSeconds(1)) {
       signal = TimeSignal.one;
       message = 'One ' + duration.isMinutesOrSeconds() + ' Left';
-    } else if (duration == Duration(seconds: 30)) {
+    } else if (duration == const Duration(seconds: 30)) {
       signal = TimeSignal.thirty;
       message = 'Thirty Seconds Left';
-    } else if (duration == Duration(seconds: 15)) {
+    } else if (duration == const Duration(seconds: 15)) {
       signal = TimeSignal.fifteen;
       message = 'Fifteen Seconds Left';
     } else if (duration.equalsMinutesOrSeconds(0)) {
       signal = TimeSignal.fist;
       message = "Time's up!";
     }
-    if (duration <= Duration(seconds: 5)) {
-      _signalDuration = Duration(milliseconds: 750);
+    if (duration <= const Duration(seconds: 5)) {
+      _signalDuration = const Duration(milliseconds: 750);
     } else {
-      _signalDuration = Duration(seconds: 2);
+      _signalDuration = const Duration(seconds: 2);
     }
     if (signal != null) {
       String assetName = 'assets/signals/${signal.toShortString()}.png';
@@ -66,15 +66,13 @@ class ShowTimeSignal {
                     msg,
                     style: Theme.of(context).textTheme.headline3,
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                 ],
               ),
             ),
           ),
         ),
       );
-    } else {
-      throw PlatformException(code: "Unsupported platform.");
     }
   }
 

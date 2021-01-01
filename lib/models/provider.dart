@@ -55,8 +55,8 @@ class PrepTimeProvider extends StatelessWidget {
           value: eventController,
         ),
         ChangeNotifierProxyProvider<EventController, Event>(
-          create: (_) => getEventFromController(eventController, context),
-          update: (_, controller, __) => getEventFromController(
+          create: (context) => getEventFromController(eventController, context),
+          update: (context, controller, _) => getEventFromController(
             controller,
             context,
           ),
