@@ -1,3 +1,6 @@
+// Copyright (c) 2020, Justin Shaw. Use of this source code is restricted,
+// please read the LICENSE file for details. All rights reserved.
+
 import 'package:flutter/material.dart';
 import 'package:preptime/models/event.dart';
 import 'package:preptime/screens/timer/src/prep_timers/prep_timers.dart';

@@ -1,11 +1,14 @@
+// Copyright (c) 2020, Justin Shaw. Use of this source code is restricted,
+// please read the LICENSE file for details. All rights reserved.
+
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:preptime/models/event.dart';
 import 'package:preptime/models/speech.dart';
 import 'package:preptime/models/speech_status.dart';
 import 'package:preptime/screens/timer/src/timer_buttons/src/button_properties.dart';
 import 'package:provider/provider.dart';
-import 'package:shimmer/shimmer.dart';
 
 /// Defines the state and behavior of a timer button.
 ///
@@ -22,12 +25,15 @@ class TimerButton extends StatefulWidget {
   /// tapped and active.
   TimerButton.cancel(
     BuildContext context,
-    void Function() onTap, {
+    bool isDisabled,
+    void Function() onPressed, {
     Key key,
   })  : behavior = {
           SpeechStatus.values[0]: ButtonProperties.grayButton(context),
-          SpeechStatus.values[1]: ButtonProperties.grayButton(context, onTap),
-          SpeechStatus.values[2]: ButtonProperties.grayButton(context, onTap),
+          SpeechStatus.values[1]: ButtonProperties.grayButton(
+              context, isDisabled ? null : onPressed),
+          SpeechStatus.values[2]: ButtonProperties.grayButton(
+              context, isDisabled ? null : onPressed),
           SpeechStatus.values[3]: ButtonProperties.grayButton(context),
         },
         super(key: key);
@@ -46,17 +52,17 @@ class TimerButton extends StatefulWidget {
   TimerButton.action(
     BuildContext context,
     bool isDisabled,
-    Speech speech, {
+    Event event, {
     Key key,
   })  : behavior = {
           SpeechStatus.values[0]: ButtonProperties.greenButton(
-              context, isDisabled ? null : speech.start),
+              context, isDisabled ? null : event.start),
           SpeechStatus.values[1]: ButtonProperties.orangeButton(
-              context, isDisabled ? null : speech.stop),
+              context, isDisabled ? null : event.stop),
           SpeechStatus.values[2]: ButtonProperties.greenButton(
-              context, isDisabled ? null : speech.resume, 'Resume'),
+              context, isDisabled ? null : event.resume, 'Resume'),
           SpeechStatus.values[3]: ButtonProperties.greenButton(
-              context, isDisabled ? null : speech.start, 'Restart'),
+              context, isDisabled ? null : event.start, 'Restart'),
         },
         super(key: key);
 
@@ -77,9 +83,7 @@ class _TimerButtonState extends State<TimerButton> {
 
   @override
   Widget build(BuildContext context) {
-    /// Whether the speech timer is running or not.
-    SpeechStatus status = context.watch<Speech>().status;
-    bool _isEnabled = widget.behavior[status].callback != null;
+    SpeechStatus status = context.watch<Event>().speech.status;
     return Container(
       width: _buttonSize.width,
       height: _buttonSize.height,
@@ -95,21 +99,15 @@ class _TimerButtonState extends State<TimerButton> {
         disabledColor: _buttonColor(status),
         shape: _circularRingWithColor(Colors.black),
         onHighlightChanged: (bool isPressed) => this.setState(() {
-          alpha = isPressed ? _initialAlpha ~/ 2 : _initialAlpha;
+          alpha = (isPressed ? _initialAlpha ~/ 2 : _initialAlpha);
         }),
-        child: Shimmer.fromColors(
-          enabled: _isEnabled,
-          period: const Duration(seconds: 2),
-          baseColor: widget.behavior[status].color,
-          highlightColor: widget.behavior[status].color.withOpacity(0.7),
-          child: Text(
-            _buttonText(status),
-            style: TextStyle(
-              fontSize: _fontSize,
-              fontWeight: _fontWeight,
-              color: _buttonTextColor(status),
-              fontFeatures: [FontFeature.tabularFigures()],
-            ),
+        child: Text(
+          _buttonText(status),
+          style: TextStyle(
+            fontSize: _fontSize,
+            fontWeight: _fontWeight,
+            color: _buttonTextColor(status),
+            fontFeatures: [FontFeature.tabularFigures()],
           ),
         ),
       ),

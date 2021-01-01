@@ -1,15 +1,84 @@
+// Copyright (c) 2020, Justin Shaw. Use of this source code is restricted,
+// please read the LICENSE file for details. All rights reserved.
+
+import 'package:fake_async/fake_async.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:preptime/models/debate_event.dart';
 import 'package:preptime/models/speech.dart';
 import 'package:preptime/utilities/debate_events/debate_events.dart';
-import 'package:test/test.dart';
+
+import '../material_wrapper.dart';
+
+class SpeechEndCallback {
+  void onSpeechEnd(BuildContext context) {}
+}
+
+/// Verifies how many times onSpeechEnd has been called.
+class MockCallback extends Mock implements SpeechEndCallback {}
 
 void main() {
   group('DebateEvent', () {
+    BuildContext mockContext;
+    MockCallback mockCallback;
     DebateEvent debateEvent;
     setUp(() {
+      mockContext = TestMaterial.mockBuildContext;
       debateEvent = Policy.highSchool();
     });
-    test('get speeches returns a non-null list of speeches.', () {
+    test('the debateEvent == operator works as expected', () {
+      expect(debateEvent == Policy.highSchool(), isTrue);
+    });
+    test('constructor fails assertion if name is null', () {
+      expect(
+        () => DebateEvent(
+          name: null,
+          description: 'description',
+          speeches: [Speech()],
+        ),
+        throwsAssertionError,
+      );
+    });
+    test('constructor fails assertion if description is null', () {
+      expect(
+        () => DebateEvent(
+          name: 'name',
+          description: null,
+          speeches: [Speech()],
+        ),
+        throwsAssertionError,
+      );
+    });
+    test('constructor fails assertion if speeches is null', () {
+      expect(
+        () => DebateEvent(
+          name: 'name',
+          description: 'description',
+          speeches: null,
+        ),
+        throwsAssertionError,
+      );
+    });
+    test('initController fails assertion if ticker is null', () {
+      expect(
+        () => debateEvent.initSpeechController(
+          null,
+          context: mockContext,
+        ),
+        throwsAssertionError,
+      );
+    });
+    test('initController fails assertion if context is null', () {
+      expect(
+        () => debateEvent.initSpeechController(
+          TestVSync(),
+          context: null,
+        ),
+        throwsAssertionError,
+      );
+    });
+    test('getter speeches returns a non-null list of speeches.', () {
       expect(debateEvent.speeches, isNotNull);
       expect(debateEvent.speeches is List<Speech>, isTrue);
     });
@@ -42,6 +111,55 @@ void main() {
       debateEvent.dispose();
       expect(debateEvent.speech, isNull);
       debateEvent = null; // make safe value for teardown
+    });
+    group('initController', () {
+      setUp(() {
+        TestWidgetsFlutterBinding.ensureInitialized();
+        mockCallback = MockCallback();
+        TickerProvider fakeTicker = TestVSync();
+        debateEvent = Policy.highSchool()
+          ..initSpeechController(
+            fakeTicker,
+            context: mockContext,
+            onSpeechEnd: mockCallback.onSpeechEnd,
+          );
+      });
+      test('start makes isRunning true', () {
+        expect(debateEvent.isNotRunning, isTrue);
+        debateEvent.start();
+        expect(debateEvent.isRunning, isTrue);
+      });
+      test('calling stop makes isNotRunning true', () {
+        debateEvent.start();
+        debateEvent.stop();
+        expect(debateEvent.isNotRunning, isTrue);
+      });
+      test('calling resume makes isRunning true', () {
+        debateEvent.start();
+        debateEvent.stop();
+        debateEvent.resume();
+        expect(debateEvent.isRunning, isTrue);
+      });
+      test('calling reset makes isNotRunning true', () {
+        debateEvent.start();
+        debateEvent.stop();
+        debateEvent.reset();
+        expect(debateEvent.isNotRunning, isTrue);
+      });
+      test('the callback is called when the speech ends', () {
+        fakeAsync((async) {
+          Speech speech = debateEvent.speech;
+          Duration currentTime;
+          speech.currentTime.listen((duration) {
+            currentTime = duration;
+          });
+          debateEvent.start();
+          async.elapse(speech.length);
+          expect(currentTime, Duration.zero);
+          expect(debateEvent.isRunning, isFalse);
+          verify(mockCallback.onSpeechEnd(mockContext)).called(1);
+        });
+      });
     });
     tearDown(() {
       debateEvent?.dispose();

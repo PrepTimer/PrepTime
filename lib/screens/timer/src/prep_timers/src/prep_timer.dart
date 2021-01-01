@@ -1,7 +1,9 @@
+// Copyright (c) 2020, Justin Shaw. Use of this source code is restricted,
+// please read the LICENSE file for details. All rights reserved.
+
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:preptime/models/debate_event.dart';
 import 'package:preptime/models/event.dart';
 import 'package:preptime/models/speech.dart';
@@ -41,7 +43,7 @@ class _PrepTimerState extends State<PrepTimer> {
 
   /// Whether the prep timer is disabled.
   ///
-  /// A [PrepTimer] is defined as disabled if [isAnyRunning] and [isNotRunning]
+  /// A [PrepTimer] is defined as disabled if [isAnyPrepRunning] and [isPrepNotRunning]
   /// are both true, meaning one of the prepTimers is running, but it is not
   /// this one. Therefore, this one should be disabled.
   bool _isDisabled;
@@ -63,8 +65,8 @@ class _PrepTimerState extends State<PrepTimer> {
 
   @override
   Widget build(BuildContext context) {
-    _speech = context.watch<Speech>();
     _debateEvent = context.watch<Event>() as DebateEvent;
+    _speech = _debateEvent.speech;
     _isDisabled = context.select<Event, bool>(_didChangeDisability);
     return GestureDetector(
       onLongPressStart: (_) => _handleReset(context),
@@ -90,20 +92,22 @@ class _PrepTimerState extends State<PrepTimer> {
 
   /// Decides if the current team's prep timer should be disabled.
   ///
-  /// This [PrepTimer] should be disabled when either of the following are
+  /// This [PrepTimer] should be disabled when any of the following are
   /// considered to be true:
   ///
   /// - The other [PrepTimer] is currently running (`isOtherTimerRunning`)
   /// - The [Speech] is currently running (`Event.speech.isRunning`)
+  /// - This [PrepTimer] is out of prep (can still reset this though)
   ///
   /// The other PrepTimer is running when there is at least one timer that is
   /// running (`Event.isAnyRunning` is `true`) and the current PrepTimer is not
   /// running (`Event.isNotRunning(this.team)`);
   bool _didChangeDisability(Event _) {
-    bool isAnyTimerRunning = _debateEvent.isAnyRunning;
-    bool isThisTimerNotRunning = _debateEvent.isNotRunning(widget.team);
-    bool isOtherTimerRunning = isAnyTimerRunning && isThisTimerNotRunning;
-    return isOtherTimerRunning || _speech.isRunning;
+    bool _isAnyTimerRunning = _debateEvent.isAnyPrepRunning;
+    bool _isThisTimerNotRunning = _debateEvent.isPrepNotRunning(widget.team);
+    bool isOtherTimerRunning = _isAnyTimerRunning && _isThisTimerNotRunning;
+    bool isOutOfPrep = _debateEvent.isOutOfPrep(widget.team);
+    return isOtherTimerRunning || _speech.isRunning || isOutOfPrep;
   }
 
   /// Handles the [reset] callback.
@@ -114,19 +118,17 @@ class _PrepTimerState extends State<PrepTimer> {
   /// will dismiss. If the user selects `reset` then the prep time will also be
   /// reset to the initial value.
   void _handleReset(BuildContext context) {
-    HapticFeedback.selectionClick();
-    if (_debateEvent.isRunning(widget.team)) _debateEvent.stopPrep(widget.team);
-    ClearTimer.showDialog(
+    if (_debateEvent.isPrepRunning(widget.team)) {
+      _debateEvent.stopPrep(widget.team);
+    }
+    ShowAlertDialog.withDestructiveAndBasicActions(
       context,
-      title: 'Reset Prep',
-      content: 'Are you sure you want to reset the prep timer?',
+      title: 'Reset Prep?',
+      content: 'The current prep time will be lost.',
       destructiveActionLabel: 'Reset',
       cancelActionLabel: 'Cancel',
-      destructiveAction: () {
-        _debateEvent.resetPrep(widget.team);
-        Navigator.of(context).pop();
-      },
-      cancelAction: () => Navigator.of(context).pop(),
+      destructiveAction: () => _debateEvent.resetPrep(widget.team),
+      cancelAction: () => null,
     );
   }
 }

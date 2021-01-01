@@ -1,3 +1,6 @@
+// Copyright (c) 2020, Justin Shaw. Use of this source code is restricted,
+// please read the LICENSE file for details. All rights reserved.
+
 import 'package:preptime/models/event_controller.dart';
 import 'package:preptime/utilities/debate_events/debate_events.dart';
 import 'package:test/test.dart';

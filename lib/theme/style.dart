@@ -1,3 +1,6 @@
+// Copyright (c) 2020, Justin Shaw. Use of this source code is restricted,
+// please read the LICENSE file for details. All rights reserved.
+
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -39,7 +42,7 @@ abstract class PrepTimeThemeData {
         fontWeight: FontWeight.w200,
         letterSpacing: -4.0,
         color: Colors.white,
-        fontSize: 90.0,
+        fontSize: 190.0,
       ),
 
       /// The [Disabled] text style for the [ClockLabel].
@@ -48,7 +51,14 @@ abstract class PrepTimeThemeData {
         fontWeight: FontWeight.w200,
         letterSpacing: -4.0,
         color: Colors.white24,
-        fontSize: 90.0,
+        fontSize: 190.0,
+      ),
+
+      /// The modal popup text style of the time signals.
+      headline3: const TextStyle(
+        fontWeight: FontWeight.w400,
+        color: Colors.white38,
+        fontSize: 24.0,
       ),
 
       /// The [Enabled] text style for a [SpeechLabel].

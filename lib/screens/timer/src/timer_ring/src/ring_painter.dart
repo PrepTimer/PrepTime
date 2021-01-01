@@ -1,8 +1,10 @@
+// Copyright (c) 2020, Justin Shaw. Use of this source code is restricted,
+// please read the LICENSE file for details. All rights reserved.
+
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:preptime/models/debate_event.dart';
 import 'package:preptime/models/event.dart';
-import 'package:preptime/models/speech.dart';
 import 'package:provider/provider.dart';
 
 /// Manages the animation of a circle and arc of the timer ring.
@@ -14,14 +16,13 @@ class RingPainter extends StatelessWidget {
   RingPainter({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    bool isPrepRunning = false;
     Event event = context.watch<Event>();
-    if (event is DebateEvent) isPrepRunning = event.isAnyRunning;
+    bool isPrepRunning = (event is DebateEvent) && event.isAnyPrepRunning;
     return Positioned.fill(
       child: CustomPaint(
         painter: _CustomRingPainter(
           context: context,
-          animation: context.watch<Speech>().controller,
+          animation: context.watch<Event>().speech.controller,
           isDisabled: isPrepRunning,
         ),
       ),
@@ -33,7 +34,6 @@ class RingPainter extends StatelessWidget {
 class _CustomRingPainter extends CustomPainter {
   static const PaintingStyle _paintStrokeStyle = PaintingStyle.stroke;
   static const StrokeCap _strokeCapStyle = StrokeCap.round;
-  static const bool _timerShouldStartEmpty = false;
   static const double _width = 7.0;
 
   /// The animation object that tracks the path of the object.
@@ -79,17 +79,12 @@ class _CustomRingPainter extends CustomPainter {
   }
 
   /// Draws the foreground arc to the canvas with the given paint object.
+  /// TODO: #32 TimerRing should change color as it spins.
   void _drawForeground(Canvas canvas, Size size, Paint paint) {
     paint.color = Theme.of(context).primaryColor;
     Rect rect = Offset.zero & size;
-    double startAngle, sweepAngle;
-    if (_timerShouldStartEmpty) {
-      startAngle = math.pi * 1.5;
-      sweepAngle = (animation.value - 1.0) * 2 * math.pi;
-    } else {
-      startAngle = math.pi * 1.5 - (1.0 - animation.value) * 2 * math.pi;
-      sweepAngle = math.pi * -0.5 - startAngle;
-    }
+    double startAngle = math.pi * 1.5 - (1.0 - animation.value) * 2 * math.pi;
+    double sweepAngle = math.pi * -0.5 - startAngle;
     canvas.drawArc(rect, startAngle, sweepAngle, false, paint);
   }
 }

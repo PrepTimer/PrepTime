@@ -1,3 +1,6 @@
+// Copyright (c) 2020, Justin Shaw. Use of this source code is restricted,
+// please read the LICENSE file for details. All rights reserved.
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:preptime/models/debate_event.dart';
@@ -41,7 +44,6 @@ class TimeLabel extends StatelessWidget {
   String _formatDuration(Duration time) {
     String seconds = (time.inSeconds % Duration.secondsPerMinute).toString();
     int minutes = (time.inMinutes % Duration.minutesPerHour);
-    if (minutes < 10) return '$minutes:${seconds.padLeft(2, '0')}';
-    return '${minutes.toString().padLeft(2, '0')}:${seconds.padLeft(2, '0')}';
+    return '$minutes:${seconds.padLeft(2, '0')}';
   }
 }

@@ -1,6 +1,12 @@
+// Copyright (c) 2020, Justin Shaw. Use of this source code is restricted,
+// please read the LICENSE file for details. All rights reserved.
+
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:preptime/models/speech.dart';
 import 'package:preptime/models/speech_status.dart';
+
+import '../material_wrapper.dart';
 
 void main() {
   group('Speech', () {
@@ -9,7 +15,7 @@ void main() {
     setUp(() {
       speech = Speech();
     });
-    test('name equals equals the constructed string', () {
+    test('name equals the constructed string', () {
       expect(speech.name, equals(Speech().name));
     });
     test('length equals the constructed duration', () {
@@ -41,8 +47,8 @@ void main() {
     test('start throws StateError without call to initController', () {
       expect(() => speech.start(), throwsStateError);
     });
-    test('timeRemaining throws StateError without initController call', () {
-      expect(() => speech.timeRemaining, throwsStateError);
+    test('currentTime throws StateError without initController call', () {
+      expect(() => speech.currentTime, throwsStateError);
     });
     test('isRunning throws StateError without initController call', () {
       expect(() => speech.isRunning, throwsStateError);
@@ -52,7 +58,14 @@ void main() {
     });
     group('(initialized)', () {
       setUp(() {
-        speech = Speech(shouldCountUp: true)..initController(const TestVSync());
+        speech = Speech(shouldCountUp: true, useJudgeAssistant: false);
+        speech.initController(
+          const TestVSync(),
+          TestMaterial.mockBuildContext,
+        );
+      });
+      test('speech attaches listener to stream if showTimeSignals', () {
+        speech = Speech(showTimeSignals: true, useJudgeAssistant: false);
       });
       test('status is pausedInMiddle after pressing start then stop', () {
         speech.start();
@@ -60,15 +73,21 @@ void main() {
         expect(speech.status, equals(SpeechStatus.pausedInMiddle));
       });
       test('status is completed after finishing at the end', () {
-        speech.start();
-        speech.controller.value = 1.0;
-        expect(speech.status, equals(SpeechStatus.completed));
+        fakeAsync((async) async {
+          speech.start();
+          async.elapse(speech.length);
+          expect(await speech.currentTime.last, Duration.zero);
+          expect(speech.status, equals(SpeechStatus.completed));
+        });
       });
       test('reset sets the timer back to the initial value', () {
-        speech.start();
-        speech.controller.value = 0.5;
-        speech.reset();
-        expect(speech.timeRemaining, equals(const Duration(minutes: 0)));
+        fakeAsync((async) async {
+          speech.start();
+          async.elapse(speech.length);
+          expect(await speech.currentTime.last, equals(Duration.zero));
+          speech.reset();
+          expect(await speech.currentTime.last, equals(speech.length));
+        });
       });
       test('stop pauses the timer', () {
         speech.stop();
@@ -76,12 +95,15 @@ void main() {
         expect(speech.isNotRunning, isTrue);
       });
       test('resume starts the timer from a stop', () {
-        speech.start();
-        speech.controller.value = 0.5;
-        speech.stop();
-        speech.resume();
-        expect(speech.timeRemaining, equals(const Duration(minutes: 4)));
-        expect(speech.isRunning, isTrue);
+        fakeAsync((async) async {
+          speech.start();
+          async.elapse(speech.length ~/ 2);
+          speech.stop();
+          expect(speech.isRunning, isFalse);
+          speech.resume();
+          expect(speech.currentTime.last, equals(speech.length ~/ 2));
+          expect(speech.isRunning, isTrue);
+        });
       });
       test('resume makes the timer tick forward', () {
         speech.resume();
@@ -91,8 +113,8 @@ void main() {
         speech.start();
         expect(speech.status, equals(SpeechStatus.runningForward));
       });
-      test('timeRemaining returns a duration', () {
-        expect(speech.timeRemaining, isA<Duration>());
+      test('currentTime returns a duration', () async {
+        expect(await speech.currentTime.first, isA<Duration>());
       });
       test('isRunning is true after start and false after stop', () {
         speech.start();
