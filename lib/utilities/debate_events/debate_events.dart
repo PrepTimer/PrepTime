@@ -15,6 +15,7 @@ Speech _createSpeech(String name, int minutes) {
   return Speech(
     name: name,
     shouldCountUp: false,
+    showTimeSignals: false,
     useJudgeAssistant: true,
     length: Duration(minutes: minutes),
   );

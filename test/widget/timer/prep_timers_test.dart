@@ -69,29 +69,25 @@ void main() {
         PrepTimers(),
         platformInfo: PlatformInfo.android(),
       ));
-      final affPrepButton = verifyVisibleWidgetWithText(PrepTimer, 'AFF PREP');
-
       verifyVisibleWidgetWithText(PrepTimer, '8:00', finds: 2);
 
+      // Tap the aff prep button
+      final affPrepButton = verifyVisibleWidgetWithText(PrepTimer, 'AFF PREP');
       await tester.tap(affPrepButton);
       await tester.pump(Duration(minutes: 8));
 
       verifyVisibleWidgetWithText(PrepTimer, '0:01', finds: 1);
-
       await longPressAndSettleButtonWithTester(affPrepButton, tester);
 
       verifyVisibleWidgetOfType(AlertDialog);
       final cancel = verifyVisibleWidgetWithText(TextButton, 'Cancel');
-
       await tapAndSettleButtonWithTester(cancel, tester);
 
       verifyVisibleWidgetWithText(PrepTimer, '0:01');
-
       await longPressAndSettleButtonWithTester(affPrepButton, tester);
 
       verifyVisibleWidgetOfType(AlertDialog);
       final reset = verifyVisibleWidgetWithText(TextButton, 'Reset');
-
       await tapAndSettleButtonWithTester(reset, tester);
 
       verifyVisibleWidgetWithText(PrepTimer, '8:00', finds: 2);

@@ -93,7 +93,9 @@ class DebateEvent extends Event with PrepTimeMixin {
         context,
         onSpeechEnd: () {
           onSpeechEnd?.call();
-          _autoScroll(speech);
+          if (speech.useJudgeAssistant) {
+            _scrollToNextPageIfSafe();
+          }
         },
       );
     }
@@ -109,17 +111,6 @@ class DebateEvent extends Event with PrepTimeMixin {
     disposePrepTimers();
     speech = null;
     super.dispose();
-  }
-
-  /// Automatically scrolls to the next speech.
-  ///
-  /// This method is a no-op if useJudgeAssistant is false or if it is not safe
-  /// to scroll to the next speech (the current speech is the last speech, for
-  /// example).
-  void _autoScroll(Speech speech) {
-    if (speech.useJudgeAssistant) {
-      _scrollToNextPageIfSafe();
-    }
   }
 
   /// Scrolls to the next page if it is safe to do so.
