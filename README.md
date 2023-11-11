@@ -5,9 +5,6 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/PrepTimer/PrepTime/actions">
-    <img alt="Build Passing" src="https://github.com/PrepTimer/PrepTime/workflows/build/badge.svg" />
-  </a>
   <a href="https://coveralls.io/github/PrepTimer/PrepTime">
     <img src="https://coveralls.io/repos/github/PrepTimer/PrepTime/badge.svg?branch=main" />
   </a>
@@ -38,6 +35,10 @@
   <a href="https://github.com/PrepTimer/PrepTime/issues/new?assignees=justinalexandershaw&labels=P4%3A+Feature&template=feature_request.md&title=%5BFEATURE%5D">Request Feature</a>
 </p>
 <p align="center">Love the project? Please consider <a href="https://github.com/sponsors/justinalexandershaw">donating</a> to help it improve!
+
+<p align="center">
+  <img width="381" alt="Screen Shot 2023-11-10 at 5 20 12 PM" src="https://github.com/PrepTimer/PrepTime/assets/46334750/8a9f472a-7cfb-4c2c-80ec-322f2e5395f0">
+</p>
 
 ## 👀 History
 What’s up Debate community!
